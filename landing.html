@@ -1,0 +1,2236 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>deepfolio.
+    </title>
+    <link rel="icon" type="logo" href="logo/logobien.png" 
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --burgundy-deep: #3D0F14;
+            --burgundy-dark: #5C1A20;
+            --burgundy: #7B2D35;
+            --burgundy-mid: #8B3A42;
+            --burgundy-light: #A84B52;
+            --burgundy-pale: #C46B73;
+            --gold: #C9A84C;
+            --gold-light: #D4B96A;
+            --gold-pale: #E8D5A0;
+            --cream: #F5EDE4;
+            --cream-light: #FAF6F2;
+            --text-dark: #1A080A;
+            --text-muted: #6B5055;
+            --bg-dark: #1A0A0E;
+            --bg-card: #2A1015;
+            --bg-card-light: #35151A;
+            --white: #FFFFFF;
+            --success: #4A9E6E;
+            --danger: #C45A5A;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-dark);
+            color: var(--cream);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        /* ===== SCROLLBAR ===== */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg-dark); }
+        ::-webkit-scrollbar-thumb { background: var(--burgundy); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--burgundy-mid); }
+
+        /* ===== NAVBAR ===== */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 1rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            background: transparent;
+        }
+
+        .navbar.scrolled {
+            background: rgba(26, 10, 14, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(123, 45, 53, 0.3);
+            padding: 0.7rem 2rem;
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+        }
+
+        .nav-logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--burgundy), var(--gold));
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--white);
+            font-family: 'Playfair Display', serif;
+        }
+
+        .nav-logo-icon span {
+            color: black;            
+        }   
+
+        .nav-logo-text {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.6rem;
+            font-weight: 600;
+            color: var(--cream);
+            letter-spacing: -0.5px;
+        }
+
+        .nav-logo-text span {
+            color: var(--gold);
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--cream);
+            font-size: 0.9rem;
+            font-weight: 400;
+            opacity: 0.8;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            opacity: 1;
+            color: var(--gold);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 1.5px;
+            background: var(--gold);
+            transition: width 0.3s;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .nav-cta {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.7rem 1.5rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: none;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .btn-ghost {
+            background: transparent;
+            color: var(--cream);
+            border: 1px solid rgba(201, 168, 76, 0.3);
+        }
+
+        .btn-ghost:hover {
+            border-color: var(--gold);
+            color: var(--gold);
+            background: rgba(201, 168, 76, 0.05);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--burgundy), var(--burgundy-mid));
+            color: var(--white);
+            box-shadow: 0 4px 15px rgba(123, 45, 53, 0.4);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(123, 45, 53, 0.5);
+        }
+
+        .btn-gold {
+            background: linear-gradient(135deg, var(--gold), var(--gold-light));
+            color: var(--text-dark);
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(201, 168, 76, 0.3);
+        }
+
+        .btn-gold:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(201, 168, 76, 0.4);
+        }
+
+        .btn-large {
+            padding: 1rem 2.2rem;
+            font-size: 1rem;
+            border-radius: 10px;
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 5px;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 2px;
+            background: var(--cream);
+            transition: all 0.3s;
+            border-radius: 2px;
+        }
+
+        /* ===== HERO ===== */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            padding: 8rem 2rem 4rem;
+            overflow: hidden;
+        }
+
+        .hero-bg {
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+        }
+
+        .hero-bg::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(ellipse at 30% 20%, rgba(123, 45, 53, 0.15) 0%, transparent 50%),
+                        radial-gradient(ellipse at 70% 60%, rgba(201, 168, 76, 0.05) 0%, transparent 50%),
+                        radial-gradient(ellipse at 50% 80%, rgba(92, 26, 32, 0.2) 0%, transparent 50%);
+            animation: heroBgMove 20s ease-in-out infinite alternate;
+        }
+
+        @keyframes heroBgMove {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            100% { transform: translate(-2%, -1%) rotate(1deg); }
+        }
+
+        .hero-grid-overlay {
+            position: absolute;
+            inset: 0;
+            background-image: 
+                linear-gradient(rgba(201, 168, 76, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(201, 168, 76, 0.03) 1px, transparent 1px);
+            background-size: 60px 60px;
+            z-index: 0;
+        }
+
+        .hero-particles {
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+        }
+
+        .particle {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            background: var(--gold);
+            border-radius: 50%;
+            opacity: 0;
+            animation: particleFloat 8s infinite;
+        }
+
+        @keyframes particleFloat {
+            0% { opacity: 0; transform: translateY(100vh) scale(0); }
+            10% { opacity: 0.6; }
+            90% { opacity: 0.6; }
+            100% { opacity: 0; transform: translateY(-10vh) scale(1); }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            max-width: 900px;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1.2rem;
+            background: rgba(123, 45, 53, 0.2);
+            border: 1px solid rgba(201, 168, 76, 0.2);
+            border-radius: 50px;
+            font-size: 0.85rem;
+            color: var(--gold-pale);
+            margin-bottom: 2rem;
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .hero-badge-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--gold);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.5); }
+        }
+
+        .hero-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.8rem, 6vw, 5rem);
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            animation: fadeInUp 0.8s ease-out 0.1s both;
+        }
+
+        .hero-title .highlight {
+            background: linear-gradient(135deg, var(--gold), var(--gold-light), var(--gold-pale));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero-title .italic {
+            font-style: italic;
+            color: var(--burgundy-pale);
+            -webkit-text-fill-color: var(--burgundy-pale);
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1rem, 2vw, 1.25rem);
+            color: var(--cream);
+            opacity: 0.7;
+            max-width: 650px;
+            margin: 0 auto 2.5rem;
+            font-weight: 300;
+            line-height: 1.7;
+            animation: fadeInUp 0.8s ease-out 0.2s both;
+        }
+
+        .hero-actions {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-bottom: 3rem;
+            animation: fadeInUp 0.8s ease-out 0.3s both;
+        }
+
+        .hero-stats {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 3rem;
+            flex-wrap: wrap;
+            animation: fadeInUp 0.8s ease-out 0.4s both;
+        }
+
+        .hero-stat {
+            text-align: center;
+        }
+
+        .hero-stat-value {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--gold);
+        }
+
+        .hero-stat-label {
+            font-size: 0.8rem;
+            color: var(--cream);
+            opacity: 0.5;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 0.25rem;
+        }
+
+        .hero-stat-divider {
+            width: 1px;
+            height: 40px;
+            background: rgba(201, 168, 76, 0.2);
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ===== FLOATING CHART (Hero Visual) ===== */
+        .hero-visual {
+            margin-top: 4rem;
+            position: relative;
+            animation: fadeInUp 1s ease-out 0.5s both;
+        }
+
+        .chart-container {
+            background: rgba(42, 16, 21, 0.8);
+            border: 1px solid rgba(123, 45, 53, 0.3);
+            border-radius: 16px;
+            padding: 2rem;
+            backdrop-filter: blur(10px);
+            max-width: 800px;
+            margin: 0 auto;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        .chart-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+        }
+
+        .chart-title-group {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .chart-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--burgundy), var(--gold));
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+        }
+
+        .chart-name {
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .chart-ticker {
+            font-size: 0.8rem;
+            color: var(--cream);
+            opacity: 0.5;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .chart-value {
+            text-align: right;
+        }
+
+        .chart-price {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+
+        .chart-change {
+            font-size: 0.85rem;
+            color: var(--success);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .chart-canvas-wrapper {
+            position: relative;
+            height: 200px;
+            margin-bottom: 1rem;
+        }
+
+        .chart-canvas-wrapper canvas {
+            width: 100%;
+            height: 100%;
+        }
+
+        .chart-timeframes {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .chart-tf {
+            padding: 0.35rem 0.8rem;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            cursor: pointer;
+            border: 1px solid rgba(201, 168, 76, 0.15);
+            background: transparent;
+            color: var(--cream);
+            opacity: 0.5;
+            transition: all 0.3s;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .chart-tf.active, .chart-tf:hover {
+            opacity: 1;
+            background: rgba(201, 168, 76, 0.1);
+            border-color: var(--gold);
+            color: var(--gold);
+        }
+
+        /* ===== SECTIONS COMMON ===== */
+        section {
+            padding: 6rem 2rem;
+            position: relative;
+        }
+
+        .section-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--gold);
+            font-weight: 500;
+            margin-bottom: 1rem;
+        }
+
+        .section-label::before {
+            content: '';
+            width: 30px;
+            height: 1px;
+            background: var(--gold);
+        }
+
+        .section-label::after {
+            content: '';
+            width: 30px;
+            height: 1px;
+            background: var(--gold);
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 700;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+
+        .section-subtitle {
+            font-size: 1.1rem;
+            color: var(--cream);
+            opacity: 0.6;
+            max-width: 600px;
+            font-weight: 300;
+            line-height: 1.7;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-header .section-subtitle {
+            margin: 0 auto;
+        }
+
+        /* ===== FEATURES ===== */
+        .features {
+            background: linear-gradient(180deg, var(--bg-dark) 0%, rgba(61, 15, 20, 0.3) 50%, var(--bg-dark) 100%);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+        }
+
+        .feature-card {
+            background: rgba(42, 16, 21, 0.6);
+            border: 1px solid rgba(123, 45, 53, 0.2);
+            border-radius: 16px;
+            padding: 2rem;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(201, 168, 76, 0.3);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+
+        .feature-card:hover::before {
+            opacity: 1;
+        }
+
+        .feature-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            margin-bottom: 1.2rem;
+            background: rgba(123, 45, 53, 0.2);
+            border: 1px solid rgba(123, 45, 53, 0.3);
+        }
+
+        .feature-card h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+
+        .feature-card p {
+            font-size: 0.9rem;
+            color: var(--cream);
+            opacity: 0.6;
+            line-height: 1.6;
+        }
+
+        /* ===== ASSET CLASSES ===== */
+        .assets {
+            overflow: hidden;
+        }
+
+        .assets-marquee {
+            display: flex;
+            gap: 1rem;
+            animation: marquee 30s linear infinite;
+            width: max-content;
+        }
+
+        .assets-marquee-wrapper {
+            overflow: hidden;
+            margin-top: 3rem;
+            mask-image: linear-gradient(90deg, transparent, black 10%, black 90%, transparent);
+            -webkit-mask-image: linear-gradient(90deg, transparent, black 10%, black 90%, transparent);
+        }
+
+        @keyframes marquee {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        .asset-chip {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 1rem 1.5rem;
+            background: rgba(42, 16, 21, 0.6);
+            border: 1px solid rgba(123, 45, 53, 0.2);
+            border-radius: 12px;
+            white-space: nowrap;
+            flex-shrink: 0;
+            transition: all 0.3s;
+        }
+
+        .asset-chip:hover {
+            border-color: var(--gold);
+            background: rgba(123, 45, 53, 0.2);
+        }
+
+        .asset-chip-icon {
+            font-size: 1.3rem;
+        }
+
+        .asset-chip-name {
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .asset-chip-type {
+            font-size: 0.75rem;
+            color: var(--cream);
+            opacity: 0.4;
+        }
+
+        /* ===== BACKTESTING DEMO ===== */
+        .backtesting {
+            background: linear-gradient(180deg, var(--bg-dark), rgba(61, 15, 20, 0.4), var(--bg-dark));
+        }
+
+        .backtesting-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        .backtesting-info h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+        }
+
+        .backtesting-info p {
+            color: var(--cream);
+            opacity: 0.6;
+            line-height: 1.7;
+            margin-bottom: 1.5rem;
+        }
+
+        .backtesting-features {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .backtesting-features li {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 0.95rem;
+            color: var(--cream);
+            opacity: 0.8;
+        }
+
+        .backtesting-features li .check {
+            width: 22px;
+            height: 22px;
+            border-radius: 6px;
+            background: rgba(74, 158, 110, 0.15);
+            border: 1px solid rgba(74, 158, 110, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            color: var(--success);
+            flex-shrink: 0;
+        }
+
+        .backtesting-demo {
+            background: rgba(42, 16, 21, 0.8);
+            border: 1px solid rgba(123, 45, 53, 0.3);
+            border-radius: 16px;
+            padding: 1.5rem;
+            backdrop-filter: blur(10px);
+        }
+
+        .demo-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(123, 45, 53, 0.2);
+        }
+
+        .demo-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .demo-tabs {
+            display: flex;
+            gap: 0.25rem;
+            background: rgba(26, 10, 14, 0.5);
+            border-radius: 8px;
+            padding: 3px;
+        }
+
+        .demo-tab {
+            padding: 0.4rem 0.8rem;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            border: none;
+            background: transparent;
+            color: var(--cream);
+            opacity: 0.5;
+            transition: all 0.3s;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .demo-tab.active {
+            background: var(--burgundy);
+            opacity: 1;
+            color: var(--white);
+        }
+
+        .demo-chart-area {
+            height: 250px;
+            position: relative;
+            margin-bottom: 1rem;
+        }
+
+        .demo-chart-area canvas {
+            width: 100%;
+            height: 100%;
+        }
+
+        .demo-metrics {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0.75rem;
+        }
+
+        .demo-metric {
+            text-align: center;
+            padding: 0.75rem;
+            background: rgba(26, 10, 14, 0.5);
+            border-radius: 8px;
+        }
+
+        .demo-metric-value {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--gold);
+        }
+
+        .demo-metric-value.green { color: var(--success); }
+        .demo-metric-value.red { color: var(--danger); }
+
+        .demo-metric-label {
+            font-size: 0.7rem;
+            color: var(--cream);
+            opacity: 0.4;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 0.25rem;
+        }
+
+        /* ===== COMPARISON SECTION ===== */
+        .comparison {
+            overflow: hidden;
+        }
+
+        .comparison-table-wrapper {
+            background: rgba(42, 16, 21, 0.6);
+            border: 1px solid rgba(123, 45, 53, 0.2);
+            border-radius: 16px;
+            overflow: hidden;
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .comparison-table thead th {
+            padding: 1.2rem 1.5rem;
+            text-align: left;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--cream);
+            opacity: 0.5;
+            font-weight: 500;
+            border-bottom: 1px solid rgba(123, 45, 53, 0.2);
+            background: rgba(26, 10, 14, 0.3);
+        }
+
+        .comparison-table tbody td {
+            padding: 1rem 1.5rem;
+            font-size: 0.9rem;
+            border-bottom: 1px solid rgba(123, 45, 53, 0.1);
+        }
+
+        .comparison-table tbody tr {
+            transition: background 0.3s;
+        }
+
+        .comparison-table tbody tr:hover {
+            background: rgba(123, 45, 53, 0.1);
+        }
+
+        .comparison-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .asset-info {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .asset-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            background: rgba(123, 45, 53, 0.2);
+        }
+
+        .asset-name {
+            font-weight: 600;
+        }
+
+        .asset-type {
+            font-size: 0.75rem;
+            color: var(--cream);
+            opacity: 0.4;
+        }
+
+        .table-value {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 500;
+        }
+
+        .table-value.positive { color: var(--success); }
+        .table-value.negative { color: var(--danger); }
+
+        .table-bar {
+            width: 100%;
+            height: 6px;
+            background: rgba(123, 45, 53, 0.2);
+            border-radius: 3px;
+            overflow: hidden;
+            min-width: 80px;
+        }
+
+        .table-bar-fill {
+            height: 100%;
+            border-radius: 3px;
+            background: linear-gradient(90deg, var(--burgundy), var(--gold));
+            transition: width 1s ease;
+        }
+
+        /* ===== PRICING ===== */
+        .pricing {
+            background: linear-gradient(180deg, var(--bg-dark), rgba(61, 15, 20, 0.3), var(--bg-dark));
+        }
+
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            align-items: start;
+        }
+
+        .pricing-card {
+            background: rgba(42, 16, 21, 0.6);
+            border: 1px solid rgba(123, 45, 53, 0.2);
+            border-radius: 20px;
+            padding: 2.5rem 2rem;
+            position: relative;
+            transition: all 0.4s;
+        }
+
+        .pricing-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .pricing-card.featured {
+            border-color: var(--gold);
+            background: rgba(42, 16, 21, 0.9);
+            box-shadow: 0 20px 60px rgba(201, 168, 76, 0.1);
+        }
+
+        .pricing-card.featured::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--burgundy), var(--gold), var(--burgundy));
+            border-radius: 20px 20px 0 0;
+        }
+
+        .pricing-popular {
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: linear-gradient(135deg, var(--gold), var(--gold-light));
+            color: var(--text-dark);
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 0.35rem 1rem;
+            border-radius: 50px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .pricing-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .pricing-desc {
+            font-size: 0.85rem;
+            color: var(--cream);
+            opacity: 0.5;
+            margin-bottom: 1.5rem;
+        }
+
+        .pricing-price {
+            margin-bottom: 2rem;
+        }
+
+        .pricing-amount {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            font-weight: 700;
+        }
+
+        .pricing-currency {
+            font-size: 1.2rem;
+            opacity: 0.6;
+            vertical-align: super;
+        }
+
+        .pricing-period {
+            font-size: 0.85rem;
+            color: var(--cream);
+            opacity: 0.4;
+        }
+
+        .pricing-features {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            margin-bottom: 2rem;
+        }
+
+        .pricing-features li {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            font-size: 0.9rem;
+            color: var(--cream);
+            opacity: 0.7;
+        }
+
+        .pricing-features li .icon {
+            font-size: 0.8rem;
+            flex-shrink: 0;
+        }
+
+        .pricing-features li .icon.check {
+            color: var(--success);
+        }
+
+        .pricing-features li .icon.cross {
+            color: var(--danger);
+            opacity: 0.3;
+        }
+
+        .pricing-card .btn {
+            width: 100%;
+        }
+
+        /* ===== TESTIMONIALS ===== */
+        .testimonials {
+            overflow: hidden;
+        }
+
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+        }
+
+        .testimonial-card {
+            background: rgba(42, 16, 21, 0.6);
+            border: 1px solid rgba(123, 45, 53, 0.2);
+            border-radius: 16px;
+            padding: 2rem;
+            transition: all 0.3s;
+        }
+
+        .testimonial-card:hover {
+            border-color: rgba(201, 168, 76, 0.3);
+        }
+
+        .testimonial-stars {
+            color: var(--gold);
+            font-size: 0.85rem;
+            margin-bottom: 1rem;
+            letter-spacing: 2px;
+        }
+
+        .testimonial-text {
+            font-size: 0.95rem;
+            color: var(--cream);
+            opacity: 0.7;
+            line-height: 1.7;
+            margin-bottom: 1.5rem;
+            font-style: italic;
+        }
+
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .testimonial-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--burgundy), var(--gold));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+
+        .testimonial-name {
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .testimonial-role {
+            font-size: 0.75rem;
+            color: var(--cream);
+            opacity: 0.4;
+        }
+
+        /* ===== CTA SECTION ===== */
+        .cta-section {
+            padding: 8rem 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-section::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse at center, rgba(123, 45, 53, 0.15) 0%, transparent 70%);
+        }
+
+        .cta-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .cta-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.2rem, 4vw, 3.5rem);
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .cta-subtitle {
+            font-size: 1.1rem;
+            color: var(--cream);
+            opacity: 0.6;
+            margin-bottom: 2.5rem;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            background: rgba(26, 10, 14, 0.95);
+            border-top: 1px solid rgba(123, 45, 53, 0.2);
+            padding: 4rem 2rem 2rem;
+        }
+
+        .footer-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-brand p {
+            font-size: 0.9rem;
+            color: var(--cream);
+            opacity: 0.5;
+            line-height: 1.7;
+            margin-top: 1rem;
+            max-width: 300px;
+        }
+
+        .footer-col h4 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 1.2rem;
+            color: var(--cream);
+        }
+
+        .footer-col ul {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+        }
+
+        .footer-col ul a {
+            text-decoration: none;
+            color: var(--cream);
+            opacity: 0.5;
+            font-size: 0.85rem;
+            transition: all 0.3s;
+        }
+
+        .footer-col ul a:hover {
+            opacity: 1;
+            color: var(--gold);
+        }
+
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(123, 45, 53, 0.15);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .footer-bottom p {
+            font-size: 0.8rem;
+            color: var(--cream);
+            opacity: 0.3;
+        }
+
+        .footer-socials {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .footer-socials a {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            border: 1px solid rgba(123, 45, 53, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+            color: var(--cream);
+            opacity: 0.5;
+        }
+
+        .footer-socials a:hover {
+            border-color: var(--gold);
+            opacity: 1;
+            background: rgba(201, 168, 76, 0.1);
+        }
+
+        /* ===== MOBILE NAV ===== */
+        .mobile-menu {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(26, 10, 14, 0.98);
+            z-index: 999;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 2rem;
+            backdrop-filter: blur(20px);
+        }
+
+        .mobile-menu.active {
+            display: flex;
+        }
+
+        .mobile-menu a {
+            text-decoration: none;
+            color: var(--cream);
+            font-size: 1.3rem;
+            font-family: 'Playfair Display', serif;
+            transition: color 0.3s;
+        }
+
+        .mobile-menu a:hover {
+            color: var(--gold);
+        }
+
+        .mobile-close {
+            position: absolute;
+            top: 1.5rem;
+            right: 2rem;
+            background: none;
+            border: none;
+            color: var(--cream);
+            font-size: 2rem;
+            cursor: pointer;
+        }
+
+        /* ===== SCROLL ANIMATIONS ===== */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 1024px) {
+            .features-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .pricing-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .pricing-card:last-child {
+                grid-column: span 2;
+                max-width: 400px;
+                margin: 0 auto;
+            }
+            .backtesting-layout {
+                grid-template-columns: 1fr;
+            }
+            .footer-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links, .nav-cta {
+                display: none;
+            }
+            .hamburger {
+                display: flex;
+            }
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+            .pricing-grid {
+                grid-template-columns: 1fr;
+            }
+            .pricing-card:last-child {
+                grid-column: span 1;
+                max-width: none;
+            }
+            .testimonials-grid {
+                grid-template-columns: 1fr;
+            }
+            .hero-stats {
+                gap: 1.5rem;
+            }
+            .hero-stat-divider {
+                display: none;
+            }
+            .comparison-table-wrapper {
+                overflow-x: auto;
+            }
+            .footer-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+            .demo-metrics {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            section {
+                padding: 4rem 1.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-actions {
+                flex-direction: column;
+            }
+            .hero-actions .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar" id="navbar">
+        <a href="#" class="nav-logo">
+            <div class="nav-logo-icon">d<span>;</span></div>
+            <div class="nav-logo-text">deep<span>folio.</span></div>
+        </a>
+        <ul class="nav-links">
+            <li><a href="#features">Funciones</a></li>
+            <li><a href="#assets">Activos</a></li>
+            <li><a href="#backtesting">Backtesting</a></li>
+            <li><a href="#comparison">Comparativas</a></li>
+            <li><a href="#pricing">Planes</a></li>
+        </ul>
+        <div class="nav-cta">
+            <a href="login.html" class="btn btn-ghost">Iniciar Sesión</a>
+            <a href="#" class="btn btn-primary">Registrarme</a>
+        </div>
+        <button class="hamburger" id="hamburger" aria-label="Menu"> 
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </nav>
+
+    <!-- MOBILE MENU -->
+    <div class="mobile-menu" id="mobileMenu">
+        <button class="mobile-close" id="mobileClose">✕</button>
+        <a href="#features" onclick="closeMobile()">Funciones</a>
+        <a href="#assets" onclick="closeMobile()">Activos</a>
+        <a href="#backtesting" onclick="closeMobile()">Backtesting</a>
+        <a href="#comparison" onclick="closeMobile()">Comparar</a>
+        <a href="#pricing" onclick="closeMobile()">Planes</a>
+        <a href="#" class="btn btn-gold btn-large" onclick="closeMobile()">Empezar Gratis</a>
+    </div>
+
+    <!-- HERO -->
+    <section class="hero">
+        <div class="hero-bg"></div>
+        <div class="hero-grid-overlay"></div>
+        <div class="hero-particles" id="particles"></div>
+        <div class="hero-content">
+            <div class="hero-badge">
+                <span class="hero-badge-dot"></span>
+                LANZAMIENTO 2026 — ACCESO ANTICIPADO
+            </div>
+            <h1 class="hero-title">
+                Tu patrimonio,<br>
+                <span class="highlight">analizado</span> con <span class="italic">profundidad</span>
+            </h1>
+            <p class="hero-subtitle">
+                Backtesting avanzado, comparativas en tiempo real y análisis profundo para acciones, ETFs, 
+                criptomonedas, renta fija, fondos indexados y más. Todo en un solo lugar.
+            </p>
+            <div class="hero-actions">
+                <a href="#" class="btn btn-gold btn-large">Comenzar Gratis →</a>
+            </div>
+            <div class="hero-stats">
+                <div class="hero-stat">
+                    <div class="hero-stat-value" id="statUsers">+30 años</div>
+                    <div class="hero-stat-label">Backtesting histórico</div>
+                </div>
+                <div class="hero-stat-divider"></div>
+                <div class="hero-stat">
+                    <div class="hero-stat-value">10.000+</div>
+                    <div class="hero-stat-label">Activos soportados</div>
+                </div>
+                <div class="hero-stat-divider"></div>
+                <div class="hero-stat">
+                    <div class="hero-stat-value">150+</div>
+                    <div class="hero-stat-label">Mercados</div>
+                </div>
+                <div class="hero-stat-divider"></div>
+                <div class="hero-stat">
+                    <div class="hero-stat-value">4.9 ★</div>
+                    <div class="hero-stat-label">Valoración</div>
+                </div>
+            </div>           
+    </section>
+
+    <!-- FEATURES -->
+    <section class="features" id="features">
+        <div class="section-container">
+            <div class="section-header reveal">
+                <div class="section-label">Funciones</div>
+                <h2 class="section-title">Todo lo que necesitas para<br><span style="color: var(--gold)">inversiones inteligentes</span></h2>
+                <p class="section-subtitle">
+                    Herramientas profesionales de análisis y gestión de carteras, 
+                    diseñadas para inversores que exigen lo mejor.
+                </p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card reveal">
+                    <div class="feature-icon">🔬</div>
+                    <h3>Backtesting Avanzado</h3>
+                    <p>Simula estrategias de inversión con datos históricos de hasta 30 años. Optimiza tu cartera antes de arriesgar un euro.</p>
+                </div>
+                <div class="feature-card reveal">
+                    <div class="feature-icon">⚖️</div>
+                    <h3>Comparativas de Carteras</h3>
+                    <p>Compara el rendimiento de diferentes carteras, fondos y activos lado a lado con métricas detalladas.</p>
+                </div>
+                <div class="feature-card reveal">
+                    <div class="feature-icon">📈</div>
+                    <h3>Multiclase de Activos</h3>
+                    <p>Acciones, ETFs, cripto, renta fija, fondos indexados, real estate y más — todo en un solo lugar.</p>
+                </div>
+                <div class="feature-card reveal">
+                    <div class="feature-icon">🧠</div>
+                    <h3>Análisis con IA</h3>
+                    <p>Nuestro motor de inteligencia artificial analiza patrones y sugiere optimizaciones para tu cartera.</p>
+                </div>
+                <div class="feature-card reveal">
+                    <div class="feature-icon">🔔</div>
+                    <h3>Alertas Inteligentes</h3>
+                    <p>Recibe notificaciones personalizadas cuando tus activos alcen umbrales clave o cambie la volatilidad.</p>
+                </div>
+                <div class="feature-card reveal">
+                    <div class="feature-icon">📋</div>
+                    <h3>Reportes Fiscales</h3>
+                    <p>Genera informes de rentabilidad, plusvalías y minusvalías listos para tu declaración de la renta.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ASSET CLASSES -->
+    <section class="assets" id="assets">
+        <div class="section-container">
+            <div class="section-header reveal">
+                <div class="section-label">Cobertura Total</div>
+                <h2 class="section-title">Cada clase de activo,<br><span style="color: var(--gold)">unificada</span></h2>
+                <p class="section-subtitle">
+                    Desde las acciones más líquidas hasta inversiones inmobiliarias, 
+                    gestiona todo tu patrimonio financiero en una sola plataforma.
+                </p>
+            </div>
+        </div>
+        <div class="assets-marquee-wrapper">
+            <div class="assets-marquee" id="assetsMarquee">
+                <div class="asset-chip"><span class="asset-chip-icon">📈</span><div><div class="asset-chip-name">Acciones</div><div class="asset-chip-type">Stocks · Equities</div></div></div>
+                <div class="asset-chip"><span class="asset-chip-icon">₿</span><div><div class="asset-chip-name">Criptomonedas</div><div class="asset-chip-type">Crypto · DeFi</div></div></div>
+                <div class="asset-chip"><span class="asset-chip-icon">🏛️</span><div><div class="asset-chip-name">ETFs</div><div class="asset-chip-type">Exchange Traded Funds</div></div></div>
+                <div class="asset-chip"><span class="asset-chip-icon">📊</span><div><div class="asset-chip-name">Fondos Indexados</div><div class="asset-chip-type">Index Funds</div></div></div>
+                <div class="asset-chip"><span class="asset-chip-icon">🏦</span><div><div class="asset-chip-name">Renta Fija</div><div class="asset-chip-type">Bonds · Fixed Income</div></div></div>
+                <div class="asset-chip"><span class="asset-chip-icon">🏠</span><div><div class="asset-chip-name">Real Estate</div><div class="asset-chip-type">REITs · Property</div></div></div>
+                <div class="asset-chip"><span class="asset-chip-icon">💎</span><div><div class="asset-chip-name">Materias Primas</div><div class="asset-chip-type">Commodities · Gold</div></div></div>
+                <div class="asset-chip"><span class="asset-chip-icon">🌍</span><div><div class="asset-chip-name">Forex</div><div class="asset-chip-type">Divisas · FX</div></div></div>
+                <div class="asset-chip"><span class="asset-chip-icon">🎯</span><div><div class="asset-chip-name">Private Equity</div><div class="asset-chip-type">Venture · PE</div></div></div>
+                <div class="asset-chip"><span class="asset-chip-icon">🔄</span><div><div class="asset-chip-name">Fondos Mutuos</div><div class="asset-chip-type">Mutual Funds</div></div></div>
+                <!-- Duplicate for seamless loop -->
+                <div class="asset-chip"><span class="asset-chip-icon">📈</span><div><div class="asset-chip-name">Acciones</div><div class="asset-chip-type">Stocks · Equities</div></div></div>
+                <div class="asset-chip"><span class="asset-chip-icon">₿</span><div><div class="asset-chip-name">Criptomonedas</div><div class="asset-chip-type">Crypto · DeFi</div></div></div>
+                <div class="asset-chip"><span class="asset-chip-icon">🏛️</span><div><div class="asset-chip-name">ETFs</div><div class="asset-chip-type">Exchange Traded Funds</div></div></div>
+                <div class="asset-chip"><span class="asset-chip-icon">📊</span><div><div class="asset-chip-name">Fondos Indexados</div><div class="asset-chip-type">Index Funds</div></div></div>
+                <div class="asset-chip"><span class="asset-chip-icon">🏦</span><div><div class="asset-chip-name">Renta Fija</div><div class="asset-chip-type">Bonds · Fixed Income</div></div></div>
+                <div class="asset-chip"><span class="asset-chip-icon">🏠</span><div><div class="asset-chip-name">Real Estate</div><div class="asset-chip-type">REITs · Property</div></div></div>
+                <div class="asset-chip"><span class="asset-chip-icon">💎</span><div><div class="asset-chip-name">Materias Primas</div><div class="asset-chip-type">Commodities · Gold</div></div></div>
+                <div class="asset-chip"><span class="asset-chip-icon">🌍</span><div><div class="asset-chip-name">Forex</div><div class="asset-chip-type">Divisas · FX</div></div></div>
+                <div class="asset-chip"><span class="asset-chip-icon">🎯</span><div><div class="asset-chip-name">Private Equity</div><div class="asset-chip-type">Venture · PE</div></div></div>
+                <div class="asset-chip"><span class="asset-chip-icon">🔄</span><div><div class="asset-chip-name">Fondos Mutuos</div><div class="asset-chip-type">Mutual Funds</div></div></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- BACKTESTING -->
+    <section class="backtesting" id="backtesting">
+        <div class="section-container">
+            <div class="backtesting-layout">
+                <div class="backtesting-info reveal">
+                    <div class="section-label">Backtesting</div>
+                    <h3>Prueba tu estrategia<br><span style="color: var(--gold)">antes de invertir</span></h3>
+                    <p>
+                        Simula cómo habría tu cartera en el pasado con datos históricos 
+                        de alta precisión. Ajusta asignaciones, fecha de inicio y frecuencia 
+                        de rebalanceo para encontrar la estrategia óptima.
+                    </p>
+                    <ul class="backtesting-features">
+                        <li><span class="check">✓</span> Datos históricos de +30 años</li>
+                        <li><span class="check">✓</span> Simulación Monte Carlo integrada</li>
+                        <li><span class="check">✓</span> Métricas: Sharpe, Sortino, Max Drawdown</li>
+                        <li><span class="check">✓</span> Rebalanceo automático configurable</li>
+                        <li><span class="check">✓</span> Análisis de estrés por escenario</li>
+                        <li><span class="check">✓</span> Comparativa vs benchmarks en tiempo real</li>
+                    </ul>
+                </div>
+                <div class="backtesting-demo reveal">
+                    <div class="demo-header">
+                        <div class="demo-title">Simulador de Estrategia</div>
+                        <div class="demo-tabs">
+                            <button class="demo-tab active" onclick="switchDemoTab(this, 'equity')">Acciones</button>
+                            <button class="demo-tab" onclick="switchDemoTab(this, 'mixed')">Mixta</button>
+                            <button class="demo-tab" onclick="switchDemoTab(this, 'crypto')">Crypto</button>
+                        </div>
+                    </div>
+                    <div class="demo-chart-area">
+                        <canvas id="backtestChart"></canvas>
+                    </div>
+                    <div class="demo-metrics">
+                        <div class="demo-metric">
+                            <div class="demo-metric-value green" id="metricReturn">+24.7%</div>
+                            <div class="demo-metric-label">Retorno</div>
+                        </div>
+                        <div class="demo-metric">
+                            <div class="demo-metric-value" id="metricSharpe">1.42</div>
+                            <div class="demo-metric-label">Sharpe</div>
+                        </div>
+                        <div class="demo-metric">
+                            <div class="demo-metric-value red" id="metricDrawdown">-12.3%</div>
+                            <div class="demo-metric-label">Max DD</div>
+                        </div>
+                        <div class="demo-metric">
+                            <div class="demo-metric-value" id="metricVol">14.2%</div>
+                            <div class="demo-metric-label">Volatilidad</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- COMPARISON -->
+    <section class="comparison" id="comparison">
+        <div class="section-container">
+            <div class="section-header reveal">
+                <div class="section-label">Comparativas</div>
+                <h2 class="section-title">Compara y decide con <span style="color: var(--gold)">datos reales</span></h2>
+                <p class="section-subtitle">
+                    Analiza el rendimiento histórico de diferentes activos y carteras 
+                    para tomar decisiones informadas.
+                </p>
+            </div>
+            <div class="comparison-table-wrapper reveal">
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Activo / Cartera</th>
+                            <th>Retorno 1A</th>
+                            <th>Retorno 5A</th>
+                            <th>Sharpe Ratio</th>
+                            <th>Max Drawdown</th>
+                            <th>Volatilidad</th>
+                            <th>Rendimiento</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <div class="asset-info">
+                                    <div class="asset-icon">📈</div>
+                                    <div>
+                                        <div class="asset-name">S&P 500 ETF</div>
+                                        <div class="asset-type">VOO · ETF</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="table-value positive">+24.2%</td>
+                            <td class="table-value positive">+15.8%</td>
+                            <td class="table-value">1.38</td>
+                            <td class="table-value negative">-23.9%</td>
+                            <td class="table-value">16.4%</td>
+                            <td><div class="table-bar"><div class="table-bar-fill" style="width: 85%"></div></div></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="asset-info">
+                                    <div class="asset-icon">₿</div>
+                                    <div>
+                                        <div class="asset-name">Bitcoin</div>
+                                        <div class="asset-type">BTC · Crypto</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="table-value positive">+156.3%</td>
+                            <td class="table-value positive">+89.2%</td>
+                            <td class="table-value">0.92</td>
+                            <td class="table-value negative">-63.4%</td>
+                            <td class="table-value">68.7%</td>
+                            <td><div class="table-bar"><div class="table-bar-fill" style="width: 72%"></div></div></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="asset-info">
+                                    <div class="asset-icon">🏛️</div>
+                                    <div>
+                                        <div class="asset-name">Mi Cartera deepfolio</div>
+                                        <div class="asset-type">Multi-Asset · Optimizada</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="table-value positive">+31.7%</td>
+                            <td class="table-value positive">+18.4%</td>
+                            <td class="table-value">1.64</td>
+                            <td class="table-value negative">-14.2%</td>
+                            <td class="table-value">12.1%</td>
+                            <td><div class="table-bar"><div class="table-bar-fill" style="width: 95%"></div></div></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="asset-info">
+                                    <div class="asset-icon">🏦</div>
+                                    <div>
+                                        <div class="asset-name">Bono Gov EU 10Y</div>
+                                        <div class="asset-type">EUR · Renta Fija</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="table-value positive">+4.8%</td>
+                            <td class="table-value positive">+2.9%</td>
+                            <td class="table-value">0.87</td>
+                            <td class="table-value negative">-8.1%</td>
+                            <td class="table-value">6.3%</td>
+                            <td><div class="table-bar"><div class="table-bar-fill" style="width: 45%"></div></div></td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <div class="asset-info">
+                                    <div class="asset-icon">🏠</div>
+                                    <div>
+                                        <div class="asset-name">REIT Europa</div>
+                                        <div class="asset-type">Real Estate · ETF</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="table-value positive">+12.1%</td>
+                            <td class="table-value positive">+8.7%</td>
+                            <td class="table-value">0.96</td>
+                            <td class="table-value negative">-18.6%</td>
+                            <td class="table-value">18.9%</td>
+                            <td><div class="table-bar"><div class="table-bar-fill" style="width: 58%"></div></div></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- PRICING -->
+    <section class="pricing" id="pricing">
+        <div class="section-container">
+            <div class="section-header reveal">
+                <div class="section-label">Planes</div>
+                <h2 class="section-title">Elige tu nivel de <span style="color: var(--gold)">profundidad</span></h2>
+                <p class="section-subtitle">
+                    Comienza gratis y escala cuando necesites más potencia. 
+                    Sin compromisos, cancela cuando quieras.
+                </p>
+            </div>
+            <div class="pricing-grid">
+                <!-- Free -->
+                <div class="pricing-card reveal">
+                    <div class="pricing-name">Explorer</div>
+                    <div class="pricing-desc">Para empezar a rastrear</div>
+                    <div class="pricing-price">
+                        <span class="pricing-amount">Gratis</span>
+                    </div>
+                    <ul class="pricing-features">
+                        <li><span class="icon check">✓</span> Hasta 3 carteras</li>
+                        <li><span class="icon check">✓</span> Acciones y ETFs básicos</li>
+                        <li><span class="icon check">✓</span> Datos en tiempo real (con delay)</li>
+                        <li><span class="icon check">✓</span> 1 backtest al mes</li>
+                        <li><span class="icon check">✓</span> Gráficos básicos</li>
+                        <li><span class="icon cross">✕</span> <span style="opacity:0.3">Criptomonedas</span></li>
+                        <li><span class="icon cross">✕</span> <span style="opacity:0.3">Análisis con IA</span></li>
+                        <li><span class="icon cross">✕</span> <span style="opacity:0.3">Reportes fiscales</span></li>
+                    </ul>
+                    <a href="#" class="btn btn-ghost" style="width:100%">Empezar Gratis</a>
+                </div>
+
+                <!-- Pro -->
+                <div class="pricing-card featured reveal">
+                    <div class="pricing-popular">Más Popular</div>
+                    <div class="pricing-name">Strategist</div>
+                    <div class="pricing-desc">Para inversores serios</div>
+                    <div class="pricing-price">
+                        <span class="pricing-currency">€</span><span class="pricing-amount">12</span>
+                        <span class="pricing-period">/mes</span>
+                    </div>
+                    <ul class="pricing-features">
+                        <li><span class="icon check">✓</span> Carteras ilimitadas</li>
+                        <li><span class="icon check">✓</span> Todos los activos (incl. crypto)</li>
+                        <li><span class="icon check">✓</span> Datos en tiempo real</li>
+                        <li><span class="icon check">✓</span> Backtesting ilimitado</li>
+                        <li><span class="icon check">✓</span> Análisis con IA</li>
+                        <li><span class="icon check">✓</span> Alertas inteligentes</li>
+                        <li><span class="icon check">✓</span> Reportes fiscales</li>
+                        <li><span class="icon cross">✕</span> <span style="opacity:0.3">API & Webhooks</span></li>
+                    </ul>
+                    <a href="#" class="btn btn-gold" style="width:100%">Probar 14 Días Gratis</a>
+                </div>
+
+                <!-- Enterprise -->
+                <div class="pricing-card reveal">
+                    <div class="pricing-name">Institutional</div>
+                    <div class="pricing-desc">Para profesionales y asesores</div>
+                    <div class="pricing-price">
+                        <span class="pricing-currency">€</span><span class="pricing-amount">39</span>
+                        <span class="pricing-period">/mes</span>
+                    </div>
+                    <ul class="pricing-features">
+                        <li><span class="icon check">✓</span> Todo lo de Deep Pro</li>
+                        <li><span class="icon check">✓</span> API completa & Webhooks</li>
+                        <li><span class="icon check">✓</span> Gestión multi-cliente</li>
+                        <li><span class="icon check">✓</span> Simulación Monte Carlo</li>
+                        <li><span class="icon check">✓</span> Análisis de estrés avanzado</li>
+                        <li><span class="icon check">✓</span> Soporte prioritario 24/7</li>
+                        <li><span class="icon check">✓</span> White-label reports</li>
+                        <li><span class="icon check">✓</span> Onboarding personalizado</li>
+                    </ul>
+                    <a href="#" class="btn btn-primary" style="width:100%">Contactar Ventas</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TESTIMONIALS -->
+    <section class="testimonials">
+        <div class="section-container">
+            <div class="section-header reveal">
+                <div class="section-label">Testimonios</div>
+                <h2 class="section-title">Lo que dicen nuestros <span style="color: var(--gold)">inversores</span></h2>
+            </div>
+            <div class="testimonials-grid">
+                <div class="testimonial-card reveal">
+                    <div class="testimonial-stars">★★★★★</div>
+                    <p class="testimonial-text">
+                        "ché."
+                    </p>
+                    <div class="testimonial-author">
+                        <div class="testimonial-avatar">MR</div>
+                        <div>
+                            <div class="testimonial-name">Francisco Tomás</div>
+                            <div class="testimonial-role">Inversor particular · Buenos Aires</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card reveal">
+                    <div class="testimonial-stars">★★★★★</div>
+                    <p class="testimonial-text">
+                        "Lorem Impsum LAUREN"
+                    </p>
+                    <div class="testimonial-author">
+                        <div class="testimonial-avatar">SL</div>
+                        <div>
+                            <div class="testimonial-name">PLACEHOLDER</div>
+                            <div class="testimonial-role">PLACEHOLDER · WIP</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="testimonial-card reveal">
+                    <div class="testimonial-stars">★★★★★</div>
+                    <p class="testimonial-text">
+                        "LOREM IMPSUS"
+                    </p>
+                    <div class="testimonial-author">
+                        <div class="testimonial-avatar">AK</div>
+                        <div>
+                            <div class="testimonial-name">PLACEHOLDER</div>
+                            <div class="testimonial-role">WIP · PLACEHOLDER</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="cta-section">
+        <div class="cta-content reveal">
+            <div class="section-label" style="justify-content: center;">Empieza Hoy</div>
+            <h2 class="cta-title">Tu patrimonio merece<br><span style="color: var(--gold)">profundidad</span></h2>
+            <p class="cta-subtitle">
+                Únete a una comunidad de inversores que ya gestionan su patrimonio con deepfolio. 
+                Gratis para empezar.
+            </p>
+            <div class="hero-actions">
+                <a href="#" class="btn btn-gold btn-large">Crear Cuenta Gratis →</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <a href="#" class="nav-logo">
+                    <div class="nav-logo-icon">d</div>
+                    <div class="nav-logo-text">deep<span>folio.</span></div>
+                </a>
+                <p>
+                    La plataforma de gestión de carteras para inversores que exigen 
+                    profundidad, precisión y elegancia en cada decisión financiera.
+                </p>
+            </div>
+            <div class="footer-col">
+                <h4>Producto</h4>
+                <ul>
+                    <li><a href="#">Funciones</a></li>
+                    <li><a href="#">Activos</a></li>
+                    <li><a href="#">Backtesting</a></li>
+                    <li><a href="#">Comparativas</a></li>
+                    <li><a href="#">Planes</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Recursos</h4>
+                <ul>
+                    <li><a href="#">Documentación</a></li>
+                    <li><a href="#">Blog</a></li>
+                    <li><a href="#">Guías</a></li>
+                    <li><a href="#">Webinars</a></li>
+                    <li><a href="#">Comunidad</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Empresa</h4>
+                <ul>
+                    <li><a href="#">Sobre Nosotros</a></li>
+                    <li><a href="#">Carreras</a></li>
+                    <li><a href="#">Contacto</a></li>
+                    <li><a href="#">Privacidad</a></li>
+                    <li><a href="#">Términos</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2026 deepfolio. Todos los derechos reservados.</p>
+            <div class="footer-socials">
+                <a href="https://x.com/deepfolio" aria-label="Twitter">𝕏</a>
+                <a href="https://www.linkedin.com/in/pauescobargarcia/" aria-label="LinkedIn">in</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // ===== NAVBAR SCROLL =====
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            navbar.classList.toggle('scrolled', window.scrollY > 50);
+        });
+
+        // ===== MOBILE MENU =====
+        const hamburger = document.getElementById('hamburger');
+        const mobileMenu = document.getElementById('mobileMenu');
+        const mobileClose = document.getElementById('mobileClose');
+
+        hamburger.addEventListener('click', () => mobileMenu.classList.add('active'));
+        mobileClose.addEventListener('click', () => mobileMenu.classList.remove('active'));
+        function closeMobile() { mobileMenu.classList.remove('active'); }
+
+        // ===== PARTICLES =====
+        const particlesContainer = document.getElementById('particles');
+        for (let i = 0; i < 30; i++) {
+            const p = document.createElement('div');
+            p.className = 'particle';
+            p.style.left = Math.random() * 100 + '%';
+            p.style.animationDelay = Math.random() * 8 + 's';
+            p.style.animationDuration = (6 + Math.random() * 6) + 's';
+            p.style.width = (2 + Math.random() * 3) + 'px';
+            p.style.height = p.style.width;
+            particlesContainer.appendChild(p);
+        }
+
+        // ===== HERO CHART =====
+        function drawHeroChart() {
+            const canvas = document.getElementById('heroChart');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            const dpr = window.devicePixelRatio || 1;
+            const rect = canvas.parentElement.getBoundingClientRect();
+            canvas.width = rect.width * dpr;
+            canvas.height = rect.height * dpr;
+            canvas.style.width = rect.width + 'px';
+            canvas.style.height = rect.height + 'px';
+            ctx.scale(dpr, dpr);
+
+            const w = rect.width;
+            const h = rect.height;
+            const padding = 10;
+
+            // Generate smooth data
+            const points = 100;
+            const data = [];
+            let val = 100;
+            for (let i = 0; i < points; i++) {
+                val += (Math.random() - 0.42) * 6;
+                val = Math.max(60, Math.min(160, val));
+                data.push(val);
+            }
+
+            const min = Math.min(...data) - 5;
+            const max = Math.max(...data) + 5;
+
+            function getX(i) { return padding + (i / (points - 1)) * (w - padding * 2); }
+            function getY(v) { return h - padding - ((v - min) / (max - min)) * (h - padding * 2); }
+
+            // Gradient fill
+            const gradient = ctx.createLinearGradient(0, 0, 0, h);
+            gradient.addColorStop(0, 'rgba(201, 168, 76, 0.15)');
+            gradient.addColorStop(0.5, 'rgba(123, 45, 53, 0.05)');
+            gradient.addColorStop(1, 'rgba(123, 45, 53, 0)');
+
+            // Fill area
+            ctx.beginPath();
+            ctx.moveTo(getX(0), h - padding);
+            for (let i = 0; i < points; i++) {
+                if (i === 0) ctx.lineTo(getX(i), getY(data[i]));
+                else {
+                    const cx = (getX(i - 1) + getX(i)) / 2;
+                    ctx.bezierCurveTo(cx, getY(data[i - 1]), cx, getY(data[i]), getX(i), getY(data[i]));
+                }
+            }
+            ctx.lineTo(getX(points - 1), h - padding);
+            ctx.closePath();
+            ctx.fillStyle = gradient;
+            ctx.fill();
+
+            // Line
+            ctx.beginPath();
+            for (let i = 0; i < points; i++) {
+                if (i === 0) ctx.moveTo(getX(i), getY(data[i]));
+                else {
+                    const cx = (getX(i - 1) + getX(i)) / 2;
+                    ctx.bezierCurveTo(cx, getY(data[i - 1]), cx, getY(data[i]), getX(i), getY(data[i]));
+                }
+            }
+            ctx.strokeStyle = 'rgba(201, 168, 76, 0.8)';
+            ctx.lineWidth = 2.5;
+            ctx.stroke();
+
+            // End dot
+            const lastX = getX(points - 1);
+            const lastY = getY(data[points - 1]);
+            ctx.beginPath();
+            ctx.arc(lastX, lastY, 5, 0, Math.PI * 2);
+            ctx.fillStyle = 'rgba(201, 168, 76, 1)';
+            ctx.fill();
+            ctx.beginPath();
+            ctx.arc(lastX, lastY, 10, 0, Math.PI * 2);
+            ctx.fillStyle = 'rgba(201, 168, 76, 0.2)';
+            ctx.fill();
+        }
+
+        // ===== BACKTEST CHART =====
+        let backtestData = [];
+        let backtestData2 = [];
+
+        function generateBacktestData(type) {
+            const points = 120;
+            const d1 = [];
+            const d2 = [];
+            let v1 = 100, v2 = 100;
+
+            for (let i = 0; i < points; i++) {
+                if (type === 'equity') {
+                    v1 += (Math.random() - 0.43) * 4;
+                    v2 += (Math.random() - 0.45) * 5;
+                } else if (type === 'mixed') {
+                    v1 += (Math.random() - 0.44) * 3;
+                    v2 += (Math.random() - 0.46) * 3.5;
+                } else {
+                    v1 += (Math.random() - 0.47) * 8;
+                    v2 += (Math.random() - 0.48) * 7;
+                }
+                v1 = Math.max(40, Math.min(200, v1));
+                v2 = Math.max(40, Math.min(200, v2));
+                d1.push(v1);
+                d2.push(v2);
+            }
+            return { d1, d2 };
+        }
+
+        function drawBacktestChart(type) {
+            const canvas = document.getElementById('backtestChart');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            const dpr = window.devicePixelRatio || 1;
+            const rect = canvas.parentElement.getBoundingClientRect();
+            canvas.width = rect.width * dpr;
+            canvas.height = rect.height * dpr;
+            canvas.style.width = rect.width + 'px';
+            canvas.style.height = rect.height + 'px';
+            ctx.scale(dpr, dpr);
+
+            const w = rect.width;
+            const h = rect.height;
+            const pad = 15;
+
+            const data = generateBacktestData(type);
+            const allData = [...data.d1, ...data.d2];
+            const min = Math.min(...allData) - 5;
+            const max = Math.max(...allData) + 5;
+
+            function getX(i) { return pad + (i / (data.d1.length - 1)) * (w - pad * 2); }
+            function getY(v) { return h - pad - ((v - min) / (max - min)) * (h - pad * 2); }
+
+            // Grid lines
+            ctx.strokeStyle = 'rgba(123, 45, 53, 0.1)';
+            ctx.lineWidth = 0.5;
+            for (let i = 0; i < 5; i++) {
+                const y = pad + (i / 4) * (h - pad * 2);
+                ctx.beginPath();
+                ctx.moveTo(pad, y);
+                ctx.lineTo(w - pad, y);
+                ctx.stroke();
+            }
+
+            // Draw line function
+            function drawLine(dataArr, color, fillColor) {
+                // Fill
+                const grad = ctx.createLinearGradient(0, 0, 0, h);
+                grad.addColorStop(0, fillColor);
+                grad.addColorStop(1, 'transparent');
+
+                ctx.beginPath();
+                ctx.moveTo(getX(0), h - pad);
+                for (let i = 0; i < dataArr.length; i++) {
+                    if (i === 0) ctx.lineTo(getX(i), getY(dataArr[i]));
+                    else {
+                        const cx = (getX(i - 1) + getX(i)) / 2;
+                        ctx.bezierCurveTo(cx, getY(dataArr[i - 1]), cx, getY(dataArr[i]), getX(i), getY(dataArr[i]));
+                    }
+                }
+                ctx.lineTo(getX(dataArr.length - 1), h - pad);
+                ctx.closePath();
+                ctx.fillStyle = grad;
+                ctx.fill();
+
+                // Line
+                ctx.beginPath();
+                for (let i = 0; i < dataArr.length; i++) {
+                    if (i === 0) ctx.moveTo(getX(i), getY(dataArr[i]));
+                    else {
+                        const cx = (getX(i - 1) + getX(i)) / 2;
+                        ctx.bezierCurveTo(cx, getY(dataArr[i - 1]), cx, getY(dataArr[i]), getX(i), getY(dataArr[i]));
+                    }
+                }
+                ctx.strokeStyle = color;
+                ctx.lineWidth = 2;
+                ctx.stroke();
+            }
+
+            drawLine(data.d1, 'rgba(201, 168, 76, 0.9)', 'rgba(201, 168, 76, 0.1)');
+            drawLine(data.d2, 'rgba(168, 75, 82, 0.7)', 'rgba(168, 75, 82, 0.05)');
+
+            // Legend
+            const legendY = pad + 5;
+            ctx.font = '11px Inter, sans-serif';
+            
+            ctx.fillStyle = 'rgba(201, 168, 76, 0.9)';
+            ctx.fillRect(w - 180, legendY, 10, 10);
+            ctx.fillStyle = 'rgba(245, 237, 228, 0.7)';
+            ctx.fillText('Mi Cartera', w - 165, legendY + 9);
+
+            ctx.fillStyle = 'rgba(168, 75, 82, 0.7)';
+            ctx.fillRect(w - 90, legendY, 10, 10);
+            ctx.fillStyle = 'rgba(245, 237, 228, 0.7)';
+            ctx.fillText('Benchmark', w - 75, legendY + 9);
+
+            // Update metrics
+            const ret1 = ((data.d1[data.d1.length - 1] - 100) / 100 * 100).toFixed(1);
+            const ret2 = ((data.d2[data.d2.length - 1] - 100) / 100 * 100).toFixed(1);
+            const sharpe = (0.8 + Math.random() * 1.2).toFixed(2);
+            const dd = (-5 - Math.random() * 15).toFixed(1);
+            const vol = (8 + Math.random() * 20).toFixed(1);
+
+            document.getElementById('metricReturn').textContent = (ret1 > 0 ? '+' : '') + ret1 + '%';
+            document.getElementById('metricReturn').className = 'demo-metric-value ' + (ret1 > 0 ? 'green' : 'red');
+            document.getElementById('metricSharpe').textContent = sharpe;
+            document.getElementById('metricDrawdown').textContent = dd + '%';
+            document.getElementById('metricVol').textContent = vol + '%';
+        }
+
+        function switchDemoTab(el, type) {
+            document.querySelectorAll('.demo-tab').forEach(t => t.classList.remove('active'));
+            el.classList.add('active');
+            drawBacktestChart(type);
+        }
+
+        // ===== SCROLL REVEAL =====
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+        // ===== INIT =====
+        window.addEventListener('load', () => {
+            drawHeroChart();
+            drawBacktestChart('equity');
+        });
+
+        window.addEventListener('resize', () => {
+            drawHeroChart();
+            drawBacktestChart('equity');
+        });
+
+        // ===== SMOOTH SCROLL =====
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                const href = this.getAttribute('href');
+                if (href === '#') return;
+                e.preventDefault();
+                const target = document.querySelector(href);
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
