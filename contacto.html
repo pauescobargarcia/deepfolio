@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>deepfolio. — Acceder</title>
+    <link rel="icon" type="logo" href="logo/logobien.png">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --burgundy-deep: #3D0F14;
+            --burgundy-dark: #5C1A20;
+            --burgundy: #7B2D35;
+            --burgundy-mid: #8B3A42;
+            --burgundy-light: #A84B52;
+            --burgundy-pale: #C46B73;
+            --gold: #C9A84C;
+            --gold-light: #D4B96A;
+            --gold-pale: #E8D5A0;
+            --cream: #F5EDE4;
+            --cream-light: #FAF6F2;
+            --text-dark: #1A080A;
+            --text-muted: #6B5055;
+            --bg-dark: #1A0A0E;
+            --bg-card: #2A1015;
+            --bg-card-light: #35151A;
+            --white: #FFFFFF;
+            --success: #4A9E6E;
+            --danger: #C45A5A;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+                html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--cream);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* ===== NAVBAR (ESTILO CÓDIGO 1) ===== */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 1.2rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            background: transparent;
+        }
+
+        .navbar.scrolled {
+            background: rgba(26, 10, 14, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(123, 45, 53, 0.3);
+            padding: 0.8rem 2rem;
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            text-decoration: none;
+        }
+
+        .nav-logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--burgundy), var(--gold));
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--white);
+            font-family: 'Playfair Display', serif;
+        }
+
+        .nav-logo-icon span { color: var(--text-dark); }
+
+        .nav-logo-text {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.6rem;
+            font-weight: 600;
+            color: var(--cream);
+            letter-spacing: -0.5px;
+        }
+
+        .nav-logo-text span { color: var(--gold); }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            color: var(--cream);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.3s;
+            opacity: 0.8;
+        }
+
+        .nav-links a:hover {
+            color: var(--gold);
+            opacity: 1;
+        }
+
+        .nav-cta {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        /* Botones de la Navbar */
+        .btn {
+            padding: 0.7rem 1.5rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .btn-ghost {
+            color: var(--cream);
+            border: 1px solid rgba(245, 237, 228, 0.2);
+        }
+
+        .btn-ghost:hover {
+            background: rgba(245, 237, 228, 0.05);
+            border-color: var(--gold);
+        }
+
+        .btn-primary {
+            background: var(--gold);
+            color: var(--bg-dark);
+        }
+
+        .btn-primary:hover {
+            background: var(--gold-light);
+            transform: translateY(-2px);
+        }
+
+        /* Hamburger (para móvil) */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 2px;
+            background: var(--cream);
+            transition: 0.3s;
+        }
+
+        /* ===== OTROS ESTILOS DEL CÓDIGO 2 ===== */
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        .text-gold { color: var(--gold); }
+
+        header.hero {
+            min-height: 60vh; display: flex; align-items: center; justify-content: center; text-align: center;
+            background: radial-gradient(circle at center, rgba(58, 13, 20, 0.4) 0%, var(--bg-dark) 70%);
+            padding-top: 100px;
+        }
+        .hero h1 {
+            font-family: 'Playfair Display', serif; font-size: clamp(2rem, 2.7vw, 3.3rem);
+            margin-bottom: 1rem; line-height: 1.1;
+        }
+        .hero p { font-size: 1.2rem; color: var(--cream); opacity: 0.7; max-width: 600px; margin: 0 auto; }
+
+
+        .hero-title .italic {
+        font-style: italic;
+        color: var(--burgundy-pale);
+        -webkit-text-fill-color: var(--burgundy-pale);
+        }
+
+        .contact-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;
+            margin-top: -4rem; position: relative; z-index: 10;
+        }
+        .card {
+            background: var(--bg-card); border: 1px solid rgba(187, 163, 108, 0.15);
+            padding: 2.5rem; border-radius: 16px; transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .card:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0,0,0,0.3); border-color: var(--gold); }
+        
+        .icon-box {
+            width: 50px; height: 50px; background: linear-gradient(135deg, var(--burgundy-dark), var(--burgundy));
+            border-radius: 12px; display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem;
+        }
+        .icon-box svg { color: var(--gold); width: 24px; height: 24px; }
+        
+        h3 { font-family: 'Playfair Display', serif; font-size: 1.4rem; margin-bottom: 0.5rem; }
+        .contact-link { color: var(--gold-pale); text-decoration: none; display: block; margin-top: 1rem; font-weight: 500; }
+
+        .main-section { padding: 4rem 0; display: grid; grid-template-columns: 1fr 1.2fr; gap: 4rem; align-items: start; }
+        .left-info h2 { font-family: 'Playfair Display', serif; font-size: 2.5rem; margin-bottom: 1rem; }
+        
+        .faq-item { border-bottom: 1px solid rgba(255,255,255,0.1); padding: 1.5rem 0; cursor: pointer; transition: all 0.3s; }
+        .faq-q { font-weight: 600; display: flex; justify-content: space-between; }
+        .answer { display: none; margin-top: 1rem; font-size: 0.95rem; opacity: 0.8; }
+
+        .form-container {
+            background: rgba(42, 16, 21, 0.3); border: 1px solid rgba(187, 163, 108, 0.15);
+            padding: 3rem; border-radius: 24px; backdrop-filter: blur(5px);
+        }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-bottom: 1.5rem; }
+        input, textarea, select {
+            width: 100%; background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.1);
+            padding: 1rem; border-radius: 10px; color: var(--cream); outline: none;
+        }
+        .btn-submit {
+            width: 100%; padding: 1rem; background: linear-gradient(to right, var(--burgundy), var(--gold));
+            color: white; border: none; font-weight: 600; cursor: pointer; border-radius: 8px;
+        }
+
+                /* ===== FOOTER ===== */
+        .footer {
+            background: rgba(26, 10, 14, 0.95);
+            border-top: 1px solid rgba(123, 45, 53, 0.2);
+            padding: 4rem 2rem 2rem;
+            color: inherit;        /* Usa el color del texto normal */
+            text-decoration: none; /* Quita el subrayado */
+        }
+
+        .footer-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-brand p {
+            font-size: 0.9rem;
+            color: var(--cream);
+            opacity: 0.5;
+            line-height: 1.7;
+            margin-top: 1rem;
+            max-width: 300px;
+        }
+
+        .footer-col h4 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 1.2rem;
+            color: var(--cream);
+        }
+
+        .footer-col ul {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+        }
+
+        .footer-col ul a {
+            text-decoration: none;
+            color: var(--cream);
+            opacity: 0.5;
+            font-size: 0.85rem;
+            transition: all 0.3s;
+        }
+
+        .footer-col ul a:hover {
+            opacity: 1;
+            color: var(--gold);
+        }
+
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(123, 45, 53, 0.15);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
+            color: inherit;        /* Usa el color del texto normal */
+            text-decoration: none; /* Quita el subrayado */
+        }
+
+        .footer-bottom p {
+            font-size: 0.8rem;
+            color: var(--cream);
+            opacity: 0.3;
+        }
+
+        .footer-socials {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .footer-socials a {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            border: 1px solid rgba(123, 45, 53, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+            color: var(--cream);
+            opacity: 0.5;
+            color: inherit;        /* Usa el color del texto normal */
+            text-decoration: none; /* Quita el subrayado */
+        }
+
+        .footer-socials a:hover {
+            border-color: var(--gold);
+            opacity: 1;
+            background: rgba(201, 168, 76, 0.1);
+            }
+    </style>
+</head>
+<body>
+
+    <!-- NAVBAR (ESTRUCTURA CÓDIGO 1) -->
+    <nav class="navbar" id="navbar">
+        <a href="#" class="nav-logo">
+            <div class="nav-logo-icon">d<span>;</span></div>
+            <div class="nav-logo-text">deep<span>folio.</span></div>
+        </a>
+        <ul class="nav-links">
+            <li><a href="#features">Funciones</a></li>
+            <li><a href="#assets">Activos</a></li>
+            <li><a href="#backtesting">Backtesting</a></li>
+            <li><a href="#comparison">Comparativas</a></li>
+            <li><a href="#pricing">Planes</a></li>
+        </ul>
+        <div class="nav-cta">
+            <a href="login.html" class="btn btn-ghost">Iniciar Sesión</a>
+            <a href="#" class="btn btn-primary">Registrarme</a>
+        </div>
+        <button class="hamburger" id="hamburger" aria-label="Menu"> 
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </nav>
+
+    <!-- Hero Header -->
+    <header class="hero">
+        <div class="container animate-up">
+            <h1>Hablemos de tu futuro<span class="italic"> financiero</span></h1>
+            <p>Ponte en contacto con el equipo detrás de <i>deepfolio.</i></p>
+        </div>
+    </header>
+
+    <!-- Contenido del Código 2 -->
+    <section class="container">
+        <div class="contact-grid animate-up">
+            <div class="card">
+                <div class="icon-box">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                </div>
+                <h3>Email Directo</h3>
+                <p>Responde a cualquier consulta de soporte o ventas en menos de 24 horas.</p>
+                <a href="mailto:contacto@deeptfolio.com" class="contact-link">contacto@deeptfolio.com</a>
+            </div>
+        </div>
+    </section>
+
+
+        </div>
+
+        <div class="form-wrapper">
+            <div class="form-container">
+                <h2 style="font-family:'Playfair Display',serif; font-size:1.8rem; margin-bottom:1.5rem;">Envíanos un mensaje</h2>
+                <form id="contactForm" onsubmit="handleSubmit(event)">
+                    <div class="form-row">
+                        <div><label>Nombre</label><input type="text" required></div>
+                        <div><label>Email</label><input type="email" required></div>
+                    </div>
+                    <div style="margin-bottom: 1.5rem;">
+                        <label>Mensaje</label>
+                        <textarea required></textarea>
+                    </div>
+                    <button type="submit" class="btn-submit">Enviar Mensaje</button>
+                </form>
+                <div id="successMsg" style="display:none; text-align:center;">
+                    <h3>✓ Enviado</h3>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <a href="#" class="nav-logo">
+                    <div class="nav-logo-icon">d<span>;</span></div>
+                    <div class="nav-logo-text">deep<span>folio.</span></div>
+                </a>
+                <p>
+                    La plataforma de gestión de carteras para inversores que exigen profundidad, precisión y elegancia en cada decisión financiera.
+                </p>
+            </div>
+            <div class="footer-col">
+                <h4>Producto</h4>
+                <ul>
+                    <li><a href="#">Funciones</a></li>
+                    <li><a href="#">Activos</a></li>
+                    <li><a href="#">Backtesting</a></li>
+                    <li><a href="#">Comparativas</a></li>
+                    <li><a href="#">Planes</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Recursos</h4>
+                <ul>
+                    <li><a href="#">Documentación</a></li>
+                    <li><a href="#">Blog</a></li>
+                    <li><a href="#">Guías</a></li>
+                    <li><a href="#">Webinars</a></li>
+                    <li><a href="#">Comunidad</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Empresa</h4>
+                <ul>
+                    <li><a href="#">Contacto</a></li>
+            
+                    <li><a href="#">Sobre Nosotros</a></li>
+                    <li><a href="#">Privacidad</a></li>
+                    <li><a href="#">Términos</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2026 deepfolio. Todos los derechos reservados.</p>
+            <div class="footer-socials">
+                <a href="https://x.com/deepfolio" aria-label="Twitter">𝕏</a>
+                <a href="https://www.linkedin.com/in/pauescobargarcia/" aria-label="LinkedIn">in</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // EFECTO SCROLL NAVBAR (NUEVO)
+        window.addEventListener('scroll', function() {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Lógica del Accordion FAQ
+        function toggleFaq(element) {
+            const answer = element.querySelector('.answer');
+            const isOpen = element.classList.contains('open');
+            if (!isOpen) {
+                element.classList.add('open');
+                answer.style.display = "block";
+            } else {
+                element.classList.remove('open');
+                answer.style.display = "none";
+            }
+        }
+
+        // Simulación envío
+        function handleSubmit(e) {
+            e.preventDefault();
+            document.getElementById('contactForm').style.display = 'none';
+            document.getElementById('successMsg').style.display = 'block';
+        }
+
+        // Observer para animaciones
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = 1;
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        });
+
+        document.querySelectorAll('.animate-up').forEach(el => {
+            el.style.opacity = 0;
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = 'all 0.6s ease-out';
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>
