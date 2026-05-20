@@ -1,0 +1,2005 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>deeptfolio — Calculadora de Interés Compuesto</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --burgundy-deep: #3D0F14;
+            --burgundy-dark: #5C1A20;
+            --burgundy: #7B2D35;
+            --burgundy-mid: #8B3A42;
+            --burgundy-light: #A84B52;
+            --burgundy-pale: #C46B73;
+            --gold: #C9A84C;
+            --gold-light: #D4B96A;
+            --gold-pale: #E8D5A0;
+            --cream: #F5EDE4;
+            --cream-light: #FAF6F2;
+            --text-dark: #1A080A;
+            --text-muted: #6B5055;
+            --bg-dark: #1A0A0E;
+            --bg-card: #2A1015;
+            --bg-card-light: #35151A;
+            --white: #FFFFFF;
+            --success: #4A9E6E;
+            --danger: #C45A5A;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-dark);
+            color: var(--cream);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg-dark); }
+        ::-webkit-scrollbar-thumb { background: var(--burgundy); border-radius: 4px; }
+
+        .editable-display {
+    background: transparent;
+    border: none;
+    border-bottom: 1px dashed rgba(201, 168, 76, 0.3);
+    color: #C9A84C;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    font-weight: 500;
+    text-align: right;
+    width: 110px;
+    outline: none;
+    cursor: text;
+    transition: border-color 0.2s;
+    padding-bottom: 1px;
+}
+.editable-display:hover {
+    border-bottom-color: rgba(201, 168, 76, 0.7);
+}
+.editable-display:focus {
+    border-bottom: 1px solid #C9A84C;
+    background: rgba(201, 168, 76, 0.05);
+    border-radius: 3px 3px 0 0;
+}
+
+        /* ===== NAVBAR ===== */
+        .navbar {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+            padding: 1rem 2rem;
+            display: flex; align-items: center; justify-content: space-between;
+            transition: all 0.4s;
+            background: transparent;
+        }
+        .navbar.scrolled {
+            background: rgba(26, 10, 14, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(123, 45, 53, 0.3);
+            padding: 0.7rem 2rem;
+        }
+        .nav-logo { display: flex; align-items: center; gap: 0.5rem; text-decoration: none; }
+        .nav-logo-icon {
+            width: 36px; height: 36px;
+            background: linear-gradient(135deg, var(--burgundy), var(--gold));
+            border-radius: 10px; display: flex; align-items: center; justify-content: center;
+            font-size: 1.1rem; font-weight: 700; color: var(--white);
+            font-family: 'Playfair Display', serif;
+        }
+        .nav-logo-text {
+            font-family: 'Playfair Display', serif; font-size: 1.4rem;
+            font-weight: 600; color: var(--cream); letter-spacing: -0.5px;
+        }
+        .nav-logo-text span { color: var(--gold); }
+        .nav-links { display: flex; align-items: center; gap: 2rem; list-style: none; }
+        .nav-links a {
+            text-decoration: none; color: var(--cream); font-size: 0.9rem;
+            font-weight: 400; opacity: 0.8; transition: all 0.3s; position: relative;
+        }
+        .nav-links a:hover { opacity: 1; color: var(--gold); }
+        .btn {
+            display: inline-flex; align-items: center; justify-content: center;
+            padding: 0.7rem 1.5rem; border-radius: 8px; font-size: 0.9rem;
+            font-weight: 500; text-decoration: none; cursor: pointer;
+            transition: all 0.3s; border: none; font-family: 'Inter', sans-serif;
+        }
+        .btn-ghost {
+            background: transparent; color: var(--cream);
+            border: 1px solid rgba(201, 168, 76, 0.3);
+        }
+        .btn-ghost:hover { border-color: var(--gold); color: var(--gold); }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--burgundy), var(--burgundy-mid));
+            color: var(--white); box-shadow: 0 4px 15px rgba(123, 45, 53, 0.4);
+        }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(123, 45, 53, 0.5); }
+        .btn-gold {
+            background: linear-gradient(135deg, var(--gold), var(--gold-light));
+            color: var(--text-dark); font-weight: 600;
+            box-shadow: 0 4px 15px rgba(201, 168, 76, 0.3);
+        }
+        .btn-gold:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(201, 168, 76, 0.4); }
+        .btn-large { padding: 1rem 2.2rem; font-size: 1rem; border-radius: 10px; }
+
+        /* ===== PAGE HEADER ===== */
+        .page-header {
+            padding: 8rem 2rem 3rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .page-header::before {
+            content: '';
+            position: absolute; inset: 0;
+            background: radial-gradient(ellipse at 50% 0%, rgba(123, 45, 53, 0.2) 0%, transparent 60%);
+        }
+        .page-header-content { position: relative; z-index: 1; }
+        .page-breadcrumb {
+            display: flex; align-items: center; justify-content: center;
+            gap: 0.5rem; font-size: 0.85rem; color: var(--cream); opacity: 0.4;
+            margin-bottom: 1.5rem;
+        }
+        .page-breadcrumb a { text-decoration: none; color: var(--cream); transition: color 0.3s; }
+        .page-breadcrumb a:hover { color: var(--gold); }
+        .page-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.2rem, 5vw, 3.5rem);
+            font-weight: 700; margin-bottom: 1rem; line-height: 1.2;
+        }
+        .page-title .highlight {
+            background: linear-gradient(135deg, var(--gold), var(--gold-light));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+        }
+        .page-subtitle {
+            font-size: 1.1rem; color: var(--cream); opacity: 0.6;
+            max-width: 600px; margin: 0 auto; font-weight: 300; line-height: 1.7;
+        }
+
+        /* ===== MAIN LAYOUT ===== */
+        .calc-section {
+            padding: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        .calc-grid {
+            display: grid;
+            grid-template-columns: 380px 1fr;
+            gap: 2rem;
+            align-items: start;
+        }
+                /* ===== ANIMATED BACKGROUND ===== */
+        .bg-layer {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .bg-gradient-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.4;
+            animation: orbFloat 12s ease-in-out infinite alternate;
+        }
+
+        .bg-gradient-orb:nth-child(1) {
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, var(--burgundy-dark), transparent 70%);
+            top: -10%;
+            left: -10%;
+            animation-duration: 15s;
+        }
+
+        .bg-gradient-orb:nth-child(2) {
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, var(--burgundy), transparent 70%);
+            bottom: -15%;
+            right: -5%;
+            animation-duration: 18s;
+            animation-delay: -3s;
+        }
+
+        .bg-gradient-orb:nth-child(3) {
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(201, 168, 76, 0.15), transparent 70%);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation-duration: 10s;
+            animation-delay: -7s;
+        }
+
+        @keyframes orbFloat {
+            0% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(30px, -20px) scale(1.05); }
+            66% { transform: translate(-20px, 30px) scale(0.95); }
+            100% { transform: translate(10px, -10px) scale(1.02); }
+        }
+
+        .bg-grid {
+            position: absolute;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(201, 168, 76, 0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(201, 168, 76, 0.02) 1px, transparent 1px);
+            background-size: 50px 50px;
+        }
+
+        .bg-particles {
+            position: absolute;
+            inset: 0;
+        }
+
+        .bg-particle {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: var(--gold);
+            border-radius: 50%;
+            opacity: 0;
+            animation: particleDrift 10s infinite;
+        }
+
+        @keyframes particleDrift {
+            0% { opacity: 0; transform: translateY(100vh) translateX(0); }
+            10% { opacity: 0.5; }
+            90% { opacity: 0.5; }
+            100% { opacity: 0; transform: translateY(-10vh) translateX(50px); }
+        }
+
+        /* ===== INPUT PANEL ===== */
+        .input-panel {
+            background: rgba(42, 16, 21, 0.7);
+            border: 1px solid rgba(123, 45, 53, 0.25);
+            border-radius: 20px;
+            padding: 2rem;
+            position: sticky;
+            top: 80px;
+            backdrop-filter: blur(10px);
+        }
+        .input-panel-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem; font-weight: 600;
+            margin-bottom: 0.3rem;
+        }
+        .input-panel-desc {
+            font-size: 0.85rem; color: var(--cream); opacity: 0.5;
+            margin-bottom: 1.5rem;
+        }
+        .input-group {
+            margin-bottom: 1.2rem;
+        }
+        .input-label {
+            display: flex; align-items: center; justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+        .input-label label {
+            font-size: 0.85rem; font-weight: 500; color: var(--cream); opacity: 0.8;
+        }
+        .input-label .input-value {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem; color: var(--gold); font-weight: 500;
+        }
+        .input-wrapper {
+            position: relative;
+        }
+        .input-wrapper input[type="range"] {
+            width: 100%; height: 6px;
+            -webkit-appearance: none; appearance: none;
+            background: rgba(123, 45, 53, 0.3);
+            border-radius: 3px; outline: none;
+            cursor: pointer;
+        }
+        .input-wrapper input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none; appearance: none;
+            width: 20px; height: 20px;
+            background: linear-gradient(135deg, var(--gold), var(--gold-light));
+            border-radius: 50%; cursor: pointer;
+            box-shadow: 0 2px 8px rgba(201, 168, 76, 0.4);
+            transition: transform 0.2s;
+        }
+        .input-wrapper input[type="range"]::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+        }
+        .input-wrapper input[type="range"]::-moz-range-thumb {
+            width: 20px; height: 20px;
+            background: linear-gradient(135deg, var(--gold), var(--gold-light));
+            border-radius: 50%; cursor: pointer; border: none;
+            box-shadow: 0 2px 8px rgba(201, 168, 76, 0.4);
+        }
+        .input-number {
+            width: 100%;
+            background: var(--bg-input);
+            border: 1px solid rgba(123, 45, 53, 0.3);
+            border-radius: 10px;
+            padding: 0.75rem 1rem 0.75rem 2.5rem;
+            color: var(--cream);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1rem;
+            outline: none;
+            transition: all 0.3s;
+        }
+        .input-number:focus {
+            border-color: var(--gold);
+            box-shadow: 0 0 0 3px rgba(201, 168, 76, 0.1);
+        }
+        .input-prefix {
+            position: absolute; left: 1rem; top: 50%; transform: translateY(-50%);
+            color: var(--cream); opacity: 0.4; font-size: 0.9rem;
+            pointer-events: none;
+        }
+        .input-suffix {
+            position: absolute; right: 1rem; top: 50%; transform: translateY(-50%);
+            color: var(--cream); opacity: 0.4; font-size: 0.85rem;
+            pointer-events: none;
+        }
+        .input-select {
+            width: 100%;
+            background: var(--bg-input);
+            border: 1px solid rgba(123, 45, 53, 0.3);
+            border-radius: 10px;
+            padding: 0.75rem 1rem;
+            color: var(--cream);
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            outline: none;
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%23C9A84C' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            transition: all 0.3s;
+        }
+        .input-select:focus {
+            border-color: var(--gold);
+            box-shadow: 0 0 0 3px rgba(201, 168, 76, 0.1);
+        }
+        .input-select option {
+            background: var(--bg-card);
+            color: var(--cream);
+        }
+        .input-divider {
+            height: 1px;
+            background: rgba(123, 45, 53, 0.2);
+            margin: 1.5rem 0;
+        }
+        .input-section-title {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--gold);
+            font-weight: 600;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .input-section-title::before {
+            content: '';
+            width: 16px; height: 2px;
+            background: var(--gold);
+            border-radius: 1px;
+        }
+        .toggle-row {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0.6rem 0;
+        }
+        .toggle-label {
+            font-size: 0.85rem; color: var(--cream); opacity: 0.7;
+        }
+        .toggle {
+            width: 44px; height: 24px;
+            background: rgba(123, 45, 53, 0.3);
+            border-radius: 12px;
+            position: relative;
+            cursor: pointer;
+            transition: background 0.3s;
+            border: none;
+        }
+        .toggle.active {
+            background: var(--gold);
+        }
+        .toggle::after {
+            content: '';
+            position: absolute;
+            width: 18px; height: 18px;
+            background: var(--white);
+            border-radius: 50%;
+            top: 3px; left: 3px;
+            transition: transform 0.3s;
+        }
+        .toggle.active::after {
+            transform: translateX(20px);
+        }
+        .advanced-fields {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease;
+        }
+        .advanced-fields.open {
+            max-height: 600px;
+        }
+        .calc-btn {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(135deg, var(--gold), var(--gold-light));
+            color: var(--text-dark);
+            font-weight: 700;
+            font-size: 1rem;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.3s;
+            margin-top: 0.5rem;
+            box-shadow: 0 4px 20px rgba(201, 168, 76, 0.3);
+        }
+        .calc-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(201, 168, 76, 0.4);
+        }
+        .calc-btn:active {
+            transform: translateY(0);
+        }
+        .preset-btns {
+            display: flex; gap: 0.5rem; margin-top: 0.75rem;
+        }
+        .preset-btn {
+            flex: 1;
+            padding: 0.5rem;
+            background: rgba(123, 45, 53, 0.15);
+            border: 1px solid rgba(123, 45, 53, 0.25);
+            border-radius: 8px;
+            color: var(--cream);
+            font-size: 0.75rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Inter', sans-serif;
+            text-align: center;
+        }
+        .preset-btn:hover {
+            border-color: var(--gold);
+            background: rgba(201, 168, 76, 0.1);
+            color: var(--gold);
+        }
+
+        /* ===== RESULTS PANEL ===== */
+        .results-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        /* Summary Cards */
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+        }
+        .summary-card {
+            background: rgba(42, 16, 21, 0.7);
+            border: 1px solid rgba(123, 45, 53, 0.2);
+            border-radius: 16px;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.3s;
+        }
+        .summary-card:hover {
+            border-color: rgba(201, 168, 76, 0.3);
+            transform: translateY(-3px);
+        }
+        .summary-card-icon {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .summary-card-value {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.6rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+        .summary-card-value.gold { color: var(--gold); }
+        .summary-card-value.green { color: var(--success); }
+        .summary-card-value.burgundy { color: var(--burgundy-pale); }
+        .summary-card-value.blue { color: var(--blue); }
+        .summary-card-label {
+            font-size: 0.75rem;
+            color: var(--cream);
+            opacity: 0.5;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Chart Area */
+        .chart-card {
+            background: rgba(42, 16, 21, 0.7);
+            border: 1px solid rgba(123, 45, 53, 0.2);
+            border-radius: 20px;
+            padding: 2rem;
+        }
+        .chart-card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+        }
+        .chart-card-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+        .chart-tabs {
+            display: flex; gap: 0.25rem;
+            background: rgba(26, 10, 14, 0.5);
+            border-radius: 8px;
+            padding: 3px;
+        }
+        .chart-tab {
+            padding: 0.4rem 0.8rem;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            border: none;
+            background: transparent;
+            color: var(--cream);
+            opacity: 0.5;
+            transition: all 0.3s;
+            font-family: 'Inter', sans-serif;
+        }
+        .chart-tab.active {
+            background: var(--burgundy);
+            opacity: 1;
+        }
+        .chart-area {
+            position: relative;
+            height: 350px;
+        }
+        .chart-area canvas {
+            width: 100%;
+            height: 100%;
+        }
+        .chart-legend {
+            display: flex;
+            gap: 1.5rem;
+            margin-top: 1rem;
+            justify-content: center;
+        }
+        .chart-legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.8rem;
+            color: var(--cream);
+            opacity: 0.7;
+        }
+        .chart-legend-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 3px;
+        }
+
+        /* Donut Chart */
+        .donut-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+        .donut-card {
+            background: rgba(42, 16, 21, 0.7);
+            border: 1px solid rgba(123, 45, 53, 0.2);
+            border-radius: 20px;
+            padding: 2rem;
+        }
+        .donut-card-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        .donut-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 2rem;
+        }
+        .donut-canvas {
+            width: 180px;
+            height: 180px;
+        }
+        .donut-legend {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+        .donut-legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        .donut-legend-color {
+            width: 14px;
+            height: 14px;
+            border-radius: 4px;
+            flex-shrink: 0;
+        }
+        .donut-legend-text {
+            font-size: 0.85rem;
+        }
+        .donut-legend-text .dl-label {
+            opacity: 0.6;
+            font-size: 0.75rem;
+        }
+        .donut-legend-text .dl-value {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 500;
+            font-size: 0.85rem;
+        }
+
+        /* Yearly Table */
+        .table-card {
+            background: rgba(42, 16, 21, 0.7);
+            border: 1px solid rgba(123, 45, 53, 0.2);
+            border-radius: 20px;
+            padding: 2rem;
+            overflow: hidden;
+        }
+        .table-card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+        }
+        .table-card-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+        .table-toggle {
+            font-size: 0.8rem;
+            color: var(--gold);
+            cursor: pointer;
+            background: none;
+            border: none;
+            font-family: 'Inter', sans-serif;
+            transition: opacity 0.3s;
+        }
+        .table-toggle:hover { opacity: 0.7; }
+        .table-wrapper {
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        .results-table {
+            width: 100%;
+            border-collapse: collapse;
+            table-layout: fixed;
+        }
+        .results-table thead {
+            display: table;
+            width: 100%;
+            table-layout: fixed;
+        }
+        .results-table thead th {
+            padding: 0.8rem 1rem;
+            text-align: right;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--cream);
+            opacity: 0.5;
+            font-weight: 500;
+            border-bottom: 1px solid rgba(123, 45, 53, 0.2);
+            background: #2a1015;
+        }
+        .results-table tbody {
+            display: block;
+            max-height: 360px;
+            overflow-y: auto;
+            width: 100%;
+        }
+        .results-table tbody::-webkit-scrollbar { width: 4px; }
+        .results-table tbody::-webkit-scrollbar-track { background: transparent; }
+        .results-table tbody::-webkit-scrollbar-thumb { background: var(--burgundy); border-radius: 2px; }
+        .results-table tbody tr {
+            display: table;
+            width: 100%;
+            table-layout: fixed;
+        }
+        .results-table thead th:first-child { text-align: center; }
+        .results-table tbody td {
+            padding: 0.7rem 1rem;
+            text-align: right;
+            font-size: 0.85rem;
+            font-family: 'JetBrains Mono', monospace;
+            border-bottom: 1px solid rgba(123, 45, 53, 0.08);
+            color: var(--cream);
+            opacity: 0.8;
+        }
+        .results-table tbody td:first-child {
+            text-align: center;
+            font-weight: 600;
+            opacity: 0.6;
+        }
+        .results-table tbody tr:hover {
+            background: rgba(123, 45, 53, 0.1);
+        }
+        .results-table tbody tr:last-child td { border-bottom: none; }
+        .results-table .positive { color: var(--success); }
+        .results-table .neutral { color: var(--gold); }
+        /* Formula Section */
+        .formula-card {
+            background: rgba(42, 16, 21, 0.7);
+            border: 1px solid rgba(123, 45, 53, 0.2);
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+        }
+        .formula-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+        .formula-display {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.1rem;
+            color: var(--gold);
+            padding: 1.5rem;
+            background: rgba(26, 10, 14, 0.5);
+            border-radius: 12px;
+            margin-bottom: 1rem;
+            letter-spacing: 1px;
+            overflow-x: auto;
+        }
+        .formula-explanation {
+            font-size: 0.85rem;
+            color: var(--cream);
+            opacity: 0.5;
+            line-height: 1.7;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            background: rgba(26, 10, 14, 0.95);
+            border-top: 1px solid rgba(123, 45, 53, 0.2);
+            padding: 4rem 2rem 2rem;
+        }
+
+        .footer-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-brand p {
+            font-size: 0.9rem;
+            color: var(--cream);
+            opacity: 0.5;
+            line-height: 1.7;
+            margin-top: 1rem;
+            max-width: 300px;
+        }
+
+        .footer-col h4 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 1.2rem;
+            color: var(--cream);
+        }
+
+        .footer-col ul {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+        }
+
+        .footer-col ul a {
+            text-decoration: none;
+            color: var(--cream);
+            opacity: 0.5;
+            font-size: 0.85rem;
+            transition: all 0.3s;
+        }
+
+        .footer-col ul a:hover {
+            opacity: 1;
+            color: var(--gold);
+        }
+        
+                .footer-col:nth-child(2) { 
+    margin-left: 500px; /* Ajusta este número a tu gusto */
+}
+
+
+.footer-col:nth-child(2) { 
+    margin-left: auto; /* Esto empuja Recursos y Empresa al extremo derecho */
+    padding-right: 50px; /* Para que no peguen al borde de la pantalla */
+}
+
+        .footer-col li a {
+    white-space: nowrap; /* Evita que el texto salte a 2 líneas */
+}
+
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(123, 45, 53, 0.15);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
+}
+
+        .footer-bottom p {
+            font-size: 0.8rem;
+            color: var(--cream);
+            opacity: 0.3;
+        }
+
+        .footer-socials {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .footer-socials a {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            border: 1px solid rgba(123, 45, 53, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+            color: var(--cream);
+            opacity: 0.5;
+        }
+
+        .footer-socials a:hover {
+            border-color: var(--gold);
+            opacity: 1;
+            background: rgba(201, 168, 76, 0.1);
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 1200px) {
+            .calc-grid {
+                grid-template-columns: 340px 1fr;
+            }
+            .summary-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        @media (max-width: 900px) {
+            .calc-grid {
+                grid-template-columns: 1fr;
+            }
+            .input-panel {
+                position: static;
+            }
+            .donut-section {
+                grid-template-columns: 1fr;
+            }
+            .nav-links { display: none; }
+        }
+        @media (max-width: 600px) {
+            .summary-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .chart-area { height: 250px; }
+            .page-header { padding: 7rem 1.5rem 2rem; }
+            .calc-section { padding: 1.5rem 1rem; }
+        }
+
+        /* ===== ANIMATIONS ===== */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeIn 0.6s ease forwards;
+        }
+        @keyframes fadeIn {
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .delay-1 { animation-delay: 0.1s; }
+        .delay-2 { animation-delay: 0.2s; }
+        .delay-3 { animation-delay: 0.3s; }
+        .delay-4 { animation-delay: 0.4s; }
+        .delay-5 { animation-delay: 0.5s; }
+
+        /* Tooltip */
+        .info-tip {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 16px; height: 16px;
+            border-radius: 50%;
+            background: rgba(123, 45, 53, 0.3);
+            font-size: 0.6rem;
+            color: var(--cream);
+            opacity: 0.5;
+            cursor: help;
+            margin-left: 0.3rem;
+            position: relative;
+        }
+        .info-tip:hover { opacity: 1; }
+        .info-tip::after {
+            content: attr(data-tip);
+            position: absolute;
+            bottom: 130%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--bg-card);
+            border: 1px solid rgba(123, 45, 53, 0.3);
+            color: var(--cream);
+            font-size: 0.7rem;
+            padding: 0.5rem 0.75rem;
+            border-radius: 8px;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+            z-index: 10;
+        }
+        .info-tip:hover::after { opacity: 1; }
+
+        /* Number animation */
+        .animate-number {
+            transition: all 0.5s ease;
+        }
+    </style>
+</head>
+<body>
+
+<!-- ANIMATED BACKGROUND -->
+<div class="bg-layer">
+    <div class="bg-gradient-orb"></div>
+    <div class="bg-gradient-orb"></div>
+    <div class="bg-gradient-orb"></div>
+    <div class="bg-grid"></div>
+    <div class="bg-particles" id="bgParticles"></div>
+</div>
+
+    <!-- NAVBAR -->
+    <nav class="navbar" id="navbar">
+        <a href="#" class="nav-logo">
+            <div class="nav-logo-icon">d</div>
+            <div class="nav-logo-text">deep<span>tfolio</span></div>
+        </a>
+        <ul class="nav-links">
+            <li><a href="#">Inicio</a></li>
+            <li><a href="#">Calculadoras</a></li>
+            <li><a href="#">Backtesting</a></li>
+            <li><a href="#">Precios</a></li>
+        </ul>
+        <div style="display:flex;gap:0.75rem;align-items:center;">
+            <a href="#" class="btn btn-ghost">Iniciar Sesión</a>
+            <a href="#" class="btn btn-primary">Empezar Gratis</a>
+        </div>
+    </nav>
+
+    <!-- PAGE HEADER -->
+    <header class="page-header">
+        <div class="page-header-content">
+            <div class="page-breadcrumb">
+                <a href="#">deepfolio.</a>
+                <span>›</span>
+                <span>Recursos</span>
+                <span>›</span>
+                <span style="opacity:1;color:var(--gold)">Calculadora de Interés Compuesto</span>
+            </div>
+            <h1 class="page-title">
+                Calculadora de<br>
+                <span class="highlight">Interés Compuesto</span>
+            </h1>
+            <p class="page-subtitle">
+                Visualiza el poder del interés compuesto. Ajusta parámetros, compara escenarios 
+                y descubre cómo tu dinero puede crecer con el tiempo.
+            </p>
+        </div>
+    </header>
+
+    <!-- CALCULATOR -->
+    <section class="calc-section">
+        <div class="calc-grid">
+
+            <!-- INPUT PANEL -->
+            <div class="input-panel fade-in">
+                <div class="input-panel-title">Configuración</div>
+                <div class="input-panel-desc">Ajusta los parámetros de tu inversión</div>
+
+                <!-- Core Inputs -->
+                <div class="input-section-title">Inversión Inicial</div>
+
+                <div class="input-group">
+                    <div class="input-label">
+                        <label>Capital inicial</label>
+                        <input type="text" id="initialDisplay" class="editable-display" value="10.000 €">
+                    </div>
+                    <div class="input-wrapper">
+                        <span class="input-prefix">€</span>
+                        <input type="range" class="range-input" id="initialRange" min="0" max="500000" step="500" value="10000">
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <div class="input-label">
+                        <label>Aportación mensual</label>
+                        <input type="text" id="monthlyDisplay" class="editable-display" value="€500">
+                    </div>
+                    <div class="input-wrapper">
+                        <span class="input-prefix">€</span>
+                        <input type="range" class="range-input" id="monthlyRange" min="0" max="10000" step="50" value="500">
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <div class="input-label">
+                        <label>Tasa de retorno anual</label>
+                        <input type="text" id="rateDisplay" class="editable-display" value="7%">
+                    </div>
+                    <div class="input-wrapper">
+                        <input type="range" class="range-input" id="rateRange" min="0.5" max="30" step="0.25" value="7">
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <div class="input-label">
+                        <label>Período de inversión</label>
+                        <input type="text" id="yearsDisplay" class="editable-display" value="20 años">
+                    </div>
+                    <div class="input-wrapper">
+                        <input type="range" class="range-input" id="yearsRange" min="1" max="50" step="1" value="20">
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <div class="input-label">
+                        <label>Frecuencia de capitalización</label>
+                    </div>
+                    <select class="input-select" id="compFreq">
+                        <option value="12" selected>Mensual</option>
+                        <option value="4">Trimestral</option>
+                        <option value="2">Semestral</option>
+                        <option value="1">Anual</option>
+                        <option value="365">Diaria</option>
+                    </select>
+                </div>
+
+                <div class="input-divider"></div>
+
+                <!-- Advanced -->
+                <div class="input-section-title">Opciones Avanzadas</div>
+
+                <div class="toggle-row">
+                    <span class="toggle-label">Ajustar por inflación</span>
+                    <button class="toggle" id="toggleInflation" onclick="toggleAdvanced('inflation')"></button>
+                </div>
+                <div class="advanced-fields" id="inflationFields">
+                    <div class="input-group">
+                        <div class="input-label">
+                            <label>Tasa de inflación</label>
+                            <input type="text" id="inflationDisplay" class="editable-display" value="2.5%">
+                        </div>
+                        <div class="input-wrapper">
+                            <input type="range" id="inflationRange" min="0" max="10" step="0.25" value="2.5">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="toggle-row" style="margin-top:0.5rem;">
+                    <span class="toggle-label">Aplicar impuestos</span>
+                    <button class="toggle" id="toggleTax" onclick="toggleAdvanced('tax')"></button>
+                </div>
+                <div class="advanced-fields" id="taxFields">
+                    <div class="input-group">
+                        <div class="input-label">
+                            <label>Tipo impositivo</label>
+                            <input type="text" id="taxDisplay" class="editable-display" value="19%">
+                        </div>
+                        <div class="input-wrapper">
+                            <input type="range" id="taxRange" min="0" max="50" step="1" value="19">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="toggle-row" style="margin-top:0.5rem;">
+                    <span class="toggle-label">Incremento anual aportaciones <span class="info-tip" data-tip="Aumento anual de tu aportación mensual">?</span></span>
+                    <button class="toggle" id="toggleIncrease" onclick="toggleAdvanced('increase')"></button>
+                </div>
+                <div class="advanced-fields" id="increaseFields">
+                    <div class="input-group">
+                        <div class="input-label">
+                            <label>Incremento anual</label>
+                            <input type="text" id="increaseDisplay" class="editable-display" value="3%">
+                        </div>
+                        <div class="input-wrapper">
+                            <input type="range" id="increaseRange" min="0" max="15" step="0.5" value="3">
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+
+            <!-- RESULTS -->
+            <div class="results-panel">
+
+                <!-- Summary Cards -->
+                <div class="summary-grid fade-in delay-1">
+                    <div class="summary-card">
+                        <div class="summary-card-icon">💰</div>
+                        <div class="summary-card-value gold animate-number" id="finalValue">€0</div>
+                        <div class="summary-card-label">Valor Final</div>
+                    </div>
+                    <div class="summary-card">
+                        <div class="summary-card-icon">📥</div>
+                        <div class="summary-card-value burgundy animate-number" id="totalContributed">€0</div>
+                        <div class="summary-card-label">Total Aportado</div>
+                    </div>
+                    <div class="summary-card">
+                        <div class="summary-card-icon">📈</div>
+                        <div class="summary-card-value green animate-number" id="totalInterest">€0</div>
+                        <div class="summary-card-label">Intereses Ganados</div>
+                    </div>
+                    <div class="summary-card">
+                        <div class="summary-card-icon">⚡</div>
+                        <div class="summary-card-value blue animate-number" id="totalReturn">0%</div>
+                        <div class="summary-card-label">Rentabilidad Total</div>
+                    </div>
+                </div>
+
+                <!-- Main Chart -->
+                <div class="chart-card fade-in delay-2">
+                    <div class="chart-card-header">
+                        <div class="chart-card-title">Crecimiento del Patrimonio</div>
+                        <div class="chart-tabs">
+                            <button class="chart-tab active" onclick="setChartView('stacked', this)">Apilado</button>
+                            <button class="chart-tab" onclick="setChartView('lines', this)">Líneas</button>
+                            <button class="chart-tab" onclick="setChartView('inflation', this)">Con Inflación</button>
+                        </div>
+                    </div>
+                    <div class="chart-area">
+                        <canvas id="mainChart"></canvas>
+                    </div>
+                    <div class="chart-legend">
+                        <div class="chart-legend-item">
+                            <div class="chart-legend-dot" style="background:var(--gold)"></div>
+                            Capital Inicial + Intereses
+                        </div>
+                        <div class="chart-legend-item">
+                            <div class="chart-legend-dot" style="background:var(--burgundy-pale)"></div>
+                            Aportaciones
+                        </div>
+                        <div class="chart-legend-item">
+                            <div class="chart-legend-dot" style="background:var(--success)"></div>
+                            Intereses Compuestos
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Donut Charts -->
+                <div class="donut-section fade-in delay-3">
+                    <div class="donut-card">
+                        <div class="donut-card-title">Distribución Final</div>
+                        <div class="donut-wrapper">
+                            <canvas class="donut-canvas" id="donutChart1"></canvas>
+                            <div class="donut-legend" id="donutLegend1"></div>
+                        </div>
+                    </div>
+                    <div class="donut-card">
+                        <div class="donut-card-title">Desglose por Década</div>
+                        <div class="donut-wrapper">
+                            <canvas class="donut-canvas" id="donutChart2"></canvas>
+                            <div class="donut-legend" id="donutLegend2"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Yearly Table -->
+                <div class="table-card fade-in delay-5">
+                    <div class="table-card-header">
+                        <div class="table-card-title">Desglose Anual</div>
+                        <button class="table-toggle" onclick="toggleTable()">Ver todos los años ▾</button>
+                    </div>
+                    <div class="table-wrapper" id="tableWrapper">
+                        <table class="results-table">
+                            <thead>
+                                <tr>
+                                    <th>Año</th>
+                                    <th>Aportación</th>
+                                    <th>Saldo Inicio</th>
+                                    <th>Interés</th>
+                                    <th>Saldo Final</th>
+                                    <th>Valor Real*</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tableBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Formula -->
+                <div class="formula-card fade-in delay-5">
+                    <div class="formula-title">La Fórmula del Poder Compuesto</div>
+                    <div class="formula-display">
+                        A = P(1 + r/n)^(nt) + PMT × [((1 + r/n)^(nt) - 1) / (r/n)]
+                    </div>
+                    <p class="formula-explanation">
+                        Donde <strong>P</strong> es el capital inicial, <strong>r</strong> la tasa anual, 
+                        <strong>n</strong> la frecuencia de capitalización, <strong>t</strong> los años, 
+                        y <strong>PMT</strong> la aportación periódica. Albert Einstein llamó al interés compuesto 
+                        «la octava maravilla del mundo».
+                    </p>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <a href="#" class="nav-logo">
+                        <div class="nav-logo-icon">d<span>;</span></div>
+                    <div class="nav-logo-text">deep<span>folio.</span></div>
+                </a>
+                <p>
+                    La plataforma de gestión de carteras para inversores que exigen 
+                    profundidad, precisión y elegancia en cada decisión financiera.
+                </p>
+            </div>
+            <div class="footer-col">
+                <h4>Recursos</h4>
+                <ul>
+                    <li><a href="#">Calculadora de Interés Compuesto</a></li>
+                    <li><a href="#">Calculadora FIRE</a></li>
+                    <li><a href="#">Calculadora de Dividendos</a></li>
+                    <li><a href="#">Comparativas</a></li>
+                    <li><a href="#">Planes</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4>Empresa</h4>
+                <ul>
+                    <li><a href="footer/empresa/contacto.html">Contacto</a></li>
+                    <li><a href="footer/empresa/Nosotros.html">Nosotros</a></li>            
+                    <li><a href="footer/empresa/FAQ.html">F.A.Q</a></li>
+                    <li><a href="footer/empresa/privacidad.html">Privacidad</a></li>
+                    <li><a href="footer/empresa/terminos.html">Términos</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4>Inversión</h4>
+                <ul>
+                    <li><a href="#">Guía de ETFs</a></li>
+                    <li><a href="#">Mejores Brokers</a></li>
+                    <li><a href="#">Glosario del Inversor</a></li>
+                    <li><a href="#">Modelos de Cartera</a></li>
+                    <li><a href="#">Enlaces de Interésa</a></li>
+                </ul>
+            </div>
+
+        </div>
+        <div class="footer-bottom">
+            <p>© 2026 deepfolio. Todos los derechos reservados.</p>
+            <div class="footer-socials">
+                <a href="https://x.com/deepfolio" aria-label="Twitter">𝕏</a>
+                <a href="https://www.linkedin.com/in/pauescobargarcia/" aria-label="LinkedIn">in</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // ===== STATE =====
+        let state = {
+            initial: 10000,
+            monthly: 500,
+            rate: 7,
+            years: 20,
+            compFreq: 12,
+            inflation: false,
+            inflationRate: 2.5,
+            tax: false,
+            taxRate: 19,
+            increase: false,
+            increaseRate: 3,
+            chartView: 'stacked',
+            tableExpanded: false,
+            yearlyData: []
+        };
+
+        // ===== NAVBAR SCROLL =====
+        window.addEventListener('scroll', () => {
+            document.getElementById('navbar').classList.toggle('scrolled', window.scrollY > 30);
+        });
+
+// ===== CONTROL DE SLIDERS =====
+// Mapeo explícito: ID del slider → clave en state
+const sliderMap = {
+    initialRange:   'initial',
+    monthlyRange:   'monthly',
+    rateRange:      'rate',
+    yearsRange:     'years',
+    inflationRange: 'inflationRate',
+    taxRange:       'taxRate',
+    increaseRange:  'increaseRate'
+};
+
+Object.entries(sliderMap).forEach(([sliderId, stateKey]) => {
+    const el = document.getElementById(sliderId);
+    if (!el) return;
+    el.addEventListener('input', () => {
+        state[stateKey] = parseFloat(el.value);
+        calculate();
+    });
+});
+
+function updateDisplays() {
+    // 1. Referencias a los Sliders
+    const ir = document.getElementById('initialRange');
+    const mr = document.getElementById('monthlyRange');
+    const rr = document.getElementById('rateRange');
+    const yr = document.getElementById('yearsRange');
+    const infR = document.getElementById('inflationRange');
+    const taxR = document.getElementById('taxRange');
+    const incR = document.getElementById('increaseRange');
+
+    // 2. Referencias a los textos (Inputs editables)
+    const initialDisp = document.getElementById('initialDisplay');
+    const monthlyDisp = document.getElementById('monthlyDisplay');
+    const rateDisp = document.getElementById('rateDisplay');
+    const yearsDisp = document.getElementById('yearsDisplay');
+
+    // 3. ACTUALIZAR TEXTOS (Solo si NO estamos escribiendo en ellos)
+    if (document.activeElement !== initialDisp) initialDisp.value = formatCurrency(state.initial);
+    if (document.activeElement !== monthlyDisp) monthlyDisp.value = formatCurrency(state.monthly);
+    if (document.activeElement !== rateDisp) rateDisp.value = state.rate + '%';
+    if (document.activeElement !== yearsDisp) yearsDisp.value = state.years + (state.years == 1 ? ' año' : ' años');
+
+    // Actualizar textos secundarios
+    const infDisp = document.getElementById('inflationDisplay');
+    const taxDisp = document.getElementById('taxDisplay');
+    const incDisp = document.getElementById('increaseDisplay');
+    if (document.activeElement !== infDisp) infDisp.value = state.inflationRate + '%';
+    if (document.activeElement !== taxDisp) taxDisp.value = state.taxRate + '%';
+    if (document.activeElement !== incDisp) incDisp.value = state.increaseRate + '%';
+
+    // 4. ACTUALIZAR SLIDERS (Esto es lo que hace que el slider se mueva al cambiar el número)
+    ir.value = state.initial;
+    mr.value = state.monthly;
+    rr.value = state.rate;
+    yr.value = state.years;
+    infR.value = state.inflationRate;
+    taxR.value = state.taxRate;
+    incR.value = state.increaseRate;
+}
+
+        // ===== TOGGLES =====
+        function toggleAdvanced(type) {
+            const toggle = document.getElementById('toggle' + type.charAt(0).toUpperCase() + type.slice(1));
+            const fields = document.getElementById(type + 'Fields');
+            toggle.classList.toggle('active');
+            fields.classList.toggle('open');
+            state[type] = toggle.classList.contains('active');
+            calculate();
+        }
+
+        // ===== PRESETS =====
+        function applyPreset(preset) {
+            const presets = {
+                conservative: { initial: 50000, monthly: 200, rate: 3, years: 30 },
+                balanced: { initial: 20000, monthly: 500, rate: 7, years: 25 },
+                aggressive: { initial: 10000, monthly: 1000, rate: 12, years: 20 },
+                retirement: { initial: 50000, monthly: 800, rate: 7, years: 30 },
+                crypto: { initial: 5000, monthly: 300, rate: 20, years: 10 },
+                savings: { initial: 10000, monthly: 200, rate: 2.5, years: 15 }
+            };
+            const p = presets[preset];
+            if (!p) return;
+
+            state.initial = p.initial;
+            state.monthly = p.monthly;
+            state.rate = p.rate;
+            state.years = p.years;
+
+            document.getElementById('initialRange').value = p.initial;
+            document.getElementById('monthlyRange').value = p.monthly;
+            document.getElementById('rateRange').value = p.rate;
+            document.getElementById('yearsRange').value = p.years;
+
+            updateDisplays();
+            calculate();
+        }
+
+// ===== CALCULATE (CORREGIDO) =====
+        function calculate() {
+            updateDisplays();
+
+            const n = state.compFreq;
+            const r = state.rate / 100;
+            const t = state.years;
+            const P = state.initial;
+            let PMT = state.monthly;
+            const inflationRate = state.inflation ? state.inflationRate / 100 : 0;
+            const taxRate = state.tax ? state.taxRate / 100 : 0;
+
+            let balance = P;
+            let totalContributed = P;
+            let totalInterest = 0;
+            let yearlyData = [];
+
+            // Tasa por periodo de capitalización
+            const ratePerPeriod = r / n;
+            const monthsPerPeriod = 12 / n;
+
+            for (let year = 1; year <= t; year++) {
+                let startBalance = balance;
+                let yearInterest = 0;
+                let yearContributions = 0;
+
+                for (let month = 1; month <= 12; month++) {
+                    // 1. La aportación ocurre al inicio del mes
+                    balance += PMT;
+                    yearContributions += PMT;
+                    totalContributed += PMT;
+
+                    // 2. Cálculo de interés según la frecuencia elegida (n)
+                    if (month % monthsPerPeriod === 0) {
+                        let interest = balance * ratePerPeriod;
+                        
+                        // Aplicar impuestos sobre el interés generado si el toggle está activo
+                        if (state.tax) {
+                            interest = interest * (1 - taxRate);
+                        }
+
+                        balance += interest;
+                        yearInterest += interest;
+                    }
+                }
+
+                totalInterest += yearInterest;
+
+                // Valor real ajustado por inflación
+                const realValue = balance / Math.pow(1 + inflationRate, year);
+
+                yearlyData.push({
+                    year,
+                    contribution: yearContributions,
+                    startBalance,
+                    interest: yearInterest,
+                    endBalance: balance,
+                    realValue: state.inflation ? realValue : balance
+                });
+
+                // Si está activo el incremento anual de la aportación
+                if (state.increase && year < t) {
+                    PMT *= (1 + state.increaseRate / 100);
+                }
+            }
+
+            state.yearlyData = yearlyData;
+
+            // Valor final: nominal o ajustado por inflación
+            const finalValNominal = balance;
+            const finalValReal = finalValNominal / Math.pow(1 + inflationRate, t);
+            const finalVal = state.inflation ? finalValReal : finalValNominal;
+            const totalRet = ((finalVal - totalContributed) / totalContributed * 100);
+
+            // Actualizar etiqueta de la tarjeta según si hay inflación activa
+            const finalLabel = document.querySelector('#finalValue + .summary-card-label') ||
+                               document.querySelector('.summary-card-label');
+            document.querySelectorAll('.summary-card-label').forEach(el => {
+                if (el.previousElementSibling && el.previousElementSibling.id === 'finalValue') {
+                    el.textContent = state.inflation ? 'Valor Final (Real)' : 'Valor Final';
+                }
+            });
+
+            animateValue('finalValue', formatCurrency(finalVal));
+            animateValue('totalContributed', formatCurrency(totalContributed));
+            animateValue('totalInterest', formatCurrency(totalInterest));
+            animateValue('totalReturn', totalRet.toFixed(1) + '%');
+
+            // Llamada a tus funciones originales de dibujo
+            drawMainChart(yearlyData, P, totalContributed, totalInterest);
+            drawDonut1(P, totalContributed - P, totalInterest);
+            drawDonut2(yearlyData, t);
+            drawTable(yearlyData);
+        }
+
+        function animateValue(id, value) {
+            const el = document.getElementById(id);
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(10px)';
+            setTimeout(() => {
+                el.textContent = value;
+                el.style.opacity = '1';
+                el.style.transform = 'translateY(0)';
+            }, 100);
+        }
+
+        function formatCurrency(num) {
+            return '€' + Math.round(num).toLocaleString('es-ES');
+        }
+
+        // ===== MAIN CHART =====
+        function drawMainChart(data, initial, totalContrib, totalInterest) {
+            const canvas = document.getElementById('mainChart');
+            const ctx = canvas.getContext('2d');
+            const dpr = window.devicePixelRatio || 1;
+            const rect = canvas.parentElement.getBoundingClientRect();
+            canvas.width = rect.width * dpr;
+            canvas.height = rect.height * dpr;
+            canvas.style.width = rect.width + 'px';
+            canvas.style.height = rect.height + 'px';
+            ctx.scale(dpr, dpr);
+
+            const w = rect.width;
+            const h = rect.height;
+            const pad = { top: 20, right: 20, bottom: 40, left: 70 };
+            const chartW = w - pad.left - pad.right;
+            const chartH = h - pad.top - pad.bottom;
+
+            ctx.clearRect(0, 0, w, h);
+
+            const maxVal = Math.max(...data.map(d => d.endBalance)) * 1.05;
+            const isStacked = state.chartView === 'stacked';
+            const isInflation = state.chartView === 'inflation';
+
+            function getX(i) { return pad.left + (i / (data.length - 1)) * chartW; }
+            function getY(v) { return pad.top + chartH - (v / maxVal) * chartH; }
+
+            // Grid
+            ctx.strokeStyle = 'rgba(123, 45, 53, 0.1)';
+            ctx.lineWidth = 0.5;
+            const gridLines = 5;
+            for (let i = 0; i <= gridLines; i++) {
+                const y = pad.top + (i / gridLines) * chartH;
+                const val = maxVal * (1 - i / gridLines);
+                ctx.beginPath();
+                ctx.moveTo(pad.left, y);
+                ctx.lineTo(w - pad.right, y);
+                ctx.stroke();
+
+                ctx.fillStyle = 'rgba(245, 237, 228, 0.3)';
+                ctx.font = '11px JetBrains Mono, monospace';
+                ctx.textAlign = 'right';
+                ctx.fillText(formatShort(val), pad.left - 8, y + 4);
+            }
+
+            // Year labels
+            ctx.fillStyle = 'rgba(245, 237, 228, 0.3)';
+            ctx.font = '11px JetBrains Mono, monospace';
+            ctx.textAlign = 'center';
+            const step = Math.max(1, Math.floor(data.length / 10));
+            for (let i = 0; i < data.length; i += step) {
+                ctx.fillText('Año ' + data[i].year, getX(i), h - pad.bottom + 20);
+            }
+
+            if (isStacked) {
+                // Stacked area: contributions + interest
+                // Fill contributions area
+                const contribGrad = ctx.createLinearGradient(0, pad.top, 0, pad.top + chartH);
+                contribGrad.addColorStop(0, 'rgba(168, 75, 82, 0.3)');
+                contribGrad.addColorStop(1, 'rgba(168, 75, 82, 0.05)');
+
+                ctx.beginPath();
+                ctx.moveTo(getX(0), getY(0));
+                for (let i = 0; i < data.length; i++) {
+                    const contribVal = initial + (data[i].endBalance - initial - (data[i].endBalance - initial - (data[i].year - 1) * state.monthly));
+                    // Simplified: show cumulative contributions
+                    const cumContrib = initial + state.monthly * (data[i].year * 12);
+                    ctx.lineTo(getX(i), getY(Math.min(cumContrib, data[i].endBalance)));
+                }
+                ctx.lineTo(getX(data.length - 1), getY(0));
+                ctx.closePath();
+                ctx.fillStyle = contribGrad;
+                ctx.fill();
+
+                // Fill total area
+                const totalGrad = ctx.createLinearGradient(0, pad.top, 0, pad.top + chartH);
+                totalGrad.addColorStop(0, 'rgba(201, 168, 76, 0.25)');
+                totalGrad.addColorStop(1, 'rgba(201, 168, 76, 0.02)');
+
+                ctx.beginPath();
+                ctx.moveTo(getX(0), getY(0));
+                for (let i = 0; i < data.length; i++) {
+                    ctx.lineTo(getX(i), getY(data[i].endBalance));
+                }
+                ctx.lineTo(getX(data.length - 1), getY(0));
+                ctx.closePath();
+                ctx.fillStyle = totalGrad;
+                ctx.fill();
+
+                // Line for total
+                ctx.beginPath();
+                for (let i = 0; i < data.length; i++) {
+                    if (i === 0) ctx.moveTo(getX(i), getY(data[i].endBalance));
+                    else {
+                        const cx = (getX(i - 1) + getX(i)) / 2;
+                        ctx.bezierCurveTo(cx, getY(data[i - 1].endBalance), cx, getY(data[i].endBalance), getX(i), getY(data[i].endBalance));
+                    }
+                }
+                ctx.strokeStyle = 'rgba(201, 168, 76, 0.9)';
+                ctx.lineWidth = 2.5;
+                ctx.stroke();
+
+                // Line for contributions
+                ctx.beginPath();
+                for (let i = 0; i < data.length; i++) {
+                    const cumContrib = initial + state.monthly * (data[i].year * 12);
+                    if (i === 0) ctx.moveTo(getX(i), getY(cumContrib));
+                    else {
+                        const prevContrib = initial + state.monthly * (data[i - 1].year * 12);
+                        const cx = (getX(i - 1) + getX(i)) / 2;
+                        ctx.bezierCurveTo(cx, getY(prevContrib), cx, getY(cumContrib), getX(i), getY(cumContrib));
+                    }
+                }
+                ctx.strokeStyle = 'rgba(168, 75, 82, 0.7)';
+                ctx.lineWidth = 2;
+                ctx.setLineDash([5, 5]);
+                ctx.stroke();
+                ctx.setLineDash([]);
+
+            } else if (isInflation) {
+                // Nominal vs Real
+                // Nominal
+                ctx.beginPath();
+                for (let i = 0; i < data.length; i++) {
+                    if (i === 0) ctx.moveTo(getX(i), getY(data[i].endBalance));
+                    else {
+                        const cx = (getX(i - 1) + getX(i)) / 2;
+                        ctx.bezierCurveTo(cx, getY(data[i - 1].endBalance), cx, getY(data[i].endBalance), getX(i), getY(data[i].endBalance));
+                    }
+                }
+                ctx.strokeStyle = 'rgba(201, 168, 76, 0.9)';
+                ctx.lineWidth = 2.5;
+                ctx.stroke();
+
+                // Real (inflation adjusted)
+                const maxReal = Math.max(...data.map(d => Math.max(d.endBalance, d.realValue))) * 1.05;
+                function getYReal(v) { return pad.top + chartH - (v / maxReal) * chartH; }
+
+                ctx.beginPath();
+                for (let i = 0; i < data.length; i++) {
+                    if (i === 0) ctx.moveTo(getX(i), getYReal(data[i].realValue));
+                    else {
+                        const cx = (getX(i - 1) + getX(i)) / 2;
+                        ctx.bezierCurveTo(cx, getYReal(data[i - 1].realValue), cx, getYReal(data[i].realValue), getX(i), getYReal(data[i].realValue));
+                    }
+                }
+                ctx.strokeStyle = 'rgba(91, 141, 184, 0.9)';
+                ctx.lineWidth = 2.5;
+                ctx.stroke();
+
+                // Update legend
+                document.querySelector('.chart-legend').innerHTML = `
+                    <div class="chart-legend-item">
+                        <div class="chart-legend-dot" style="background:var(--gold)"></div>
+                        Valor Nominal
+                    </div>
+                    <div class="chart-legend-item">
+                        <div class="chart-legend-dot" style="background:var(--blue)"></div>
+                        Valor Real (ajustado inflación)
+                    </div>
+                `;
+
+                
+
+            } else {
+                // Lines view: separate lines
+                // Total balance
+                ctx.beginPath();
+                for (let i = 0; i < data.length; i++) {
+                    if (i === 0) ctx.moveTo(getX(i), getY(data[i].endBalance));
+                    else {
+                        const cx = (getX(i - 1) + getX(i)) / 2;
+                        ctx.bezierCurveTo(cx, getY(data[i - 1].endBalance), cx, getY(data[i].endBalance), getX(i), getY(data[i].endBalance));
+                    }
+                }
+                ctx.strokeStyle = 'rgba(201, 168, 76, 0.9)';
+                ctx.lineWidth = 2.5;
+                ctx.stroke();
+
+                // Cumulative contributions
+                ctx.beginPath();
+                for (let i = 0; i < data.length; i++) {
+                    const cumContrib = initial + state.monthly * (data[i].year * 12);
+                    if (i === 0) ctx.moveTo(getX(i), getY(cumContrib));
+                    else {
+                        const prevContrib = initial + state.monthly * (data[i - 1].year * 12);
+                        const cx = (getX(i - 1) + getX(i)) / 2;
+                        ctx.bezierCurveTo(cx, getY(prevContrib), cx, getY(cumContrib), getX(i), getY(cumContrib));
+                    }
+                }
+                ctx.strokeStyle = 'rgba(168, 75, 82, 0.7)';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+
+                // Interest earned
+                ctx.beginPath();
+                for (let i = 0; i < data.length; i++) {
+                    const interestVal = data[i].endBalance - initial - (state.monthly * data[i].year * 12);
+                    if (i === 0) ctx.moveTo(getX(i), getY(interestVal));
+                    else {
+                        const prevInterest = data[i - 1].endBalance - initial - (state.monthly * data[i - 1].year * 12);
+                        const cx = (getX(i - 1) + getX(i)) / 2;
+                        ctx.bezierCurveTo(cx, getY(prevInterest), cx, getY(interestVal), getX(i), getY(interestVal));
+                    }
+                }
+                ctx.strokeStyle = 'rgba(74, 158, 110, 0.7)';
+                ctx.lineWidth = 2;
+                ctx.stroke();
+
+                
+
+                document.querySelector('.chart-legend').innerHTML = `
+                    <div class="chart-legend-item">
+                        <div class="chart-legend-dot" style="background:var(--gold)"></div>
+                        Saldo Total
+                    </div>
+                    <div class="chart-legend-item">
+                        <div class="chart-legend-dot" style="background:var(--burgundy-pale)"></div>
+                        Aportaciones Acumuladas
+                    </div>
+                    <div class="chart-legend-item">
+                        <div class="chart-legend-dot" style="background:var(--success)"></div>
+                        Intereses Acumulados
+                    </div>
+                `;
+            }
+
+            // End point highlight
+            const lastData = data[data.length - 1];
+            const endY = isInflation ? getY(lastData.endBalance) : getY(lastData.endBalance);
+            ctx.beginPath();
+            ctx.arc(getX(data.length - 1), endY, 6, 0, Math.PI * 2);
+            ctx.fillStyle = 'rgba(201, 168, 76, 0.9)';
+            ctx.fill();
+            ctx.beginPath();
+            ctx.arc(getX(data.length - 1), endY, 12, 0, Math.PI * 2);
+            ctx.fillStyle = 'rgba(201, 168, 76, 0.15)';
+            ctx.fill();
+        }
+
+        
+        function formatShort(num) {
+            if (num >= 1000000) return '€' + (num / 1000000).toFixed(1) + 'M';
+            if (num >= 1000) return '€' + (num / 1000).toFixed(0) + 'K';
+            return '€' + Math.round(num);
+        }
+
+        // ===== DONUT CHART 1: Distribution =====
+        function drawDonut1(initial, contributions, interest) {
+            const canvas = document.getElementById('donutChart1');
+            const ctx = canvas.getContext('2d');
+            const dpr = window.devicePixelRatio || 1;
+            canvas.width = 180 * dpr;
+            canvas.height = 180 * dpr;
+            canvas.style.width = '180px';
+            canvas.style.height = '180px';
+            ctx.scale(dpr, dpr);
+
+            const cx = 90, cy = 90, r = 75, inner = 50;
+            const total = initial + contributions + interest;
+
+            const segments = [
+                { label: 'Capital Inicial', value: initial, color: '#C9A84C' },
+                { label: 'Aportaciones', value: contributions, color: '#A84B52' },
+                { label: 'Intereses', value: interest, color: '#4A9E6E' }
+            ];
+
+            let startAngle = -Math.PI / 2;
+            segments.forEach(seg => {
+                const sliceAngle = (seg.value / total) * Math.PI * 2;
+                ctx.beginPath();
+                ctx.arc(cx, cy, r, startAngle, startAngle + sliceAngle);
+                ctx.arc(cx, cy, inner, startAngle + sliceAngle, startAngle, true);
+                ctx.closePath();
+                ctx.fillStyle = seg.color;
+                ctx.fill();
+                startAngle += sliceAngle;
+            });
+
+            // Center text
+            ctx.fillStyle = 'rgba(245, 237, 228, 0.8)';
+            ctx.font = '600 14px JetBrains Mono, monospace';
+            ctx.textAlign = 'center';
+            ctx.fillText(formatShort(total), cx, cy - 2);
+            ctx.fillStyle = 'rgba(245, 237, 228, 0.4)';
+            ctx.font = '10px Inter, sans-serif';
+            ctx.fillText('Total', cx, cy + 14);
+
+            // Legend
+            const legend = document.getElementById('donutLegend1');
+            legend.innerHTML = segments.map(s => `
+                <div class="donut-legend-item">
+                    <div class="donut-legend-color" style="background:${s.color}"></div>
+                    <div class="donut-legend-text">
+                        <div class="dl-label">${s.label}</div>
+                        <div class="dl-value">${formatCurrency(s.value)} (${(s.value / total * 100).toFixed(1)}%)</div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // ===== DONUT CHART 2: By Decade =====
+        function drawDonut2(data, totalYears) {
+            const canvas = document.getElementById('donutChart2');
+            const ctx = canvas.getContext('2d');
+            const dpr = window.devicePixelRatio || 1;
+            canvas.width = 180 * dpr;
+            canvas.height = 180 * dpr;
+            canvas.style.width = '180px';
+            canvas.style.height = '180px';
+            ctx.scale(dpr, dpr);
+
+            const cx = 90, cy = 90, r = 75, inner = 50;
+
+            // Group by decade
+            const decades = {};
+            const colors = ['#C9A84C', '#A84B52', '#4A9E6E', '#5B8DB8', '#8B6BA0'];
+            data.forEach(d => {
+                const decade = Math.floor((d.year - 1) / 10) * 10 + 1;
+                if (!decades[decade]) decades[decade] = 0;
+                decades[decade] += d.interest;
+            });
+
+            const segments = Object.entries(decades).map(([dec, val], i) => ({
+                label: `Años ${dec}-${Math.min(dec + 9, totalYears)}`,
+                value: val,
+                color: colors[i % colors.length]
+            }));
+
+            const total = segments.reduce((s, seg) => s + seg.value, 0);
+
+            let startAngle = -Math.PI / 2;
+            segments.forEach(seg => {
+                const sliceAngle = (seg.value / total) * Math.PI * 2;
+                ctx.beginPath();
+                ctx.arc(cx, cy, r, startAngle, startAngle + sliceAngle);
+                ctx.arc(cx, cy, inner, startAngle + sliceAngle, startAngle, true);
+                ctx.closePath();
+                ctx.fillStyle = seg.color;
+                ctx.fill();
+                startAngle += sliceAngle;
+            });
+
+            ctx.fillStyle = 'rgba(245, 237, 228, 0.8)';
+            ctx.font = '600 12px JetBrains Mono, monospace';
+            ctx.textAlign = 'center';
+            ctx.fillText(formatShort(total), cx, cy - 2);
+            ctx.fillStyle = 'rgba(245, 237, 228, 0.4)';
+            ctx.font = '10px Inter, sans-serif';
+            ctx.fillText('Intereses', cx, cy + 14);
+
+            const legend = document.getElementById('donutLegend2');
+            legend.innerHTML = segments.map(s => `
+                <div class="donut-legend-item">
+                    <div class="donut-legend-color" style="background:${s.color}"></div>
+                    <div class="donut-legend-text">
+                        <div class="dl-label">${s.label}</div>
+                        <div class="dl-value">${formatCurrency(s.value)}</div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // ===== TABLE =====
+        function drawTable(data) {
+            const tbody = document.getElementById('tableBody');
+            const visible = state.tableExpanded ? data : data.slice(0, 10);
+
+            tbody.innerHTML = visible.map(d => `
+                <tr>
+                    <td>${d.year}</td>
+                    <td>${formatCurrency(d.contribution)}</td>
+                    <td>${formatCurrency(d.startBalance)}</td>
+                    <td class="positive">+${formatCurrency(d.interest)}</td>
+                    <td class="neutral">${formatCurrency(d.endBalance)}</td>
+                    <td>${state.inflation ? formatCurrency(d.realValue) : '—'}</td>
+                </tr>
+            `).join('');
+
+            if (!state.tableExpanded && data.length > 10) {
+                tbody.innerHTML += `<tr><td colspan="6" style="text-align:center;opacity:0.4;padding:1rem;">
+                    ... y ${data.length - 10} años más. <button class="table-toggle" onclick="toggleTable()" style="display:inline;">Ver todos</button>
+                </td></tr>`;
+            }
+        }
+
+        function toggleTable() {
+            state.tableExpanded = !state.tableExpanded;
+            calculate();
+        }
+
+        // ===== CHART VIEW =====
+        function setChartView(view, btn) {
+            state.chartView = view;
+            document.querySelectorAll('.chart-tab').forEach(t => t.classList.remove('active'));
+            btn.classList.add('active');
+            calculate();
+        }
+
+        // ===== INIT =====
+        window.addEventListener('load', () => {
+            calculate();
+        });
+
+        window.addEventListener('resize', () => {
+            calculate();
+        });
+
+        // ===== EDITABLE DISPLAYS =====
+        // Conecta cada caja de texto editable con su variable de estado
+        const editableMap = {
+            initial:   { key: 'initial',       min: 0,   max: 10000000 },
+            monthly:   { key: 'monthly',        min: 0,   max: 100000 },
+            rate:      { key: 'rate',           min: 0.1, max: 100 },
+            years:     { key: 'years',          min: 1,   max: 100, integer: true },
+            inflation: { key: 'inflationRate',  min: 0,   max: 20 },
+            tax:       { key: 'taxRate',        min: 0,   max: 100 },
+            increase:  { key: 'increaseRate',   min: 0,   max: 50 }
+        };
+
+        Object.entries(editableMap).forEach(([prefix, cfg]) => {
+            const disp = document.getElementById(prefix + 'Display');
+            if (!disp) return;
+
+            disp.addEventListener('focus', () => {
+                disp.value = parseFloat(String(disp.value).replace(/[^0-9.]/g, '')) || '';
+                disp.select();
+            });
+
+            disp.addEventListener('blur', () => {
+                let val = parseFloat(String(disp.value).replace(/[^0-9.]/g, ''));
+                if (!isNaN(val) && val >= 0) {
+                    val = Math.min(Math.max(val, cfg.min), cfg.max);
+                    if (cfg.integer) val = Math.round(val);
+                    state[cfg.key] = val;
+                }
+                calculate();
+            });
+
+            disp.addEventListener('keydown', e => {
+                if (e.key === 'Enter') disp.blur();
+            });
+        });
+
+        const particlesContainer = document.getElementById('bgParticles');
+
+for (let i = 0; i < 25; i++) {
+    const p = document.createElement('div');
+    p.className = 'bg-particle';
+    p.style.left = Math.random() * 100 + '%';
+    p.style.animationDelay = Math.random() * 10 + 's';
+    p.style.animationDuration = (8 + Math.random() * 8) + 's';
+
+    particlesContainer.appendChild(p);
+}
+
+    </script>
+</body>
+</html>
