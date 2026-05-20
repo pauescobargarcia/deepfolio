@@ -1,0 +1,1289 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>deeptfolio — Calculadora FIRE</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --burgundy-deep: #3D0F14;
+            --burgundy-dark: #5C1A20;
+            --burgundy: #7B2D35;
+            --burgundy-mid: #8B3A42;
+            --burgundy-light: #A84B52;
+            --burgundy-pale: #C46B73;
+            --gold: #C9A84C;
+            --gold-light: #D4B96A;
+            --gold-pale: #E8D5A0;
+            --cream: #F5EDE4;
+            --cream-light: #FAF6F2;
+            --text-dark: #1A080A;
+            --text-muted: #6B5055;
+            --bg-dark: #1A0A0E;
+            --bg-card: #2A1015;
+            --bg-card-light: #35151A;
+            --white: #FFFFFF;
+            --success: #4A9E6E;
+            --danger: #C45A5A;
+            --info: #5B8DB8;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-dark);
+            color: var(--cream);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg-dark); }
+        ::-webkit-scrollbar-thumb { background: var(--burgundy); border-radius: 4px; }
+
+        /* NAVBAR */
+        .navbar {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+            padding: 1rem 2rem; display: flex; align-items: center;
+            justify-content: space-between; transition: all 0.4s;
+            background: transparent;
+        }
+        .navbar.scrolled {
+            background: rgba(26, 10, 14, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(123, 45, 53, 0.3);
+            padding: 0.7rem 2rem;
+        }
+        .nav-logo { display: flex; align-items: center; gap: 0.5rem; text-decoration: none; }
+        .nav-logo-icon {
+            width: 40px; height: 40px;
+            background: linear-gradient(135deg, var(--burgundy), var(--gold));
+            border-radius: 10px; display: flex; align-items: center;
+            justify-content: center; font-size: 1.2rem; font-weight: 700;
+            color: var(--white); font-family: 'Playfair Display', serif;
+        }
+        .nav-logo-text {
+            font-family: 'Playfair Display', serif; font-size: 1.6rem;
+            font-weight: 600; color: var(--cream); letter-spacing: -0.5px;
+        }
+        .nav-logo-text span { color: var(--gold); }
+        .nav-links { display: flex; align-items: center; gap: 2rem; list-style: none; }
+        .nav-links a {
+            text-decoration: none; color: var(--cream); font-size: 0.9rem;
+            font-weight: 400; opacity: 0.8; transition: all 0.3s; position: relative;
+        }
+        .nav-links a:hover { opacity: 1; color: var(--gold); }
+        .btn {
+            display: inline-flex; align-items: center; justify-content: center;
+            padding: 0.7rem 1.5rem; border-radius: 8px; font-size: 0.9rem;
+            font-weight: 500; text-decoration: none; cursor: pointer;
+            transition: all 0.3s; border: none; font-family: 'Inter', sans-serif;
+        }
+        .btn-ghost {
+            background: transparent; color: var(--cream);
+            border: 1px solid rgba(201, 168, 76, 0.3);
+        }
+        .btn-ghost:hover { border-color: var(--gold); color: var(--gold); }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--burgundy), var(--burgundy-mid));
+            color: var(--white); box-shadow: 0 4px 15px rgba(123, 45, 53, 0.4);
+        }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(123, 45, 53, 0.5); }
+        .btn-gold {
+            background: linear-gradient(135deg, var(--gold), var(--gold-light));
+            color: var(--text-dark); font-weight: 600;
+            box-shadow: 0 4px 15px rgba(201, 168, 76, 0.3);
+        }
+        .btn-gold:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(201, 168, 76, 0.4); }
+        .btn-large { padding: 1rem 2.2rem; font-size: 1rem; border-radius: 10px; }
+
+        /* HERO */
+        .hero {
+            min-height: 60vh; display: flex; align-items: center;
+            justify-content: center; position: relative;
+            padding: 8rem 2rem 3rem; overflow: hidden;
+        }
+        .hero-bg {
+            position: absolute; inset: 0; z-index: 0;
+        }
+        .hero-bg::before {
+            content: ''; position: absolute; top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            background: radial-gradient(ellipse at 30% 20%, rgba(123, 45, 53, 0.15) 0%, transparent 50%),
+                        radial-gradient(ellipse at 70% 60%, rgba(201, 168, 76, 0.05) 0%, transparent 50%);
+            animation: heroBgMove 20s ease-in-out infinite alternate;
+        }
+        @keyframes heroBgMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(-2%, -1%); }
+        }
+        .hero-content { position: relative; z-index: 1; text-align: center; max-width: 800px; }
+        .hero-badge {
+            display: inline-flex; align-items: center; gap: 0.5rem;
+            padding: 0.5rem 1.2rem; background: rgba(123, 45, 53, 0.2);
+            border: 1px solid rgba(201, 168, 76, 0.2); border-radius: 50px;
+            font-size: 0.85rem; color: var(--gold-pale); margin-bottom: 2rem;
+        }
+        .hero-badge-dot {
+            width: 8px; height: 8px; background: var(--gold);
+            border-radius: 50%; animation: pulse 2s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.5); }
+        }
+        .hero-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.2rem, 5vw, 3.8rem); font-weight: 700;
+            line-height: 1.1; margin-bottom: 1rem;
+        }
+        .hero-title .highlight {
+            background: linear-gradient(135deg, var(--gold), var(--gold-light), var(--gold-pale));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+        }
+        .hero-title .italic { font-style: italic; color: var(--burgundy-pale); -webkit-text-fill-color: var(--burgundy-pale); }
+        .hero-subtitle {
+            font-size: clamp(0.95rem, 1.8vw, 1.15rem); color: var(--cream);
+            opacity: 0.6; max-width: 600px; margin: 0 auto;
+            font-weight: 300; line-height: 1.7;
+        }
+
+        /* MAIN CALCULATOR */
+        .calculator-section {
+            padding: 2rem 2rem 6rem; position: relative;
+        }
+        .calc-container {
+            max-width: 1300px; margin: 0 auto;
+            display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;
+        }
+
+        /* PANELS */
+        .panel {
+            background: rgba(42, 16, 21, 0.7);
+            border: 1px solid rgba(123, 45, 53, 0.25);
+            border-radius: 20px; padding: 2rem;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s;
+        }
+        .panel:hover { border-color: rgba(123, 45, 53, 0.4); }
+        .panel-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem; font-weight: 600;
+            margin-bottom: 0.3rem; display: flex;
+            align-items: center; gap: 0.6rem;
+        }
+        .panel-subtitle {
+            font-size: 0.85rem; color: var(--cream); opacity: 0.4;
+            margin-bottom: 1.8rem;
+        }
+
+        /* INPUT GROUPS */
+        .input-group {
+            margin-bottom: 1.5rem;
+        }
+        .input-label {
+            display: flex; align-items: center; justify-content: space-between;
+            margin-bottom: 0.6rem;
+        }
+        .input-label-text {
+            font-size: 0.85rem; font-weight: 500; color: var(--cream); opacity: 0.8;
+        }
+        .input-label-text small {
+            font-weight: 300; opacity: 0.5; margin-left: 0.3rem;
+        }
+        .input-value-display {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem; font-weight: 500;
+            color: var(--gold); background: rgba(201, 168, 76, 0.08);
+            padding: 0.2rem 0.6rem; border-radius: 6px;
+            border: 1px solid rgba(201, 168, 76, 0.15);
+        }
+
+        /* CUSTOM RANGE SLIDER */
+        .slider-container {
+            position: relative; padding: 0.5rem 0;
+        }
+        input[type="range"] {
+            -webkit-appearance: none; appearance: none;
+            width: 100%; height: 6px;
+            background: rgba(123, 45, 53, 0.3);
+            border-radius: 3px; outline: none;
+            cursor: pointer;
+        }
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none; appearance: none;
+            width: 22px; height: 22px;
+            background: linear-gradient(135deg, var(--gold), var(--gold-light));
+            border-radius: 50%; cursor: pointer;
+            box-shadow: 0 2px 10px rgba(201, 168, 76, 0.4);
+            transition: transform 0.2s;
+        }
+        input[type="range"]::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+        }
+        input[type="range"]::-moz-range-thumb {
+            width: 22px; height: 22px;
+            background: linear-gradient(135deg, var(--gold), var(--gold-light));
+            border-radius: 50%; cursor: pointer; border: none;
+            box-shadow: 0 2px 10px rgba(201, 168, 76, 0.4);
+        }
+
+        /* CUSTOM NUMBER INPUT */
+        .number-input {
+            width: 100%; padding: 0.7rem 1rem;
+            background: rgba(26, 10, 14, 0.6);
+            border: 1px solid rgba(123, 45, 53, 0.3);
+            border-radius: 10px; color: var(--cream);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1rem; outline: none;
+            transition: all 0.3s;
+        }
+        .number-input:focus {
+            border-color: var(--gold);
+            box-shadow: 0 0 0 3px rgba(201, 168, 76, 0.1);
+        }
+
+        /* FIRE TIERS */
+        .fire-tiers {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+        .fire-tier {
+            padding: 1rem; border-radius: 12px;
+            border: 1px solid rgba(123, 45, 53, 0.2);
+            background: rgba(26, 10, 14, 0.4);
+            cursor: pointer; transition: all 0.3s;
+            text-align: center;
+        }
+        .fire-tier:hover { border-color: rgba(201, 168, 76, 0.3); }
+        .fire-tier.active {
+            border-color: var(--gold);
+            background: rgba(201, 168, 76, 0.08);
+            box-shadow: 0 0 20px rgba(201, 168, 76, 0.1);
+        }
+        .fire-tier-icon { font-size: 1.5rem; margin-bottom: 0.3rem; }
+        .fire-tier-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 0.9rem; font-weight: 600; margin-bottom: 0.2rem;
+        }
+        .fire-tier-desc {
+            font-size: 0.7rem; color: var(--cream); opacity: 0.4;
+        }
+        .fire-tier-amount {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem; color: var(--gold);
+            margin-top: 0.4rem; font-weight: 500;
+        }
+
+        /* RESULTS */
+        .results-panel {
+            position: sticky; top: 80px;
+        }
+        .result-hero {
+            text-align: center; padding: 2rem 1rem;
+            background: linear-gradient(135deg, rgba(123, 45, 53, 0.2), rgba(201, 168, 76, 0.05));
+            border-radius: 16px; margin-bottom: 1.5rem;
+            border: 1px solid rgba(201, 168, 76, 0.15);
+        }
+        .result-hero-label {
+            font-size: 0.8rem; text-transform: uppercase;
+            letter-spacing: 2px; color: var(--cream); opacity: 0.5;
+            margin-bottom: 0.5rem;
+        }
+        .result-hero-value {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem; font-weight: 700;
+            background: linear-gradient(135deg, var(--gold), var(--gold-light));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .result-hero-sub {
+            font-size: 0.9rem; color: var(--cream); opacity: 0.6;
+            margin-top: 0.3rem;
+        }
+
+        .result-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+        .result-card {
+            padding: 1rem; border-radius: 12px;
+            background: rgba(26, 10, 14, 0.5);
+            border: 1px solid rgba(123, 45, 53, 0.15);
+            text-align: center;
+        }
+        .result-card-value {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.3rem; font-weight: 600;
+            margin-bottom: 0.2rem;
+        }
+        .result-card-label {
+            font-size: 0.75rem; color: var(--cream); opacity: 0.4;
+            text-transform: uppercase; letter-spacing: 0.5px;
+        }
+        .result-card-value.gold { color: var(--gold); }
+        .result-card-value.green { color: var(--success); }
+        .result-card-value.red { color: var(--danger); }
+        .result-card-value.blue { color: var(--info); }
+
+        /* PROGRESS BAR */
+        .fire-progress {
+            margin-bottom: 1.5rem;
+        }
+        .fire-progress-header {
+            display: flex; justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+        .fire-progress-label {
+            font-size: 0.85rem; font-weight: 500;
+        }
+        .fire-progress-percent {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem; color: var(--gold);
+        }
+        .fire-progress-bar {
+            width: 100%; height: 12px;
+            background: rgba(123, 45, 53, 0.2);
+            border-radius: 6px; overflow: hidden;
+        }
+        .fire-progress-fill {
+            height: 100%; border-radius: 6px;
+            background: linear-gradient(90deg, var(--burgundy), var(--gold));
+            transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+        }
+        .fire-progress-fill::after {
+            content: ''; position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            animation: shimmer 2s infinite;
+        }
+        @keyframes shimmer {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        /* CHART */
+        .chart-panel {
+            grid-column: 1 / -1;
+        }
+        .chart-wrapper {
+            position: relative; height: 350px;
+        }
+        .chart-wrapper canvas {
+            width: 100%; height: 100%;
+        }
+        .chart-legend {
+            display: flex; gap: 1.5rem; justify-content: center;
+            margin-top: 1rem; flex-wrap: wrap;
+        }
+        .chart-legend-item {
+            display: flex; align-items: center; gap: 0.5rem;
+            font-size: 0.8rem; color: var(--cream); opacity: 0.7;
+        }
+        .chart-legend-dot {
+            width: 10px; height: 10px; border-radius: 3px;
+        }
+
+        /* YEARLY TABLE */
+        .yearly-section {
+            grid-column: 1 / -1;
+        }
+        .yearly-table-wrapper {
+            max-height: 400px; overflow-y: auto;
+            border-radius: 12px;
+        }
+        .yearly-table {
+            width: 100%; border-collapse: collapse;
+            font-size: 0.85rem;
+        }
+        .yearly-table thead th {
+            position: sticky; top: 0;
+            padding: 0.8rem 1rem; text-align: right;
+            font-size: 0.75rem; text-transform: uppercase;
+            letter-spacing: 1px; color: var(--cream); opacity: 0.5;
+            font-weight: 500;
+            background: rgba(42, 16, 21, 0.95);
+            border-bottom: 1px solid rgba(123, 45, 53, 0.2);
+        }
+        .yearly-table thead th:first-child { text-align: left; }
+        .yearly-table tbody td {
+            padding: 0.6rem 1rem; text-align: right;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            border-bottom: 1px solid rgba(123, 45, 53, 0.08);
+        }
+        .yearly-table tbody td:first-child {
+            text-align: left;
+            font-family: 'Inter', sans-serif;
+            color: var(--cream); opacity: 0.6;
+        }
+        .yearly-table tbody tr.fire-year {
+            background: rgba(201, 168, 76, 0.08);
+        }
+        .yearly-table tbody tr.fire-year td {
+            color: var(--gold); font-weight: 500;
+        }
+        .yearly-table tbody tr:hover {
+            background: rgba(123, 45, 53, 0.1);
+        }
+        .yearly-table .positive { color: var(--success); }
+        .yearly-table .negative { color: var(--danger); }
+
+        /* TIPS SECTION */
+        .tips-section {
+            grid-column: 1 / -1;
+        }
+        .tips-grid {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem;
+        }
+        .tip-card {
+            padding: 1.5rem; border-radius: 12px;
+            background: rgba(26, 10, 14, 0.5);
+            border: 1px solid rgba(123, 45, 53, 0.15);
+            transition: all 0.3s;
+        }
+        .tip-card:hover { border-color: rgba(201, 168, 76, 0.3); transform: translateY(-2px); }
+        .tip-icon { font-size: 1.5rem; margin-bottom: 0.8rem; }
+        .tip-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1rem; font-weight: 600; margin-bottom: 0.5rem;
+        }
+        .tip-text {
+            font-size: 0.85rem; color: var(--cream); opacity: 0.5; line-height: 1.6;
+        }
+
+        /* SCROLLBAR for table */
+        .yearly-table-wrapper::-webkit-scrollbar { width: 6px; }
+        .yearly-table-wrapper::-webkit-scrollbar-track { background: transparent; }
+        .yearly-table-wrapper::-webkit-scrollbar-thumb { background: var(--burgundy); border-radius: 3px; }
+
+        /* SECTION LABEL */
+        .section-label {
+            display: inline-flex; align-items: center; gap: 0.5rem;
+            font-size: 0.8rem; text-transform: uppercase;
+            letter-spacing: 2px; color: var(--gold); font-weight: 500;
+        }
+        .section-label::before {
+            content: ''; width: 30px; height: 1px; background: var(--gold);
+        }
+
+        /* FOOTER */
+        .footer {
+            background: rgba(26, 10, 14, 0.95);
+            border-top: 1px solid rgba(123, 45, 53, 0.2);
+            padding: 3rem 2rem 2rem; text-align: center;
+        }
+        .footer p {
+            font-size: 0.8rem; color: var(--cream); opacity: 0.3;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 1024px) {
+            .calc-container { grid-template-columns: 1fr; }
+            .results-panel { position: static; }
+            .chart-panel, .yearly-section, .tips-section { grid-column: 1; }
+            .tips-grid { grid-template-columns: 1fr 1fr; }
+        }
+        @media (max-width: 768px) {
+            .nav-links { display: none; }
+            .fire-tiers { grid-template-columns: 1fr 1fr; }
+            .result-grid { grid-template-columns: 1fr 1fr; }
+            .tips-grid { grid-template-columns: 1fr; }
+            .hero-title { font-size: 2rem; }
+            .result-hero-value { font-size: 2.2rem; }
+        }
+        @media (max-width: 480px) {
+            .fire-tiers { grid-template-columns: 1fr; }
+            .result-grid { grid-template-columns: 1fr; }
+        }
+
+        /* ANIMATIONS */
+        .reveal {
+            opacity: 0; transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .reveal.visible { opacity: 1; transform: translateY(0); }
+
+        /* Tooltip */
+        .info-tip {
+            display: inline-flex; align-items: center; justify-content: center;
+            width: 16px; height: 16px; border-radius: 50%;
+            background: rgba(123, 45, 53, 0.3); font-size: 0.6rem;
+            cursor: help; position: relative; margin-left: 0.3rem;
+            vertical-align: middle;
+        }
+        .info-tip:hover::after {
+            content: attr(data-tip);
+            position: absolute; bottom: 100%; left: 50%;
+            transform: translateX(-50%); padding: 0.5rem 0.8rem;
+            background: var(--bg-card-light); border: 1px solid rgba(123, 45, 53, 0.3);
+            border-radius: 8px; font-size: 0.75rem; white-space: nowrap;
+            color: var(--cream); opacity: 1; z-index: 10;
+            font-family: 'Inter', sans-serif; font-weight: 400;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        /* Divider */
+        .divider {
+            height: 1px; background: rgba(123, 45, 53, 0.2);
+            margin: 1.5rem 0;
+        }
+
+        /* Milestone badges */
+        .milestones {
+            display: flex; gap: 0.5rem; flex-wrap: wrap;
+            margin-bottom: 1.5rem;
+        }
+        .milestone {
+            display: flex; align-items: center; gap: 0.4rem;
+            padding: 0.4rem 0.8rem; border-radius: 8px;
+            font-size: 0.75rem; font-weight: 500;
+            border: 1px solid;
+        }
+        .milestone.achieved {
+            background: rgba(74, 158, 110, 0.1);
+            border-color: rgba(74, 158, 110, 0.3);
+            color: var(--success);
+        }
+        .milestone.pending {
+            background: rgba(123, 45, 53, 0.1);
+            border-color: rgba(123, 45, 53, 0.2);
+            color: var(--cream); opacity: 0.4;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar" id="navbar">
+        <a href="#" class="nav-logo">
+            <div class="nav-logo-icon">d</div>
+            <div class="nav-logo-text">deep<span>tfolio</span></div>
+        </a>
+        <ul class="nav-links">
+            <li><a href="#calculator">Calculadora</a></li>
+            <li><a href="#projection">Proyección</a></li>
+            <li><a href="#details">Detalle Anual</a></li>
+            <li><a href="#tips">Consejos</a></li>
+        </ul>
+        <a href="#" class="btn btn-primary">Empezar Gratis</a>
+    </nav>
+
+    <!-- HERO -->
+    <section class="hero">
+        <div class="hero-bg"></div>
+        <div class="hero-content">
+            <div class="hero-badge">
+                <span class="hero-badge-dot"></span>
+                Calculadora FIRE — Financial Independence, Retire Early
+            </div>
+            <h1 class="hero-title">
+                Calcula tu camino hacia la<br>
+                <span class="highlight">libertad financiera</span>
+            </h1>
+            <p class="hero-subtitle">
+                Introduce tus datos y descubre cuánto necesitas ahorrar, cuándo podrás jubilarte 
+                y cómo optimizar tu estrategia con la regla del 4% y análisis de inflación.
+            </p>
+        </div>
+    </section>
+
+    <!-- CALCULATOR -->
+    <section class="calculator-section" id="calculator">
+        <div class="calc-container">
+
+            <!-- LEFT: INPUTS -->
+            <div class="panel reveal">
+                <div class="panel-title">📊 Tus Datos Financieros</div>
+                <div class="panel-subtitle">Ajusta los parámetros para calcular tu camino al FIRE</div>
+
+                <!-- FIRE Tier -->
+                <div class="input-group">
+                    <div class="input-label">
+                        <span class="input-label-text">Tipo de FIRE <span class="info-tip" data-tip="Elige tu estilo de vida post-jubilación">?</span></span>
+                    </div>
+                    <div class="fire-tiers" id="fireTiers">
+                        <div class="fire-tier active" data-tier="lean" onclick="selectTier(this)">
+                            <div class="fire-tier-icon">🌱</div>
+                            <div class="fire-tier-name">Lean FIRE</div>
+                            <div class="fire-tier-desc">Vida frugal</div>
+                            <div class="fire-tier-amount" id="leanAmount">€100K</div>
+                        </div>
+                        <div class="fire-tier" data-tier="safe" onclick="selectTier(this)">
+                            <div class="fire-tier-icon">🛡️</div>
+                            <div class="fire-tier-name">Safe FIRE</div>
+                            <div class="fire-tier-desc">Comodidad</div>
+                            <div class="fire-tier-amount" id="safeAmount">€250K</div>
+                        </div>
+                        <div class="fire-tier" data-tier="fat" onclick="selectTier(this)">
+                            <div class="fire-tier-icon">👑</div>
+                            <div class="fire-tier-name">Fat FIRE</div>
+                            <div class="fire-tier-desc">Abundancia</div>
+                            <div class="fire-tier-amount" id="fatAmount">€500K</div>
+                        </div>
+                        <div class="fire-tier" data-tier="barista" onclick="selectTier(this)">
+                            <div class="fire-tier-icon">☕</div>
+                            <div class="fire-tier-name">Barista FIRE</div>
+                            <div class="fire-tier-desc">Trabajo parcial</div>
+                            <div class="fire-tier-amount" id="baristaAmount">€75K</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="divider"></div>
+
+                <!-- Current Age -->
+                <div class="input-group">
+                    <div class="input-label">
+                        <span class="input-label-text">Edad actual</span>
+                        <span class="input-value-display" id="ageDisplay">30 años</span>
+                    </div>
+                    <div class="slider-container">
+                        <input type="range" id="currentAge" min="18" max="70" value="30" oninput="updateCalc()">
+                    </div>
+                </div>
+
+                <!-- Target Retirement Age -->
+                <div class="input-group">
+                    <div class="input-label">
+                        <span class="input-label-text">Edad objetivo de jubilación</span>
+                        <span class="input-value-display" id="retireAgeDisplay">50 años</span>
+                    </div>
+                    <div class="slider-container">
+                        <input type="range" id="retireAge" min="25" max="75" value="50" oninput="updateCalc()">
+                    </div>
+                </div>
+
+                <!-- Current Savings -->
+                <div class="input-group">
+                    <div class="input-label">
+                        <span class="input-label-text">Ahorros actuales <small>(patrimonio invertible)</small></span>
+                        <span class="input-value-display" id="savingsDisplay">€25,000</span>
+                    </div>
+                    <div class="slider-container">
+                        <input type="range" id="currentSavings" min="0" max="1000000" step="1000" value="25000" oninput="updateCalc()">
+                    </div>
+                </div>
+
+                <!-- Annual Savings -->
+                <div class="input-group">
+                    <div class="input-label">
+                        <span class="input-label-text">Ahorro anual <small>(lo que inviertes al año)</small></span>
+                        <span class="input-value-display" id="annualSavingsDisplay">€15,000</span>
+                    </div>
+                    <div class="slider-container">
+                        <input type="range" id="annualSavings" min="0" max="200000" step="500" value="15000" oninput="updateCalc()">
+                    </div>
+                </div>
+
+                <!-- Annual Expenses -->
+                <div class="input-group">
+                    <div class="input-label">
+                        <span class="input-label-text">Gastos anuales en jubilación <small>(en euros de hoy)</small></span>
+                        <span class="input-value-display" id="expensesDisplay">€36,000</span>
+                    </div>
+                    <div class="slider-container">
+                        <input type="range" id="annualExpenses" min="5000" max="200000" step="500" value="36000" oninput="updateCalc()">
+                    </div>
+                </div>
+
+                <div class="divider"></div>
+
+                <!-- Expected Return -->
+                <div class="input-group">
+                    <div class="input-label">
+                        <span class="input-label-text">Rendimiento esperado anual <span class="info-tip" data-tip="Rendimiento compuesto antes de inflación. Promedio mercado: 7-10%">?</span></span>
+                        <span class="input-value-display" id="returnDisplay">7%</span>
+                    </div>
+                    <div class="slider-container">
+                        <input type="range" id="expectedReturn" min="1" max="15" step="0.5" value="7" oninput="updateCalc()">
+                    </div>
+                </div>
+
+                <!-- Inflation -->
+                <div class="input-group">
+                    <div class="input-label">
+                        <span class="input-label-text">Tasa de inflación <span class="info-tip" data-tip="La inflación erosiona el poder adquisitivo. Media histórica: 2-3%">?</span></span>
+                        <span class="input-value-display" id="inflationDisplay">2.5%</span>
+                    </div>
+                    <div class="slider-container">
+                        <input type="range" id="inflation" min="0" max="8" step="0.5" value="2.5" oninput="updateCalc()">
+                    </div>
+                </div>
+
+                <!-- Withdrawal Rate -->
+                <div class="input-group">
+                    <div class="input-label">
+                        <span class="input-label-text">Tasa de retirada segura <span class="info-tip" data-tip="La regla del 4% es el estándar. Más conservador = más seguro">?</span></span>
+                        <span class="input-value-display" id="withdrawalDisplay">4%</span>
+                    </div>
+                    <div class="slider-container">
+                        <input type="range" id="withdrawalRate" min="2" max="8" step="0.5" value="4" oninput="updateCalc()">
+                    </div>
+                </div>
+
+                <!-- Annual Salary -->
+                <div class="input-group">
+                    <div class="input-label">
+                        <span class="input-label-text">Salario anual neto <small>(para calcular tasa de ahorro)</small></span>
+                        <span class="input-value-display" id="salaryDisplay">€50,000</span>
+                    </div>
+                    <div class="slider-container">
+                        <input type="range" id="annualSalary" min="15000" max="300000" step="1000" value="50000" oninput="updateCalc()">
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- RIGHT: RESULTS -->
+            <div class="panel results-panel reveal">
+                <div class="panel-title">🎯 Tu Plan FIRE</div>
+                <div class="panel-subtitle">Resultados actualizados en tiempo real</div>
+
+                <!-- FIRE Number -->
+                <div class="result-hero">
+                    <div class="result-hero-label">Tu número FIRE</div>
+                    <div class="result-hero-value" id="fireNumber">€900,000</div>
+                    <div class="result-hero-sub" id="fireNumberSub">Patrimonio necesario para jubilarte</div>
+                </div>
+
+                <!-- Progress -->
+                <div class="fire-progress">
+                    <div class="fire-progress-header">
+                        <span class="fire-progress-label">Progreso hacia el FIRE</span>
+                        <span class="fire-progress-percent" id="fireProgress">2.8%</span>
+                    </div>
+                    <div class="fire-progress-bar">
+                        <div class="fire-progress-fill" id="fireProgressBar" style="width: 2.8%"></div>
+                    </div>
+                </div>
+
+                <!-- Milestones -->
+                <div class="milestones" id="milestones">
+                    <div class="milestone achieved" id="ms1">✓ €10K</div>
+                    <div class="milestone pending" id="ms2">○ €50K</div>
+                    <div class="milestone pending" id="ms3">○ €100K</div>
+                    <div class="milestone pending" id="ms4">○ €250K</div>
+                    <div class="milestone pending" id="ms5">○ €500K</div>
+                    <div class="milestone pending" id="ms6">○ €1M</div>
+                </div>
+
+                <!-- Key Metrics -->
+                <div class="result-grid">
+                    <div class="result-card">
+                        <div class="result-card-value gold" id="yearsToFIRE">18.2</div>
+                        <div class="result-card-label">Años hasta FIRE</div>
+                    </div>
+                    <div class="result-card">
+                        <div class="result-card-value green" id="fireAge">48.2</div>
+                        <div class="result-card-label">Edad FIRE</div>
+                    </div>
+                    <div class="result-card">
+                        <div class="result-card-value gold" id="monthlySavings">€1,250</div>
+                        <div class="result-card-label">Ahorro mensual</div>
+                    </div>
+                    <div class="result-card">
+                        <div class="result-card-value blue" id="savingsRate">30%</div>
+                        <div class="result-card-label">Tasa de ahorro</div>
+                    </div>
+                    <div class="result-card">
+                        <div class="result-card-value gold" id="monthlyWithdrawal">€3,000</div>
+                        <div class="result-card-label">Retirada mensual</div>
+                    </div>
+                    <div class="result-card">
+                        <div class="result-card-value green" id="realReturn">4.4%</div>
+                        <div class="result-card-label">Retorno real</div>
+                    </div>
+                    <div class="result-card">
+                        <div class="result-card-value gold" id="totalContributions">€315,000</div>
+                        <div class="result-card-label">Total aportaciones</div>
+                    </div>
+                    <div class="result-card">
+                        <div class="result-card-value green" id="totalInterest">€585,000</div>
+                        <div class="result-card-label">Interés compuesto</div>
+                    </div>
+                </div>
+
+                <!-- Rule of 25 / Rule of 4 -->
+                <div class="divider"></div>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 1.5rem;">
+                    <div class="result-card">
+                        <div class="result-card-value gold" id="rule25">25x</div>
+                        <div class="result-card-label">Regla del 25x (4%)</div>
+                    </div>
+                    <div class="result-card">
+                        <div class="result-card-value green" id="rule33">33x</div>
+                        <div class="result-card-label">Regla del 3x (3%)</div>
+                    </div>
+                </div>
+
+                <!-- Can I make it? -->
+                <div id="fireStatus" style="padding: 1rem; border-radius: 12px; text-align: center; font-size: 0.9rem; margin-bottom: 1.5rem; border: 1px solid;">
+                    <!-- Dynamic -->
+                </div>
+
+                <a href="#" class="btn btn-gold btn-large" style="width: 100%;">Guardar Plan en deeptfolio</a>
+            </div>
+
+            <!-- CHART -->
+            <div class="panel chart-panel reveal" id="projection">
+                <div class="panel-title">📈 Proyección de Patrimonio</div>
+                <div class="panel-subtitle">Crecimiento estimado año a año hasta tu FIRE</div>
+                <div class="chart-wrapper">
+                    <canvas id="fireChart"></canvas>
+                </div>
+                <div class="chart-legend">
+                    <div class="chart-legend-item">
+                        <div class="chart-legend-dot" style="background: rgba(201, 168, 76, 0.8);"></div>
+                        Patrimonio acumulado
+                    </div>
+                    <div class="chart-legend-item">
+                        <div class="chart-legend-dot" style="background: rgba(123, 45, 53, 0.5);"></div>
+                        Total aportaciones
+                    </div>
+                    <div class="chart-legend-item">
+                        <div class="chart-legend-dot" style="background: rgba(74, 158, 110, 0.4);"></div>
+                        Interés compuesto
+                    </div>
+                    <div class="chart-legend-item">
+                        <div class="chart-legend-dot" style="background: rgba(201, 168, 76, 0.3); border: 1px dashed var(--gold);"></div>
+                        Línea FIRE
+                    </div>
+                </div>
+            </div>
+
+            <!-- YEARLY TABLE -->
+            <div class="panel yearly-section reveal" id="details">
+                <div class="panel-title">📋 Desglose Anual</div>
+                <div class="panel-subtitle">Detalle año a año de tu camino hacia la libertad financiera</div>
+                <div class="yearly-table-wrapper">
+                    <table class="yearly-table">
+                        <thead>
+                            <tr>
+                                <th>Año</th>
+                                <th>Edad</th>
+                                <th>Aportación</th>
+                                <th>Rendimiento</th>
+                                <th>Patrimonio</th>
+                                <th>% FIRE</th>
+                            </tr>
+                        </thead>
+                        <tbody id="yearlyBody">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- TIPS -->
+            <div class="panel tips-section reveal" id="tips">
+                <div class="panel-title">💡 Consejos para acelerar tu FIRE</div>
+                <div class="panel-subtitle">Estrategias probadas para llegar antes a tu objetivo</div>
+                <div class="tips-grid">
+                    <div class="tip-card">
+                        <div class="tip-icon">📊</div>
+                        <div class="tip-title">Aumenta tu tasa de ahorro</div>
+                        <div class="tip-text">Cada 10% adicional de tasa de ahorro puede reducir tu tiempo al FIRE en 3-5 años. Busca formas de aumentar ingresos o reducir gastos.</div>
+                    </div>
+                    <div class="tip-card">
+                        <div class="tip-icon">🔄</div>
+                        <div class="tip-title">Reinvierte los dividendos</div>
+                        <div class="tip-text">El interés compuesto es tu mejor aliado. Reinvertir dividendos y intereses acelera exponencialmente el crecimiento.</div>
+                    </div>
+                    <div class="tip-card">
+                        <div class="tip-icon">🏠</div>
+                        <div class="tip-title">Reduce tu mayor gasto</div>
+                        <div class="tip-text">La vivienda suele ser el gasto más grande. Considera opciones más económicas o genera ingresos con alquiler parcial.</div>
+                    </div>
+                    <div class="tip-card">
+                        <div class="tip-icon">💼</div>
+                        <div class="tip-title">Side hustle</div>
+                        <div class="tip-text">Un ingreso adicional de €500/mes invertido al 7% puede sumar más de €200K en 20 años gracias al interés compuesto.</div>
+                    </div>
+                    <div class="tip-card">
+                        <div class="tip-icon">📉</div>
+                        <div class="tip-title">Minimiza comisiones</div>
+                        <div class="tip-text">Un ETF con 0.07% vs un fondo con 1.5% puede significar la diferencia de €100K+ en 30 años sobre €100K invertidos.</div>
+                    </div>
+                    <div class="tip-card">
+                        <div class="tip-icon">🧠</div>
+                        <div class="tip-title">Protege tu mente</div>
+                        <div class="tip-text">El FIRE no es solo matemáticas. Prepara tu identidad, propósito y red social para la vida post-trabajo.</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <p>© 2025 deeptfolio — Calculadora FIRE. Las proyecciones son estimaciones y no garantizan resultados futuros.</p>
+    </footer>
+
+    <script>
+        // ===== NAVBAR SCROLL =====
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            navbar.classList.toggle('scrolled', window.scrollY > 50);
+        });
+
+        // ===== STATE =====
+        let currentTier = 'lean';
+        let yearlyData = [];
+
+        // ===== FORMAT =====
+        function formatCurrency(n) {
+            if (n >= 1000000) return '€' + (n / 1000000).toFixed(1) + 'M';
+            if (n >= 1000) return '€' + n.toLocaleString('es-ES', { maximumFractionDigits: 0 });
+            return '€' + n.toFixed(0);
+        }
+
+        function formatCurrencyFull(n) {
+            return '€' + n.toLocaleString('es-ES', { maximumFractionDigits: 0 });
+        }
+
+        // ===== SELECT TIER =====
+        function selectTier(el) {
+            document.querySelectorAll('.fire-tier').forEach(t => t.classList.remove('active'));
+            el.classList.add('active');
+            currentTier = el.dataset.tier;
+            updateCalc();
+        }
+
+        // ===== MAIN CALCULATION =====
+        function updateCalc() {
+            const currentAge = parseInt(document.getElementById('currentAge').value);
+            const retireAge = parseInt(document.getElementById('retireAge').value);
+            const currentSavings = parseInt(document.getElementById('currentSavings').value);
+            const annualSavings = parseInt(document.getElementById('annualSavings').value);
+            const annualExpenses = parseInt(document.getElementById('annualExpenses').value);
+            const expectedReturn = parseFloat(document.getElementById('expectedReturn').value) / 100;
+            const inflation = parseFloat(document.getElementById('inflation').value) / 100;
+            const withdrawalRate = parseFloat(document.getElementById('withdrawalRate').value) / 100;
+            const annualSalary = parseInt(document.getElementById('annualSalary').value);
+
+            // Update displays
+            document.getElementById('ageDisplay').textContent = currentAge + ' años';
+            document.getElementById('retireAgeDisplay').textContent = retireAge + ' años';
+            document.getElementById('savingsDisplay').textContent = formatCurrencyFull(currentSavings);
+            document.getElementById('annualSavingsDisplay').textContent = formatCurrencyFull(annualSavings);
+            document.getElementById('expensesDisplay').textContent = formatCurrencyFull(annualExpenses);
+            document.getElementById('returnDisplay').textContent = (expectedReturn * 100).toFixed(1) + '%';
+            document.getElementById('inflationDisplay').textContent = (inflation * 100).toFixed(1) + '%';
+            document.getElementById('withdrawalDisplay').textContent = (withdrawalRate * 100).toFixed(1) + '%';
+            document.getElementById('salaryDisplay').textContent = formatCurrencyFull(annualSalary);
+
+            // FIRE Number = Annual Expenses / Withdrawal Rate
+            const fireNumber = annualExpenses / withdrawalRate;
+
+            // Update tier amounts
+            document.getElementById('leanAmount').textContent = formatCurrency(fireNumber * 0.5);
+            document.getElementById('safeAmount').textContent = formatCurrency(fireNumber);
+            document.getElementById('fatAmount').textContent = formatCurrency(fireNumber * 2);
+            document.getElementById('baristaAmount').textContent = formatCurrency(fireNumber * 0.3);
+
+            // Real return
+            const realReturn = ((1 + expectedReturn) / (1 + inflation) - 1);
+
+            // Savings rate
+            const savingsRate = annualSalary > 0 ? (annualSavings / annualSalary) : 0;
+
+            // Monthly values
+            const monthlySavings = annualSavings / 12;
+            const monthlyWithdrawal = annualExpenses / 12;
+
+            // Years to FIRE (iterative calculation)
+            yearlyData = [];
+            let balance = currentSavings;
+            let totalContributed = currentSavings;
+            let fireReached = false;
+            let fireYear = -1;
+            const maxYears = retireAge - currentAge + 30; // safety buffer
+
+            for (let year = 1; year <= maxYears; year++) {
+                const age = currentAge + year;
+                const contribution = annualSavings;
+                const returnAmount = balance * expectedReturn;
+                balance = balance + contribution + returnAmount;
+                totalContributed += contribution;
+                const interest = balance - totalContributed;
+                const firePercent = Math.min((balance / fireNumber) * 100, 999);
+
+                yearlyData.push({
+                    year, age, contribution, returnAmount,
+                    balance, totalContributed, interest,
+                    firePercent, isFireYear: false
+                });
+
+                if (!fireReached && balance >= fireNumber) {
+                    fireReached = true;
+                    fireYear = year;
+                    yearlyData[yearlyData.length - 1].isFireYear = true;
+                }
+            }
+
+            const yearsToFIRE = fireReached ? fireYear : (currentAge + maxYears > retireAge ? 'No alcanzado' : '30+');
+            const fireAgeVal = fireReached ? (currentAge + fireYear).toFixed(1) : '—';
+            const progress = Math.min((currentSavings / fireNumber) * 100, 100);
+            const totalContributionsAtFire = fireReached ? yearlyData[fireYear - 1]?.totalContributed : totalContributed;
+            const totalInterestAtFire = fireReached ? yearlyData[fireYear - 1]?.interest : interest;
+
+            // Update results
+            document.getElementById('fireNumber').textContent = formatCurrencyFull(fireNumber);
+            document.getElementById('fireNumberSub').textContent = `Patrimonio necesario para retirar ${formatCurrencyFull(annualExpenses)}/año`;
+            document.getElementById('fireProgress').textContent = progress.toFixed(1) + '%';
+            document.getElementById('fireProgressBar').style.width = progress + '%';
+            document.getElementById('yearsToFIRE').textContent = typeof yearsToFIRE === 'number' ? yearsToFIRE.toFixed(1) : yearsToFIRE;
+            document.getElementById('fireAge').textContent = fireAgeVal;
+            document.getElementById('monthlySavings').textContent = formatCurrency(monthlySavings);
+            document.getElementById('savingsRate').textContent = (savingsRate * 100).toFixed(0) + '%';
+            document.getElementById('monthlyWithdrawal').textContent = formatCurrency(monthlyWithdrawal);
+            document.getElementById('realReturn').textContent = (realReturn * 100).toFixed(1) + '%';
+            document.getElementById('totalContributions').textContent = formatCurrency(totalContributionsAtFire);
+            document.getElementById('totalInterest').textContent = formatCurrency(totalInterestAtFire);
+
+            // Rule of 25 and 33
+            document.getElementById('rule25').textContent = '25x';
+            document.getElementById('rule33').textContent = '33x';
+
+            // Fire status message
+            const statusEl = document.getElementById('fireStatus');
+            if (fireReached) {
+                statusEl.style.borderColor = 'rgba(74, 158, 110, 0.3)';
+                statusEl.style.background = 'rgba(74, 158, 110, 0.08)';
+                statusEl.innerHTML = `✅ <strong>¡Alcanzable!</strong> Podrías llegar al FIRE en <strong>${fireYear} años</strong> (edad ${currentAge + fireYear})`;
+            } else {
+                statusEl.style.borderColor = 'rgba(196, 90, 90, 0.3)';
+                statusEl.style.background = 'rgba(196, 90, 90, 0.08)';
+                statusEl.innerHTML = `⚠️ <strong>Revisión necesaria</strong> — Con la tasa actual no alcanzarías el FIRE antes de los 75. Aumenta tu ahorro o reduce gastos.`;
+            }
+
+            // Milestones
+            const milestones = [
+                { id: 'ms1', val: 10000 },
+                { id: 'ms2', val: 50000 },
+                { id: 'ms3', val: 100000 },
+                { id: 'ms4', val: 250000 },
+                { id: 'ms5', val: 500000 },
+                { id: 'ms6', val: 1000000 }
+            ];
+            milestones.forEach(m => {
+                const el = document.getElementById(m.id);
+                const achieved = balance >= m.val;
+                el.className = 'milestone ' + (achieved ? 'achieved' : 'pending');
+                el.textContent = (achieved ? '✓ ' : '○ ') + formatCurrency(m.val);
+            });
+
+            // Update chart
+            drawFireChart(fireNumber);
+
+            // Update yearly table
+            updateYearlyTable();
+        }
+
+        // ===== DRAW CHART =====
+        function drawFireChart(fireNumber) {
+            const canvas = document.getElementById('fireChart');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            const dpr = window.devicePixelRatio || 1;
+            const rect = canvas.parentElement.getBoundingClientRect();
+            canvas.width = rect.width * dpr;
+            canvas.height = rect.height * dpr;
+            canvas.style.width = rect.width + 'px';
+            canvas.style.height = rect.height + 'px';
+            ctx.scale(dpr, dpr);
+
+            const w = rect.width;
+            const h = rect.height;
+            const pad = { top: 30, right: 30, bottom: 40, left: 70 };
+            const chartW = w - pad.left - pad.right;
+            const chartH = h - pad.top - pad.bottom;
+
+            // Data
+            const data = yearlyData;
+            if (data.length === 0) return;
+
+            const maxVal = Math.max(...data.map(d => d.balance), fireNumber) * 1.1;
+            const minVal = 0;
+
+            function getX(i) { return pad.left + (i / (data.length - 1)) * chartW; }
+            function getY(v) { return pad.top + chartH - ((v - minVal) / (maxVal - minVal)) * chartH; }
+
+            // Grid
+            ctx.strokeStyle = 'rgba(123, 45, 53, 0.1)';
+            ctx.lineWidth = 0.5;
+            const gridLines = 5;
+            for (let i = 0; i <= gridLines; i++) {
+                const y = pad.top + (i / gridLines) * chartH;
+                ctx.beginPath();
+                ctx.moveTo(pad.left, y);
+                ctx.lineTo(w - pad.right, y);
+                ctx.stroke();
+
+                // Y labels
+                const val = maxVal - (i / gridLines) * (maxVal - minVal);
+                ctx.fillStyle = 'rgba(245, 237, 228, 0.3)';
+                ctx.font = '11px JetBrains Mono, monospace';
+                ctx.textAlign = 'right';
+                ctx.fillText(formatCurrency(val), pad.left - 8, y + 4);
+            }
+
+            // X labels
+            ctx.textAlign = 'center';
+            const step = Math.max(1, Math.floor(data.length / 10));
+            for (let i = 0; i < data.length; i += step) {
+                ctx.fillStyle = 'rgba(245, 237, 228, 0.3)';
+                ctx.fillText('Año ' + data[i].year, getX(i), h - pad.bottom + 20);
+            }
+
+            // FIRE line
+            const fireY = getY(fireNumber);
+            ctx.strokeStyle = 'rgba(201, 168, 76, 0.3)';
+            ctx.lineWidth = 1.5;
+            ctx.setLineDash([8, 4]);
+            ctx.beginPath();
+            ctx.moveTo(pad.left, fireY);
+            ctx.lineTo(w - pad.right, fireY);
+            ctx.stroke();
+            ctx.setLineDash([]);
+
+            // FIRE label
+            ctx.fillStyle = 'rgba(201, 168, 76, 0.6)';
+            ctx.font = '11px Inter, sans-serif';
+            ctx.textAlign = 'left';
+            ctx.fillText('🎯 Número FIRE: ' + formatCurrency(fireNumber), pad.left + 5, fireY - 8);
+
+            // Interest area (between balance and contributions)
+            ctx.beginPath();
+            ctx.moveTo(getX(0), getY(data[0].totalContributed));
+            for (let i = 1; i < data.length; i++) {
+                ctx.lineTo(getX(i), getY(data[i].totalContributed));
+            }
+            for (let i = data.length - 1; i >= 0; i--) {
+                ctx.lineTo(getX(i), getY(data[i].balance));
+            }
+            ctx.closePath();
+            const interestGrad = ctx.createLinearGradient(0, pad.top, 0, pad.top + chartH);
+            interestGrad.addColorStop(0, 'rgba(74, 158, 110, 0.15)');
+            interestGrad.addColorStop(1, 'rgba(74, 158, 110, 0.02)');
+            ctx.fillStyle = interestGrad;
+            ctx.fill();
+
+            // Contributions area
+            ctx.beginPath();
+            ctx.moveTo(getX(0), getY(0));
+            for (let i = 0; i < data.length; i++) {
+                ctx.lineTo(getX(i), getY(data[i].totalContributed));
+            }
+            ctx.lineTo(getX(data.length - 1), getY(0));
+            ctx.closePath();
+            const contribGrad = ctx.createLinearGradient(0, pad.top, 0, pad.top + chartH);
+            contribGrad.addColorStop(0, 'rgba(123, 45, 53, 0.3)');
+            contribGrad.addColorStop(1, 'rgba(123, 45, 53, 0.05)');
+            ctx.fillStyle = contribGrad;
+            ctx.fill();
+
+            // Balance line
+            ctx.beginPath();
+            for (let i = 0; i < data.length; i++) {
+                if (i === 0) ctx.moveTo(getX(i), getY(data[i].balance));
+                else {
+                    const cx = (getX(i - 1) + getX(i)) / 2;
+                    ctx.bezierCurveTo(cx, getY(data[i - 1].balance), cx, getY(data[i].balance), getX(i), getY(data[i].balance));
+                }
+            }
+            ctx.strokeStyle = 'rgba(201, 168, 76, 0.9)';
+            ctx.lineWidth = 2.5;
+            ctx.stroke();
+
+            // Contributions line
+            ctx.beginPath();
+            for (let i = 0; i < data.length; i++) {
+                if (i === 0) ctx.moveTo(getX(i), getY(data[i].totalContributed));
+                else {
+                    const cx = (getX(i - 1) + getX(i)) / 2;
+                    ctx.bezierCurveTo(cx, getY(data[i - 1].totalContributed), cx, getY(data[i].totalContributed), getX(i), getY(data[i].totalContributed));
+                }
+            }
+            ctx.strokeStyle = 'rgba(123, 45, 53, 0.6)';
+            ctx.lineWidth = 1.5;
+            ctx.stroke();
+
+            // FIRE year marker
+            const fireYearIdx = data.findIndex(d => d.isFireYear);
+            if (fireYearIdx >= 0) {
+                const fx = getX(fireYearIdx);
+                const fy = getY(data[fireYearIdx].balance);
+
+                // Vertical line
+                ctx.strokeStyle = 'rgba(201, 168, 76, 0.2)';
+                ctx.lineWidth = 1;
+                ctx.setLineDash([4, 4]);
+                ctx.beginPath();
+                ctx.moveTo(fx, pad.top);
+                ctx.lineTo(fx, pad.top + chartH);
+                ctx.stroke();
+                ctx.setLineDash([]);
+
+                // Dot
+                ctx.beginPath();
+                ctx.arc(fx, fy, 6, 0, Math.PI * 2);
+                ctx.fillStyle = 'rgba(201, 168, 76, 1)';
+                ctx.fill();
+                ctx.beginPath();
+                ctx.arc(fx, fy, 12, 0, Math.PI * 2);
+                ctx.fillStyle = 'rgba(201, 168, 76, 0.15)';
+                ctx.fill();
+
+                // Label
+                ctx.fillStyle = 'rgba(201, 168, 76, 0.9)';
+                ctx.font = '600 12px Inter, sans-serif';
+                ctx.textAlign = 'center';
+                ctx.fillText('🎯 FIRE en año ' + data[fireYearIdx].year, fx, fy - 20);
+            }
+        }
+
+        // ===== YEARLY TABLE =====
+        function updateYearlyTable() {
+            const tbody = document.getElementById('yearlyBody');
+            tbody.innerHTML = '';
+            yearlyData.forEach(d => {
+                const tr = document.createElement('tr');
+                if (d.isFireYear) tr.className = 'fire-year';
+                tr.innerHTML = `
+                    <td>${d.year}</td>
+                    <td>${d.age}</td>
+                    <td class="positive">+${formatCurrency(d.contribution)}</td>
+                    <td class="positive">+${formatCurrency(d.returnAmount)}</td>
+                    <td>${formatCurrency(d.balance)}</td>
+                    <td>${d.firePercent.toFixed(1)}%</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        // ===== SCROLL REVEAL =====
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) entry.target.classList.add('visible');
+            });
+        }, { threshold: 0.05 });
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+        // ===== INIT =====
+        window.addEventListener('load', () => {
+            updateCalc();
+        });
+
+        window.addEventListener('resize', () => {
+            updateCalc();
+        });
+    </script>
+</body>
+</html>
