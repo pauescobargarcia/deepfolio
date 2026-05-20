@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>deepfolio.
     </title>
-    <link rel="icon" type="logo" href="logobien.png" 
+    <link rel="icon" type="logo" href="logo/logobien.png">
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -1244,6 +1244,20 @@
             opacity: 1;
             color: var(--gold);
         }
+        
+                .footer-col:nth-child(2) { 
+    margin-left: 500px; /* Ajusta este número a tu gusto */
+}
+
+
+.footer-col:nth-child(2) { 
+    margin-left: auto; /* Esto empuja Recursos y Empresa al extremo derecho */
+    padding-right: 50px; /* Para que no peguen al borde de la pantalla */
+}
+
+        .footer-col li a {
+    white-space: nowrap; /* Evita que el texto salte a 2 líneas */
+}
 
         .footer-bottom {
             max-width: 1200px;
@@ -1913,35 +1927,38 @@
                 </p>
             </div>
             <div class="footer-col">
-                <h4>Producto</h4>
+                <h4>Recursos</h4>
                 <ul>
-                    <li><a href="#">Funciones</a></li>
-                    <li><a href="#">Activos</a></li>
-                    <li><a href="#">Backtesting</a></li>
+                    <li><a href="#">Calculadora de Interés Compuesto</a></li>
+                    <li><a href="#">Calculadora FIRE</a></li>
+                    <li><a href="#">Calculadora de Dividendos</a></li>
                     <li><a href="#">Comparativas</a></li>
                     <li><a href="#">Planes</a></li>
                 </ul>
             </div>
-            <div class="footer-col">
-                <h4>Recursos</h4>
-                <ul>
-                    <li><a href="#">Documentación</a></li>
-                    <li><a href="#">Blog</a></li>
-                    <li><a href="#">Guías</a></li>
-                    <li><a href="#">Webinars</a></li>
-                    <li><a href="#">Comunidad</a></li>
-                </ul>
-            </div>
+
             <div class="footer-col">
                 <h4>Empresa</h4>
                 <ul>
-                    <li><a href="contacto.html">Contacto</a></li>
-                    <li><a href="#">Nosotros</a></li>            
-                    <li><a href="#">F.A.Q</a></li>
-                    <li><a href="#">Privacidad</a></li>
-                    <li><a href="#">Términos</a></li>
+                    <li><a href="footer/empresa/contacto.html">Contacto</a></li>
+                    <li><a href="footer/empresa/Nosotros.html">Nosotros</a></li>            
+                    <li><a href="footer/empresa/FAQ.html">F.A.Q</a></li>
+                    <li><a href="footer/empresa/privacidad.html">Privacidad</a></li>
+                    <li><a href="footer/empresa/terminos.html">Términos</a></li>
                 </ul>
             </div>
+
+            <div class="footer-col">
+                <h4>Inversión</h4>
+                <ul>
+                    <li><a href="#">Guía de ETFs</a></li>
+                    <li><a href="#">Mejores Brokers</a></li>
+                    <li><a href="#">Glosario del Inversor</a></li>
+                    <li><a href="#">Modelos de Cartera</a></li>
+                    <li><a href="#">Enlaces de Interés</a></li>
+                </ul>
+            </div>
+
         </div>
         <div class="footer-bottom">
             <p>© 2026 deepfolio. Todos los derechos reservados.</p>
@@ -1953,7 +1970,7 @@
     </footer>
 
     <script>
-        // ===== NAVBAR SCROLL =====
+            // ===== NAVBAR SCROLL =====
         const navbar = document.getElementById('navbar');
         window.addEventListener('scroll', () => {
             navbar.classList.toggle('scrolled', window.scrollY > 50);
