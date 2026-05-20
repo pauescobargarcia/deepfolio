@@ -1,0 +1,1982 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>deepfolio. — FAQ</title>
+    <link rel="icon" type="logo" href="../../logo/logobien.png">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --burgundy-deep: #3D0F14;
+            --burgundy-dark: #5C1A20;
+            --burgundy: #7B2D35;
+            --burgundy-mid: #8B3A42;
+            --burgundy-light: #A84B52;
+            --burgundy-pale: #C46B73;
+            --gold: #C9A84C;
+            --gold-light: #D4B96A;
+            --gold-pale: #E8D5A0;
+            --cream: #F5EDE4;
+            --cream-light: #FAF6F2;
+            --text-dark: #1A080A;
+            --text-muted: #6B5055;
+            --bg-dark: #1A0A0E;
+            --bg-card: #2A1015;
+            --bg-card-light: #35151A;
+            --white: #FFFFFF;
+            --success: #4A9E6E;
+            --danger: #C45A5A;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-dark);
+            color: var(--cream);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg-dark); }
+        ::-webkit-scrollbar-thumb { background: var(--burgundy); border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--burgundy-mid); }
+
+        /* ===== NAVBAR ===== */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 1rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            background: transparent;
+        }
+
+        .navbar.scrolled {
+            background: rgba(26, 10, 14, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(123, 45, 53, 0.3);
+            padding: 0.7rem 2rem;
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+        }
+
+        .nav-logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--burgundy), var(--gold));
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--white);
+            font-family: 'Playfair Display', serif;
+        }
+
+        .nav-logo-icon span {
+            color: black;            
+        }   
+
+        .nav-logo-text {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.6rem;
+            font-weight: 600;
+            color: var(--cream);
+            letter-spacing: -0.5px;
+        }
+
+        .nav-logo-text span {
+            color: var(--gold);
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--cream);
+            font-size: 0.9rem;
+            font-weight: 500;
+            opacity: 0.8;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            opacity: 1;
+            color: var(--gold);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 1.5px;
+            background: var(--gold);
+            transition: width 0.3s;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .nav-cta {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.7rem 1.5rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: none;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .btn-ghost {
+            background: transparent;
+            color: var(--cream);
+            border: 1px solid rgba(201, 168, 76, 0.3);
+        }
+
+        .btn-ghost:hover {
+            border-color: var(--gold);
+            color: var(--gold);
+            background: rgba(201, 168, 76, 0.05);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--burgundy), var(--burgundy-mid));
+            color: var(--white);
+            box-shadow: 0 4px 15px rgba(123, 45, 53, 0.4);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(123, 45, 53, 0.5);
+        }
+
+        .btn-gold {
+            background: linear-gradient(135deg, var(--gold), var(--gold-light));
+            color: var(--text-dark);
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(201, 168, 76, 0.3);
+        }
+
+        .btn-gold:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(201, 168, 76, 0.4);
+        }
+
+        .btn-large {
+            padding: 1rem 2.2rem;
+            font-size: 1rem;
+            border-radius: 10px;
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 5px;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 2px;
+            background: var(--cream);
+            transition: all 0.3s;
+            border-radius: 2px;
+        }
+
+        /* ===== PAGE HEADER ===== */
+        .page-header {
+            padding: 10rem 2rem 4rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .page-header::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse at 50% 0%, rgba(123, 45, 53, 0.12) 0%, transparent 60%),
+                        radial-gradient(ellipse at 80% 50%, rgba(201, 168, 76, 0.04) 0%, transparent 40%);
+        }
+
+        .page-header-content {
+            position: relative;
+            z-index: 1;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .page-header .section-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--gold);
+            font-weight: 500;
+            margin-bottom: 1rem;
+        }
+
+        .page-header .section-label::before {
+            content: '';
+            width: 30px;
+            height: 1px;
+            background: var(--gold);
+        }
+
+       .page-header .section-label::after {
+            content: '';
+            width: 30px;
+            height: 1px;
+            background: var(--gold);
+
+             }
+
+        .page-header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.5rem, 5vw, 3.8rem);
+            font-weight: 700;
+            margin-bottom: 1rem;
+            line-height: 1.15;
+        }
+
+        .page-header h1 .highlight {
+            background: linear-gradient(135deg, var(--gold), var(--gold-light), var(--gold-pale));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .page-header p {
+            font-size: 1.1rem;
+            color: var(--cream);
+            opacity: 0.6;
+            font-weight: 300;
+            line-height: 1.7;
+        }
+
+        /* ===== SEARCH ===== */
+        .search-section {
+            max-width: 600px;
+            margin: -1rem auto 3rem;
+            position: relative;
+            z-index: 1;
+            padding: 0 2rem;
+        }
+
+        .search-wrapper {
+            position: relative;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 1.2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 1.1rem;
+            opacity: 0.4;
+            pointer-events: none;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 1.1rem 1.2rem 1.1rem 3.2rem;
+            background: rgba(42, 16, 21, 0.8);
+            border: 1px solid rgba(123, 45, 53, 0.3);
+            border-radius: 12px;
+            color: var(--cream);
+            font-size: 1rem;
+            font-family: 'Inter', sans-serif;
+            outline: none;
+            transition: all 0.3s;
+            backdrop-filter: blur(10px);
+        }
+
+        .search-input::placeholder {
+            color: var(--cream);
+            opacity: 0.3;
+        }
+
+        .search-input:focus {
+            border-color: var(--gold);
+            box-shadow: 0 0 0 3px rgba(201, 168, 76, 0.1);
+        }
+
+        .search-results-count {
+            text-align: center;
+            margin-top: 0.75rem;
+            font-size: 0.85rem;
+            color: var(--cream);
+            opacity: 0.4;
+            display: none;
+        }
+
+        .search-results-count.visible {
+            display: block;
+        }
+
+        /* ===== FAQ LAYOUT ===== */
+        .faq-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 2rem 6rem;
+        }
+
+        /* Category */
+        .faq-category {
+            margin-bottom: 3rem;
+        }
+
+        .faq-category-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid rgba(123, 45, 53, 0.2);
+        }
+
+        .faq-category-icon {
+            width: 42px;
+            height: 42px;
+            border-radius: 10px;
+            background: rgba(123, 45, 53, 0.2);
+            border: 1px solid rgba(123, 45, 53, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+
+        .faq-category-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4rem;
+            font-weight: 600;
+        }
+
+        .faq-category-count {
+            margin-left: auto;
+            font-size: 0.8rem;
+            color: var(--cream);
+            opacity: 0.3;
+            background: rgba(42, 16, 21, 0.6);
+            padding: 0.3rem 0.8rem;
+            border-radius: 50px;
+            border: 1px solid rgba(123, 45, 53, 0.2);
+        }
+
+        /* FAQ Item */
+        .faq-item {
+            background: rgba(42, 16, 21, 0.4);
+            border: 1px solid rgba(123, 45, 53, 0.15);
+            border-radius: 12px;
+            margin-bottom: 0.75rem;
+            overflow: hidden;
+            transition: all 0.3s;
+        }
+
+        .faq-item:hover {
+            border-color: rgba(123, 45, 53, 0.3);
+        }
+
+        .faq-item.active {
+            border-color: rgba(201, 168, 76, 0.3);
+            background: rgba(42, 16, 21, 0.7);
+        }
+
+        .faq-question {
+            width: 100%;
+            padding: 1.2rem 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            background: none;
+            border: none;
+            color: var(--cream);
+            font-size: 0.95rem;
+            font-weight: 500;
+            font-family: 'Inter', sans-serif;
+            cursor: pointer;
+            text-align: left;
+            line-height: 1.5;
+            transition: color 0.3s;
+        }
+
+        .faq-question:hover {
+            color: var(--gold-pale);
+        }
+
+        .faq-item.active .faq-question {
+            color: var(--gold);
+        }
+
+        .faq-toggle {
+            width: 28px;
+            height: 28px;
+            border-radius: 7px;
+            background: rgba(123, 45, 53, 0.2);
+            border: 1px solid rgba(123, 45, 53, 0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            font-size: 0.85rem;
+            color: var(--cream);
+            opacity: 0.6;
+        }
+
+        .faq-item.active .faq-toggle {
+            background: rgba(201, 168, 76, 0.15);
+            border-color: var(--gold);
+            transform: rotate(45deg);
+            opacity: 1;
+            color: var(--gold);
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1), padding 0.3s;
+        }
+
+        .faq-item.active .faq-answer {
+            max-height: 600px;
+        }
+
+        .faq-answer-inner {
+            padding: 0 1.5rem 1.5rem;
+            font-size: 0.9rem;
+            color: var(--cream);
+            opacity: 0.65;
+            line-height: 1.8;
+        }
+
+        .faq-answer-inner p {
+            margin-bottom: 0.75rem;
+        }
+
+        .faq-answer-inner p:last-child {
+            margin-bottom: 0;
+        }
+
+        .faq-answer-inner ul {
+            margin: 0.5rem 0;
+            padding-left: 1.2rem;
+        }
+
+        .faq-answer-inner ul li {
+            margin-bottom: 0.4rem;
+        }
+
+        .faq-answer-inner strong {
+            color: var(--cream);
+            opacity: 1;
+            font-weight: 600;
+        }
+
+        .faq-answer-inner a {
+            color: var(--gold);
+            text-decoration: underline;
+            text-decoration-color: rgba(201, 168, 76, 0.3);
+            text-underline-offset: 3px;
+            transition: text-decoration-color 0.3s;
+        }
+
+        .faq-answer-inner a:hover {
+            text-decoration-color: var(--gold);
+        }
+
+        .faq-answer-inner code {
+            background: rgba(123, 45, 53, 0.2);
+            padding: 0.15rem 0.45rem;
+            border-radius: 4px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.82rem;
+            color: var(--gold-pale);
+        }
+
+        .faq-answer-inner .tip-box {
+            background: rgba(201, 168, 76, 0.08);
+            border-left: 3px solid var(--gold);
+            padding: 0.75rem 1rem;
+            border-radius: 0 8px 8px 0;
+            margin-top: 0.75rem;
+            font-size: 0.85rem;
+        }
+
+        .faq-answer-inner .tip-box strong {
+            color: var(--gold);
+        }
+
+        /* ===== NOT FOUND ===== */
+        .no-results {
+            text-align: center;
+            padding: 4rem 2rem;
+            display: none;
+        }
+
+        .no-results.visible {
+            display: block;
+        }
+
+        .no-results-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.3;
+        }
+
+        .no-results h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .no-results p {
+            color: var(--cream);
+            opacity: 0.4;
+            font-size: 0.9rem;
+        }
+
+        /* ===== CONTACT CTA ===== */
+        .contact-cta {
+            max-width: 700px;
+            margin: 0 auto 4rem;
+            padding: 0 2rem;
+        }
+
+        .contact-card {
+            background: rgba(42, 16, 21, 0.6);
+            border: 1px solid rgba(123, 45, 53, 0.25);
+            border-radius: 20px;
+            padding: 3rem 2.5rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .contact-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+        }
+
+        .contact-card h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.6rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+
+        .contact-card p {
+            color: var(--cream);
+            opacity: 0.5;
+            font-size: 0.95rem;
+            margin-bottom: 2rem;
+            max-width: 450px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.7;
+        }
+
+        .contact-options {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .contact-option {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            padding: 0.8rem 1.3rem;
+            background: rgba(26, 10, 14, 0.5);
+            border: 1px solid rgba(123, 45, 53, 0.2);
+            border-radius: 10px;
+            text-decoration: none;
+            color: var(--cream);
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+
+        .contact-option:hover {
+            border-color: var(--gold);
+            background: rgba(201, 168, 76, 0.05);
+        }
+
+        .contact-option-icon {
+            font-size: 1.1rem;
+        }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            background: rgba(26, 10, 14, 0.95);
+            border-top: 1px solid rgba(123, 45, 53, 0.2);
+            padding: 4rem 2rem 2rem;
+        }
+
+        .footer-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-brand p {
+            font-size: 0.9rem;
+            color: var(--cream);
+            opacity: 0.5;
+            line-height: 1.7;
+            margin-top: 1rem;
+            max-width: 300px;
+        }
+
+        .footer-col h4 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 1.2rem;
+            color: var(--cream);
+        }
+
+        .footer-col ul {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+        }
+
+        .footer-col ul a {
+            text-decoration: none;
+            color: var(--cream);
+            opacity: 0.5;
+            font-size: 0.85rem;
+            transition: all 0.3s;
+        }
+
+        .footer-col ul a:hover {
+            opacity: 1;
+            color: var(--gold);
+        }
+        
+                .footer-col:nth-child(2) { 
+    margin-left: 500px; /* Ajusta este número a tu gusto */
+}
+
+
+.footer-col:nth-child(2) { 
+    margin-left: auto; /* Esto empuja Recursos y Empresa al extremo derecho */
+    padding-right: 50px; /* Para que no peguen al borde de la pantalla */
+}
+
+        .footer-col li a {
+    white-space: nowrap; /* Evita que el texto salte a 2 líneas */
+}
+
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(123, 45, 53, 0.15);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .footer-bottom p {
+            font-size: 0.8rem;
+            color: var(--cream);
+            opacity: 0.3;
+        }
+
+        .footer-socials {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .footer-socials a {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            border: 1px solid rgba(123, 45, 53, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+            color: var(--cream);
+            opacity: 0.5;
+        }
+
+        .footer-socials a:hover {
+            border-color: var(--gold);
+            opacity: 1;
+            background: rgba(201, 168, 76, 0.1);
+        }
+
+        /* ===== MOBILE MENU ===== */
+        .mobile-menu {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(26, 10, 14, 0.98);
+            z-index: 999;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 2rem;
+            backdrop-filter: blur(20px);
+        }
+
+        .mobile-menu.active {
+            display: flex;
+        }
+
+        .mobile-menu a {
+            text-decoration: none;
+            color: var(--cream);
+            font-size: 1.3rem;
+            font-family: 'Playfair Display', serif;
+            transition: color 0.3s;
+        }
+
+        .mobile-menu a:hover {
+            color: var(--gold);
+        }
+
+        .mobile-close {
+            position: absolute;
+            top: 1.5rem;
+            right: 2rem;
+            background: none;
+            border: none;
+            color: var(--cream);
+            font-size: 2rem;
+            cursor: pointer;
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 1024px) {
+            .footer-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links, .nav-cta {
+                display: none;
+            }
+            .hamburger {
+                display: flex;
+            }
+            .page-header {
+                padding: 8rem 1.5rem 3rem;
+            }
+            .faq-container {
+                padding: 0 1.5rem 4rem;
+            }
+            .faq-question {
+                padding: 1rem 1.2rem;
+                font-size: 0.9rem;
+            }
+            .faq-answer-inner {
+                padding: 0 1.2rem 1.2rem;
+            }
+            .contact-card {
+                padding: 2rem 1.5rem;
+            }
+            .contact-options {
+                flex-direction: column;
+            }
+            .footer-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .faq-category-header {
+                flex-wrap: wrap;
+            }
+            .faq-category-count {
+                margin-left: 0;
+                margin-top: 0.5rem;
+                width: 100%;
+                text-align: center;
+            }
+        }
+                /* ===== ANIMATED BACKGROUND ===== */
+        .bg-layer {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .bg-gradient-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.4;
+            animation: orbFloat 12s ease-in-out infinite alternate;
+        }
+
+        .bg-gradient-orb:nth-child(1) {
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, var(--burgundy-dark), transparent 70%);
+            top: -10%;
+            left: -10%;
+            animation-duration: 15s;
+        }
+
+        .bg-gradient-orb:nth-child(2) {
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, var(--burgundy), transparent 70%);
+            bottom: -15%;
+            right: -5%;
+            animation-duration: 18s;
+            animation-delay: -3s;
+        }
+
+        .bg-gradient-orb:nth-child(3) {
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(201, 168, 76, 0.15), transparent 70%);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation-duration: 10s;
+            animation-delay: -7s;
+        }
+
+        @keyframes orbFloat {
+            0% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(30px, -20px) scale(1.05); }
+            66% { transform: translate(-20px, 30px) scale(0.95); }
+            100% { transform: translate(10px, -10px) scale(1.02); }
+        }
+
+        .bg-grid {
+            position: absolute;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(201, 168, 76, 0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(201, 168, 76, 0.02) 1px, transparent 1px);
+            background-size: 50px 50px;
+        }
+
+        .bg-particles {
+            position: absolute;
+            inset: 0;
+        }
+
+        .bg-particle {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: var(--gold);
+            border-radius: 50%;
+            opacity: 0;
+            animation: particleDrift 10s infinite;
+        }
+
+        @keyframes particleDrift {
+            0% { opacity: 0; transform: translateY(100vh) translateX(0); }
+            10% { opacity: 0.5; }
+            90% { opacity: 0.5; }
+            100% { opacity: 0; transform: translateY(-10vh) translateX(50px); }
+        }
+
+        /* ===== SCROLL REVEAL ===== */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Highlight for search */
+        mark {
+            background: rgba(201, 168, 76, 0.25);
+            color: var(--gold-pale);
+            padding: 0 2px;
+            border-radius: 2px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ANIMATED BACKGROUND -->
+<div class="bg-layer">
+    <div class="bg-gradient-orb"></div>
+    <div class="bg-gradient-orb"></div>
+    <div class="bg-gradient-orb"></div>
+    <div class="bg-grid"></div>
+    <div class="bg-particles" id="bgParticles"></div>
+</div>
+
+    <!-- NAVBAR -->
+    <nav class="navbar" id="navbar">
+        <a href="#" class="nav-logo">
+            <div class="nav-logo-icon">d<span>;</span></div>
+            <div class="nav-logo-text">deep<span>folio.</span></div>
+        </a>
+        <ul class="nav-links">
+            <li><a href="#features">Funciones</a></li>
+            <li><a href="#assets">Activos</a></li>
+            <li><a href="#backtesting">Backtesting</a></li>
+            <li><a href="#comparison">Comparativas</a></li>
+            <li><a href="#pricing">Planes</a></li>
+        </ul>
+        <div class="nav-cta">
+            <a href="login.html" class="btn btn-ghost">Iniciar Sesión</a>
+            <a href="#" class="btn btn-primary">Registrarme</a>
+        </div>
+        <button class="hamburger" id="hamburger" aria-label="Menu"> 
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </nav>
+
+    <!-- MOBILE MENU -->
+    <div class="mobile-menu" id="mobileMenu">
+        <button class="mobile-close" id="mobileClose">✕</button>
+        <a href="index.html" onclick="closeMobile()">Inicio</a>
+        <a href="index.html#features" onclick="closeMobile()">Funciones</a>
+        <a href="index.html#backtesting" onclick="closeMobile()">Backtesting</a>
+        <a href="index.html#pricing" onclick="closeMobile()">Precios</a>
+        <a href="#" onclick="closeMobile()">FAQ</a>
+    </div>
+
+    <!-- PAGE HEADER -->
+    <header class="page-header">
+        <div class="page-header-content">
+            <div class="section-label">Centro de Ayuda</div>
+            <h1>Preguntas <span class="highlight">frecuentes</span></h1>
+            <p>Todo lo que necesitas saber sobre deepfolio. Si no encuentras tu respuesta, no dudes en contactarnos.</p>
+        </div>
+    </header>
+
+    <!-- SEARCH -->
+    <div class="search-section">
+        <div class="search-wrapper">
+            <span class="search-icon">🔍</span>
+            <input type="text" class="search-input" id="faqSearch" placeholder="Buscar en las preguntas frecuentes..." autocomplete="off">
+        </div>
+        <div class="search-results-count" id="searchCount"></div>
+    </div>
+
+    <!-- FAQ CONTENT -->
+    <div class="faq-container" id="faqContainer">
+
+        <!-- GENERAL -->
+        <div class="faq-category reveal" data-category="general">
+            <div class="faq-category-header">
+                <div class="faq-category-icon">🌐</div>
+                <h2 class="faq-category-title">General</h2>
+                <span class="faq-category-count">6 preguntas</span>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question">
+                    ¿Qué es deepfolio. y para quién está diseñado?
+                    <span class="faq-toggle">+</span>
+                </button>
+                <div class="faq-answer">
+                    <div class="faq-answer-inner">
+                        <p><strong>deeptolio.</strong> es una plataforma de gestión y análisis de carteras de inversión que permite rastrear, comparar y optimizar tu patrimonio financiero. Está diseñada para:</p>
+                        <ul>
+                            <li><strong>Inversores particulares</strong> que quieren un panorama completo de sus inversiones</li>
+                            <li><strong>Asesores financieros</strong> que necesitan herramientas profesionales de análisis</li>
+                            <li><strong>Traders</strong> que desean hacer backtesting de estrategias antes de ejecutarlas</li>
+                            <li><strong>Inversores institucionales</strong> que requieren reportes avanzados y API</li>
+                        </ul>
+                        <p>La plataforma es accesible tanto para principiantes como para inversores experimentados, con un modelo <strong>freemium</strong> que te permite empezar sin coste alguno.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question">
+                    ¿Es deepfolio. una plataforma segura para mis datos financieros?
+                    <span class="faq-toggle">+</span>
+                </button>
+                <div class="faq-answer">
+                    <div class="faq-answer-inner">
+                        <p>Absolutamente. La seguridad es nuestra prioridad. Implementamos:</p>
+                        <ul>
+                            <li><strong>Cifrado AES-256</strong> para todos los datos almacenados</li>
+                            <li><strong>Certificado SSL/TLS</strong> para todas las comunicaciones</li>
+                            <li><strong>Autenticación de dos factores (2FA)</strong> en todas las cuentas</li>
+                            <li><strong>Cumplimiento RGPD</strong> completo para usuarios europeos</li>
+                            <li>Servidores en la <strong>Unión Europea</strong> con redundancia geográfica</li>
+                        </ul>
+                        <div class="tip-box">
+                            <strong>💡 Nota:</strong> deepfolio. nunca almacena credenciales de tus brokers. Nos conectamos mediante APIs seguras de solo lectura.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question">
+                    ¿Puedo conectar mis brokers y cuentas bancarias existentes?
+                    <span class="faq-toggle">+</span>
+                </button>
+                <div class="faq-answer">
+                    <div class="faq-answer-inner">
+                        <p>Sí. deepfolio. se integra con <strong>brokers y plataformas</strong> a nivel global, incluyendo:</p>
+                        <ul>
+                            <li>Interactive Brokers, Degiro, eToro, Trade Republic, Revolut</li>
+                            <li>Binance, Coinbase, Kraken (para criptomonedas)</li>
+                            <li>Bancos tradicionales europeos y españoles</li>
+                            <li>Plataformas de real estate como Brickvest y Fundrise</li>
+                        </ul>
+                        <p>La conexión es mediante <strong>APIs de solo lectura</strong>, lo que significa que deepfolio. puede ver tus posiciones pero nunca ejecutar operaciones.</p>
+                        <div class="tip-box">
+                            <strong>💡 Tip:</strong> También puedes importar tus posiciones manualmente mediante CSV o entrada individual.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question">
+                    ¿En qué idiomas está disponible deepfolio.?
+                    <span class="faq-toggle">+</span>
+                </button>
+                <div class="faq-answer">
+                    <div class="faq-answer-inner">
+                        <p>Actualmente deepfolio. está disponible en <strong>español e inglés</strong>. Estamos trabajando activamente para añadir más idiomas, incluyendo portugués, francés e italiano.</p>
+                        <p>Puedes cambiar el idioma desde <code>Ajustes → Idioma</code> en tu perfil.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question">
+                    ¿Tiene deepfolio. aplicación móvil?
+                    <span class="faq-toggle">+</span>
+                </button>
+                <div class="faq-answer">
+                    <div class="faq-answer-inner">
+                        <p>No, actualmente no valoramos contar con aplicación móvil.<strong>
+                                            </div>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question">
+                    ¿Cómo puedo cancelar mi suscripción?
+                    <span class="faq-toggle">+</span>
+                </button>
+                <div class="faq-answer">
+                    <div class="faq-answer-inner">
+                        <p>Puedes cancelar en cualquier momento desde <code>Ajustes → Suscripción → Cancelar</code>. No hay penalizaciones ni permanencia mínima.</p>
+                        <p>Al cancelar:</p>
+                        <ul>
+                            <li>Tu cuenta se mantendrá activa hasta el final del período pagado</li>
+                            <li>Podrás descargar todos tus datos en formato CSV</li>
+                            <li>Tu cuenta pasará automáticamente al plan <strong>Explorer (gratuito)</strong></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- BACKTESTING & SIMULACIÓN -->
+        <div class="faq-category reveal" data-category="backtesting">
+            <div class="faq-category-header">
+                <div class="faq-category-icon">🔬</div>
+                <h2 class="faq-category-title">Backtesting & Simulación</h2>
+                <span class="faq-category-count">5 preguntas</span>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question">
+                    ¿Qué es el backtesting y por qué es útil?
+                    <span class="faq-toggle">+</span>
+                </button>
+                <div class="faq-answer">
+                    <div class="faq-answer-inner">
+                        <p>El <strong>backtesting</strong> consiste en simular cómo habría funcionado una estrategia de inversión utilizando datos históricos. Es fundamental porque:</p>
+                        <ul>
+                            <li>Te permite <strong>validar ideas</strong> antes de arriesgar capital real</li>
+                            <li>Identifica <strong>puntos débiles</strong> en tu estrategia (drawdowns, volatilidad excesiva)</li>
+                            <li>Compara diferentes <strong>asignaciones de activos</strong> objetivamente</li>
+                            <li>Evalúa el impacto de <strong>rebalanceos</strong> periódicos</li>
+                        </ul>
+                        <p>deepfolio. ofrece backtesting con datos históricos de hasta <strong>30 años</strong> para la mayoría de activos.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question">
+                    ¿Qué datos históricos utiliza deepfolio. para el backtesting?
+                    <span class="faq-toggle">+</span>
+                </button>
+                <div class="faq-answer">
+                    <div class="faq-answer-inner">
+                        <p>Utilizamos datos de alta calidad de múltiples proveedores:</p>
+                        <ul>
+                            <li><strong>Acciones y ETFs:</strong> Datos ajustados por splits y dividendos (hasta 30 años)</li>
+                            <li><strong>Criptomonedas:</strong> Datos diarios/horarios desde 2013</li>
+                            <li><strong>Renta fija:</strong> Curvas de rendimiento de bonos gubernamentales</li>
+                            <li><strong>Forex:</strong> Datos de divisas con frecuencia horaria</li>
+                        </ul>
+                        <p>Todos los datos están <strong>ajustados por eventos corporativos</strong> (splits, dividendos, fusiones) para máxima precisión.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question">
+                    ¿Qué es la simulación Monte Carlo y cómo la uso?
+                    <span class="faq-toggle">+</span>
+                </button>
+                <div class="faq-answer">
+                    <div class="faq-answer-inner">
+                        <p>La <strong>simulación Monte Carlo</strong> genera miles de escenarios posibles de rendimiento futuro basados en la volatilidad y correlación histórica de tus activos. Esto te permite:</p>
+                        <ul>
+                            <li>Estimar la <strong>probabilidad de alcanzar</strong> tus objetivos financieros</li>
+                            <li>Evaluar el <strong>riesgo de ruina</strong> en diferentes horizontes temporales</li>
+                            <li>Visualizar <strong>bandas de confianza</strong> para tu proyección de patrimonio</li>
+                        </ul>
+                        <p>Esta función está disponible en los planes <strong>Strategist</strong> e <strong>Institutional</strong>. Puedes configurar el número de simulaciones (100–10,000) y el horizonte temporal (1–40 años).</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question">
+                    ¿Cuántos backtests puedo realizar por mes?
+                    <span class="faq-toggle">+</span>
+                </button>
+                <div class="faq-answer">
+                    <div class="faq-answer-inner">
+                        <p>Depende de tu plan:</p>
+                        <ul>
+                            <li><strong>Explorer (Gratis):</strong> 2 backtest al mes</li>
+                            <li><strong>Strategist (€12/mes):</strong> 15 backtest al mes + 1 Monte Carlo semanal</li>
+                            <li><strong>Institutional (€39/mes):</strong> Backtests ilimitados + Monte Carlo ilimitado</li>
+                        </ul>
+                        <p>Cada backtest se guarda en tu historial y puedes reutilizarlo como punto de partida para nuevas simulaciones.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question">
+                    ¿Las métricas de backtesting incluyen dividendos y costos de transacción?
+                    <span class="faq-toggle">+</span>
+                </button>
+                <div class="faq-answer">
+                    <div class="faq-answer-inner">
+                        <p>Sí. Puedes configurar ambos:</p>
+                        <ul>
+                            <li><strong>Dividendos:</strong> Elige entre "precio total" (con dividendos reinvertidos) o "precio" (sin dividendos)</li>
+                            <li><strong>Costos de transacción:</strong> Configura comisiones por operación (fijas o porcentuales) y slippage</li>
+                            <li><strong>Impuestos:</strong> Simula el impacto fiscal según tu residencia fiscal</li>
+                        </ul>
+                        <div class="tip-box">
+                            <strong>💡 Recomendación:</strong> Para resultados más realistas, activa siempre los costos de transacción y la reinversión de dividendos.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CLASES DE ACTIVOS -->
+        <div class="faq-category reveal" data-category="activos">
+            <div class="faq-category-header">
+                <div class="faq-category-icon">📊</div>
+                <h2 class="faq-category-title">Clases de Activos</h2>
+                <span class="faq-category-count">5 preguntas</span>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question">
+                    ¿Qué tipos de activos puedo rastrear en deepfolio.?
+                    <span class="faq-toggle">+</span>
+                </button>
+                <div class="faq-answer">
+                    <div class="faq-answer-inner">
+                        <p>deepfolio. soporta una cobertura completa de clases de activos:</p>
+                        <ul>
+                            <li><strong>Acciones</strong> — Mercados globales (NYSE, NASDAQ, LSE, XETRA, etc.)</li>
+                            <li><strong>ETFs y Fondos Indexados</strong> — Miles de fondos cotizados</li>
+                            <li><strong>Criptomonedas</strong> — Bitcoin, Ethereum y +5,000 tokens</li>
+                            <li><strong>Renta Fija</strong> — Bonos gubernamentales, corporativos y municipales</li>
+                            <li><strong>Real Estate</strong> — REITs, propiedades directas e índices inmobiliarios</li>
+                            <li><strong>Materias Primas</strong> — Oro, plata, petróleo, agricultura</li>
+                            <li><strong>Forex</strong> — Pares de divisas principales y exóticos</li>
+                            <li><strong>Private Equity</strong> — Inversiones en capital privado y venture</li>
+                            <li><strong>Metals Preciosos</strong> — Oro, plata, platino, paladio</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question">
+                    ¿Cómo se gestionan las criptomonedas en deepfolio.?
+                    <span class="faq-toggle">+</span>
+                </button>
+                <div class="faq-answer">
+                    <div class="faq-answer-inner">
+                        <p>Las criptomonedas están completamente integradas:</p>
+                        <ul>
+                            <li><strong>Conexión directa</strong> con Binance, Coinbase, Kraken y varios exchanges más</li>
+                            <li><strong>Datos en tiempo real</strong> de precios y capitalización de mercado</li>
+                            <li><strong>Staking y DeFi:</strong> Rastrea rendimientos de staking, yield farming y lending</li>
+                            <li><strong>NFTs:</strong> Registra valor estimado de tu colección NFT</li>
+                            <li><strong>Reportes fiscales crypto</strong> con cálculo automático de plusvalías</li>
+                        </ul>
+                        <p>Las criptomonedas están disponibles en los planes <strong>Strategist</strong> e <strong>Institutional</strong>.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question">
+                    ¿Puedo rastrear propiedades inmobiliarias y REITs?
+                    <span class="faq-toggle">+</span>
+                </button>
+                <div class="faq-answer">
+                    <div class="faq-answer-inner">
+                        <p>Sí. Para <strong>real estate</strong> ofrecemos:</p>
+                        <ul>
+                            <li><strong>REITs cotizados:</strong> Rastreo automático como cualquier acción</li>
+                            <li><strong>Propiedades directas:</strong> Registra valor de compra, mejoras, alquileres y gastos</li>
+                            <li><strong>Plataformas de crowdfunding:</strong> Integración con Brickvest, Fundrise, EstateGuru</li>
+                            <li><strong>Índices de referencia:</strong> Comparativa vs índices inmobiliarios locales y globales</li>
+                        </ul>
+                        <p>Para propiedades directas, puedes añadir <strong>cash flow mensual</strong> (alquileres) y calcular el <strong>yield bruto y neto</strong> automáticamente.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question">
+                    ¿Cómo se calcula el rendimiento de la renta fija en deepfolio.?
+                    <span class="faq-toggle">+</span>
+                </button>
+                <div class="faq-answer">
+                    <div class="faq-answer-inner">
+                        <p>Para bonos y renta fija, deepfolio. calcula:</p>
+                        <ul>
+                            <li><strong>YTM (Yield to Maturity):</strong> Rendimiento al vencimiento</li>
+                            <li><strong>Duración modificada:</strong> Sensibilidad a cambios de tipos</li>
+                            <li><strong>Acumulación de cupones:</strong> Con opción de reinversión</li>
+                            <li><strong>Curva de rendimiento:</strong> Visualización de la curva de tipos</li>
+                            <li><strong>Spread vs bonos soberanos:</strong> Para bonos corporativos</li>
+                        </ul>
+                        <p>Los datos de bonos gubernamentales cubren EUR, USD, GBP, JPY y más de 20 países.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question">
+                    ¿Puedo añadir activos personalizados o no cotizados?
+                    <span class="faq-toggle">+</span>
+                </button>
+                <div class="faq-answer">
+                    <div class="faq-answer-inner">
+                        <p>Sí. Puedes añadir activos que no estén en nuestra base de datos:</p>
+                        <ul>
+                            <li><strong>Activos personalizados:</strong> Introduce manualmente precio, fecha y tipo</li>
+                            <li><strong>Activos no cotizados:</strong> Inversiones en startups, arte, coleccionables</li>
+                            <li><strong>Importación CSV:</strong> Sube tu propia lista de posiciones</li>
+                        </ul>
+                        <p>Para activos personalizados, deberás actualizar el valor manualmente o establecer una <strong>valoración estimada</strong> con fecha de revisión.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- COMPARATIVAS & ANÁLISIS -->
+        <div class="faq-category reveal" data-category="comparativas">
+            <div class="faq-category-header">
+                <div class="faq-category-icon">⚖️</div>
+                <h2 class="faq-category-title">Comparativas & Análisis</h2>
+                <span class="faq-category-count">4 preguntas</span>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question">
+                    ¿Qué métricas puedo comparar entre diferentes carteras?
+                    <span class="faq-toggle">+</span>
+                </button>
+                <div class="faq-answer">
+                    <div class="faq-answer-inner">
+                        <p>deepfolio. ofrece un panel completo de métricas para comparar:</p>
+                        <ul>
+                            <li><strong>Retorno anualizado</strong> (CAGR) a 1, 3, 5 y 10 años</li>
+                            <li><strong>Ratio de Sharpe</strong> y <strong>Sortino</strong></li>
+                            <li><strong>Maximum Drawdown</strong> y período de recuperación</li>
+                            <li><strong>Volatilidad</strong> (desviación estándar anualizada)</li>
+                            <li><strong>Alpha y Beta</strong> vs benchmarks</li>
+                            <li><strong>R² (coeficiente de determinación)</strong></li>
+                            <li><strong>Calmar Ratio</strong> y <strong>Omega Ratio</strong></li>
+                            <li><strong>Correlación</strong> entre activos y carteras</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question">
+                    ¿Puedo comparar mi cartera contra benchmarks personalizados?
+                    <span class="faq-toggle">+</span>
+                </button>
+                <div class="faq-answer">
+                    <div class="faq-answer-inner">
+                        <p>Sí. Puedes elegir entre:</p>
+                        <ul>
+                            <li><strong>Benchmarks predefinidos:</strong> S&P 500, MSCI World, FTSE 100, Euro Stoxx 50, etc.</li>
+                            <li><strong>Benchmarks personalizados:</strong> Crea tu propia referencia con cualquier combinación de activos</li>
+                            <li><strong>Benchmark compuesto:</strong> Ej. 60% S&P 500 + 40% Bonos EU</li>
+                        </ul>
+                        <p>Las comparativas se actualizan en tiempo real y puedes exportar los gráficos como imágenes de alta resolución.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question">
+                    ¿Qué es el análisis de estrés y cómo funciona?
+                    <span class="faq-toggle">+</span>
+                </button>
+                <div class="faq-answer">
+                    <div class="faq-answer-inner">
+                        <p>El <strong>análisis de estrés</strong> simula cómo reaccionaría tu cartera ante eventos extremos:</p>
+                        <ul>
+                            <li><strong>Crisis financiera 2008</strong> — Caídas del 40-60% en equities</li>
+                            <li><strong>Crisis del COVID 2020</strong> — Volatilidad extrema y recuperación rápida</li>
+                            <li><strong>Subida agresiva de tipos</strong> — Impacto en renta fija y valoraciones</li>
+                            <li><strong>Colapso crypto 2022</strong> — -70% en criptomonedas</li>
+                            <li><strong>Escenarios personalizados</strong> — Define tus propios shocks</li>
+                        </ul>
+                        <p>Esta función está disponible en el plan <strong>Institutional</strong> y te ayuda a evaluar la <strong>resiliencia</strong> de tu cartera.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question">
+                    ¿Puedo compartir mis análisis con otros usuarios o asesores?
+                    <span class="faq-toggle">+</span>
+                </button>
+                <div class="faq-answer">
+                    <div class="faq-answer-inner">
+                        <p>Sí, deepfolio. ofrece varias opciones de compartir:</p>
+                        <ul>
+                            <li><strong>Enlaces compartidos:</strong> Genera un enlace público con visualización de tu análisis</li>
+                            <li><strong>Exportación PDF:</strong> Reportes profesionales con tu branding (Institutional)</li>
+                            <li><strong>Invitar colaboradores:</strong> Comparte acceso a carteras específicas</li>
+                            <li><strong>API de datos:</strong> Conecta con herramientas de terceros</li>
+                        </ul>
+                        <p>Los enlaces compartidos son <strong>de solo lectura</strong> y puedes revocar el acceso en cualquier momento.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- PRECIOS & SUSCRIPCIÓN -->
+        <div class="faq-category reveal" data-category="precios">
+            <div class="faq-category-header">
+                <div class="faq-category-icon">💳</div>
+                <h2 class="faq-category-title">Precios & Suscripción</h2>
+                <span class="faq-category-count">5 preguntas</span>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question">
+                    ¿Qué incluye el plan gratuito Explorer?
+                    <span class="faq-toggle">+</span>
+                </button>
+                <div class="faq-answer">
+                    <div class="faq-answer-inner">
+                        <p>El plan <strong>Explorer</strong> es completamente gratis e incluye:</p>
+                        <ul>
+                            <li>Hasta <strong>3 carteras</strong> activas</li>
+                            <li>Rastreo de <strong>acciones y ETFs</strong> básicos</li>
+                            <li>Datos en tiempo real con <strong>delay de 15 minutos</strong></li>
+                            <li><strong>1 backtest</strong> al mes</li>
+                            <li>Gráficos y métricas básicas</li>
+                        </ul>
+                        <p>No requiere tarjeta de crédito para registrarse y puedes usarlo indefinidamente.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question">
+                    ¿Qué ventajas tiene el plan Strategist?
+                    <span class="faq-toggle">+</span>
+                </button>
+                <div class="faq-answer">
+                    <div class="faq-answer-inner">
+                        <p>El plan <strong>Strategist</strong> (€12/mes) es el más popular e incluye:</p>
+                        <ul>
+                            <li><strong>Carteras ilimitadas</strong></li>
+                            <li>Todas las clases de activos, incluyendo <strong>criptomonedas</strong></li>
+                            <li>Datos en <strong>tiempo real</strong> sin delay</li>
+                            <li><strong>15 backtests mensuales</strong></li>
+                            <li><strong>Análisis con IA</strong> para sugerencias de optimización</li>
+                            <li><strong>Alertas inteligentes</strong> personalizadas</li>
+                            <li><strong>Algunos reportes fiscales</strong> listos para declarar</li>
+                            <li>Soporte por email prioritario</li>
+                        </ul>
+                        <p>Incluye <strong>7 días de prueba gratuita</strong> sin necesidad de tarjeta.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question">
+                    ¿Cuándo debería elegir el plan Institutional?
+                    <span class="faq-toggle">+</span>
+                </button>
+                <div class="faq-answer">
+                    <div class="faq-answer-inner">
+                        <p>El plan <strong>Institutional</strong> (€39/mes) está diseñado para:</p>
+                        <ul>
+                            <li><strong>Asesores financieros</strong> que gestionan múltiples clientes</li>
+                            <li><strong>Gestores de fondos</strong> que necesitan análisis institucional</li>
+                            <li><strong>Inversores avanzados</strong> que requieren simulación Monte Carlo</li>
+                        </ul>
+                        <p>Además de todo lo de Strategist, incluye:</p>
+                        <ul>
+                            <li><strong>API completa</strong> con webhooks en tiempo real</li>
+                            <li><strong>Gestión multi-cliente</strong> con dashboards individuales</li>
+                            <li><strong>Simulación Monte Carlo</strong> avanzada</li>
+                            <li><strong>Análisis de estrés</strong> por escenario</li>
+                            <li><strong>White-label reports</strong> con tu marca</li>
+                            <li><strong>Soporte 24/7</strong> dedicado</li>
+                            <li><strong>Onboarding personalizado</strong></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question">
+                    ¿Hay algun descuento por pago anual?
+                    <span class="faq-toggle">+</span>
+                </button>
+                <div class="faq-answer">
+                    <div class="faq-answer-inner">
+                        <p>Sí, tenemos varias opciones de descuento:</p>
+                        <ul>
+                            <li><strong>Pago anual:</strong> 20% de descuento en Strategist e Institutional (equivale a <strong>2 meses gratis</strong>)</li>
+                            <li><strong>Equipos:</strong> Descuentos por volumen para +5 licencias</li>
+                        </ul>
+                        <p>Contacta con nuestro equipo de ventas para <strong>precios personalizados</strong> en el plan Enterprise.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question">
+                    ¿Qué métodos de pago aceptan?
+                    <span class="faq-toggle">+</span>
+                </button>
+                <div class="faq-answer">
+                    <div class="faq-answer-inner">
+                        <p>Aceptamos los siguientes métodos de pago:</p>
+                        <ul>
+                            <li><strong>Tarjetas de crédito/débito:</strong> Visa, Mastercard, American Express</li>
+                            <li><strong>Transferencia bancaria SEPA</strong> (para planes anuales)</li>
+                            <li><strong>PayPal</strong></li>
+                        </ul>
+                        <p>Todos los precios están en <strong>euros (EUR)</strong> e incluyen IVA cuando aplica.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- TÉCNICO & API-->
+        <div class="faq-category reveal" data-category="tecnico">
+            <div class="faq-category-header">
+                <div class="faq-category-icon">⚙️</div>
+                <h2 class="faq-category-title">Técnico & API</h2>
+                <span class="faq-category-count">3 preguntas</span>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question">
+                    ¿Cómo funciona la API de deepfolio.?
+                    <span class="faq-toggle">+</span>
+                </button>
+                <div class="faq-answer">
+                    <div class="faq-answer-inner">
+                        <p>Nuestra API REST permite:</p>
+                        <ul>
+                            <li><strong>Acceso a datos de mercado</strong> en tiempo real e histórico</li>
+                            <li><strong>Gestión de carteras</strong> programática (crear, modificar, eliminar)</li>
+                            <li><strong>Ejecución de backtests</strong> vía API</li>
+                            <li><strong>Webhooks</strong> para notificaciones en tiempo real</li>
+                            <li><strong>Exportación de datos</strong> en JSON, CSV o XML</li>
+                        </ul>
+                        <p>La API utiliza <strong>autenticación OAuth 2.0</strong> y está documentada con ejemplos en Python, JavaScript y cURL. Disponible en planes <strong>Institutional</strong>.</p>
+                        <div class="tip-box">
+                            <strong>📚 Documentación:</strong> Visita <code>docs.deepfolio.com/api</code> para la referencia completa.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question">
+                    ¿Con qué frecuencia se actualizan los datos de mercado?
+                    <span class="faq-toggle">+</span>
+                </button>
+                <div class="faq-answer">
+                    <div class="faq-answer-inner">
+                        <p>La frecuencia depende del plan y tipo de activo:</p>
+                        <ul>
+                            <li><strong>Explorer:</strong> Actualización cada 15 minutos (delay)</li>
+                            <li><strong>Deep Pro:</strong> Tiempo real (actualización cada segundo en horario bursátil)</li>
+                            <li><strong>Enterprise:</strong> Tiempo real + datos tick-level para activos seleccionados</li>
+                        </ul>
+                        <p>Las criptomonedas se actualizan <strong>24/7</strong> ya que los exchanges crypto no tienen horario de cierre.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question">
+                    ¿Puedo exportar mis datos si decido dejar deepfolio.?
+                    <span class="faq-toggle">+</span>
+                </button>
+                <div class="faq-answer">
+                    <div class="faq-answer-inner">
+                        <p>Por supuesto. Creemos en la <strong>portabilidad de tus datos</strong>:</p>
+                        <ul>
+                            <li><strong>Exportación completa</strong> en CSV con todas tus posiciones, operaciones e historial</li>
+                            <li><strong>Exportación JSON</strong> para integración con otras herramientas</li>
+                            <li><strong>Reportes PDF</strong> con métricas y gráficos</li>
+                            <li><strong>Dump de base de datos</strong> (Enterprise, bajo solicitud)</li>
+                        </ul>
+                        <p>Puedes exportar desde <code>Ajustes → Datos → Exportar</code> en cualquier momento.</p>
+                    </div>
+                </div>
+            </div>   
+                   </div>
+
+        <!-- FISCAL & LEGAL -->
+        <div class="faq-category reveal" data-category="fiscal">
+            <div class="faq-category-header">
+                <div class="faq-category-icon">📋</div>
+                <h2 class="faq-category-title">Fiscal & Legal</h2>
+                <span class="faq-category-count">3 preguntas</span>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question">
+                    ¿Cómo me ayuda deepfolio. con la declaración de la renta?
+                    <span class="faq-toggle">+</span>
+                </button>
+                <div class="faq-answer">
+                    <div class="faq-answer-inner">
+                        <p>deepfolio. genera reportes fiscales adaptados a diferentes jurisdicciones:</p>
+                        <ul>
+                            <li><strong>España:</strong> Modelos 720, declaración de patrimonio, plusvalías/minusvalías con criterio de <strong>promedio ponderado</strong></li>
+                            <li><strong>Francia:</strong> Flat tax 30% o integración en IR</li>
+                            <li><strong>Alemania:</strong> Abgeltungssteuer con Freistellungsauftrag</li>
+                            <li><strong>EE.UU.:</strong> Cost basis reporting (FIFO, LIFO, Average Cost)</li>
+                        </ul>
+                        <p>Los reportes incluyen <strong>fecha de compra/venta, precio, cantidad, plusvalía/minusvalía</strong> y están listos para importar en tu software fiscal o enviar a tu gestor.</p>
+                        <div class="tip-box">
+                            <strong>⚠️ Disclaimer:</strong> deepfolio. no es un asesor fiscal. Te recomendamos revisar los reportes con un profesional antes de presentar tu declaración.
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question">
+                    ¿Cómo se calculan las plusvalías en criptomonedas?
+                    <span class="faq-toggle">+</span>
+                </button>
+                <div class="faq-answer">
+                    <div class="faq-answer-inner">
+                        <p>Para criptomonedas, deepfolio. soporta múltiples métodos de cálculo:</p>
+                        <ul>
+                            <li><strong>FIFO (First In, First Out):</strong> El más común y aceptado</li>
+                            <li><strong>Promedio ponderado:</strong> Recomendado por la AEAT para crypto</li>
+                            <li><strong>LIFO (Last In, First Out)</strong></li>
+                            <li><strong>Identificación específica:</strong> Para holdings individuales</li>
+                        </ul>
+                        <p>El sistema registra automáticamente cada <strong>transacción on-chain</strong> conectada y calcula la ganancia/pérdida al momento de la venta o intercambio.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <button class="faq-question">
+                    ¿deepfolio. es una entidad regulada?
+                    <span class="faq-toggle">+</span>
+                </button>
+                <div class="faq-answer">
+                    <div class="faq-answer-inner">
+                        <p>deepfolio. es una <strong>plataforma de software de análisis</strong>, no una entidad financiera regulada:</p>
+                        <ul>
+                            <li><strong>No gestionamos fondos</strong> — tus activos permanecen en tus brokers</li>
+                            <li><strong>No ejecutamos operaciones</strong> — solo rastreamos y analizamos</li>
+                            <li><strong>No damos consejos de inversión</strong> — las recomendaciones de IA son informativas</li>
+                        </ul>
+                        <p>Somos una empresa tecnológica registrada en la Unión Europea y cumplimos con todas las obligaciones de <strong>protección de datos (RGPD)</strong> y <strong>servicios de la sociedad de la información</strong>.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- NO RESULTS -->
+        <div class="no-results" id="noResults">
+            <div class="no-results-icon">🔍</div>
+            <h3>No se encontraron resultados</h3>
+            <p>Intenta con otros términos o contacta con nuestro equipo de soporte.</p>
+        </div>
+
+    </div>
+
+    <!-- CONTACT CTA -->
+    <div class="contact-cta reveal">
+        <div class="contact-card">
+            <h3>¿No encuentras lo que buscas?</h3>
+            <p>Nuestro equipo de soporte está disponible para ayudarte con cualquier pregunta adicional.</p>
+                        </a>
+                <a href="#" class="contact-option">
+                    <span class="contact-option-icon">📧</span>
+                    soporte@deepfolio.es
+                </a>
+            
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <a href="#" class="nav-logo">
+                        <div class="nav-logo-icon">d<span>;</span></div>
+                    <div class="nav-logo-text">deep<span>folio.</span></div>
+                </a>
+                <p>
+                    La plataforma de gestión de carteras para inversores que exigen 
+                    profundidad, precisión y elegancia en cada decisión financiera.
+                </p>
+            </div>
+            <div class="footer-col">
+                <h4>Recursos</h4>
+                <ul>
+                    <li><a href="#">Calculadora de Interés Compuesto</a></li>
+                    <li><a href="#">Calculadora FIRE</a></li>
+                    <li><a href="#">Calculadora de Dividendos</a></li>
+                    <li><a href="#">Comparativas</a></li>
+                    <li><a href="#">Planes</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4>Empresa</h4>
+                <ul>
+                    <li><a href="footer/empresa/contacto.html">Contacto</a></li>
+                    <li><a href="footer/empresa/Nosotros.html">Nosotros</a></li>            
+                    <li><a href="footer/empresa/FAQ.html">F.A.Q</a></li>
+                    <li><a href="footer/empresa/privacidad.html">Privacidad</a></li>
+                    <li><a href="footer/empresa/terminos.html">Términos</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4>Inversión</h4>
+                <ul>
+                    <li><a href="#">Guía de ETFs</a></li>
+                    <li><a href="#">Mejores Brokers</a></li>
+                    <li><a href="#">Glosario del Inversor</a></li>
+                    <li><a href="#">Modelos de Cartera</a></li>
+                    <li><a href="#">Enlaces de Interés</a></li>
+                </ul>
+            </div>
+
+        </div>
+        <div class="footer-bottom">
+            <p>© 2026 deepfolio. Todos los derechos reservados.</p>
+            <div class="footer-socials">
+                <a href="https://x.com/deepfolio" aria-label="Twitter">𝕏</a>
+                <a href="https://www.linkedin.com/in/pauescobargarcia/" aria-label="LinkedIn">in</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+            // ===== NAVBAR SCROLL =====
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            navbar.classList.toggle('scrolled', window.scrollY > 50);
+        });
+
+        // ===== MOBILE MENU =====
+        const hamburger = document.getElementById('hamburger');
+        const mobileMenu = document.getElementById('mobileMenu');
+        const mobileClose = document.getElementById('mobileClose');
+
+        hamburger.addEventListener('click', () => mobileMenu.classList.add('active'));
+        mobileClose.addEventListener('click', () => mobileMenu.classList.remove('active'));
+        function closeMobile() { mobileMenu.classList.remove('active'); }
+
+        // ===== FAQ ACCORDION =====
+        document.querySelectorAll('.faq-question').forEach(button => {
+            button.addEventListener('click', () => {
+                const item = button.parentElement;
+                const isActive = item.classList.contains('active');
+
+                // Close all in same category
+                item.parentElement.querySelectorAll('.faq-item').forEach(i => {
+                    i.classList.remove('active');
+                });
+
+                // Toggle current
+                if (!isActive) {
+                    item.classList.add('active');
+                }
+            });
+        });
+
+        // ===== SEARCH =====
+        const searchInput = document.getElementById('faqSearch');
+        const searchCount = document.getElementById('searchCount');
+        const noResults = document.getElementById('noResults');
+        const faqContainer = document.getElementById('faqContainer');
+
+        searchInput.addEventListener('input', function() {
+            const query = this.value.toLowerCase().trim();
+            const allItems = document.querySelectorAll('.faq-item');
+            const allCategories = document.querySelectorAll('.faq-category');
+            let totalVisible = 0;
+
+            if (query === '') {
+                // Show everything
+                allItems.forEach(item => {
+                    item.style.display = '';
+                    resetHighlight(item);
+                });
+                allCategories.forEach(cat => {
+                    cat.style.display = '';
+                    updateCategoryCount(cat);
+                });
+                searchCount.classList.remove('visible');
+                noResults.classList.remove('visible');
+                return;
+            }
+
+            allItems.forEach(item => {
+                const question = item.querySelector('.faq-question').textContent.toLowerCase();
+                const answer = item.querySelector('.faq-answer-inner').textContent.toLowerCase();
+
+                if (question.includes(query) || answer.includes(query)) {
+                    item.style.display = '';
+                    highlightText(item, query);
+                    totalVisible++;
+                } else {
+                    item.style.display = 'none';
+                    resetHighlight(item);
+                }
+            });
+
+            // Hide empty categories
+            allCategories.forEach(cat => {
+                const visibleItems = cat.querySelectorAll('.faq-item:not([style*="display: none"])');
+                cat.style.display = visibleItems.length > 0 ? '' : 'none';
+                updateCategoryCount(cat);
+            });
+
+            // Show/hide no results
+            noResults.classList.toggle('visible', totalVisible === 0);
+
+            // Update count
+            searchCount.textContent = `${totalVisible} pregunta${totalVisible !== 1 ? 's' : ''} encontrada${totalVisible !== 1 ? 's' : ''}`;
+            searchCount.classList.add('visible');
+        });
+
+
+        function highlightText(item, query) {
+            const question = item.querySelector('.faq-question');
+            const answer = item.querySelector('.faq-answer-inner');
+
+            // Highlight in question
+            highlightElement(question, query);
+            // Highlight in answer
+            highlightElement(answer, query);
+        }
+
+        function highlightElement(el, query) {
+            // Remove existing marks
+            el.querySelectorAll('mark').forEach(m => {
+                m.replaceWith(m.textContent);
+            });
+
+            if (!query) return;
+
+            const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT, null, false);
+            const textNodes = [];
+            while (walker.nextNode()) {
+                textNodes.push(walker.currentNode);
+            }
+
+            textNodes.forEach(node => {
+                const text = node.textContent;
+                const lowerText = text.toLowerCase();
+                const lowerQuery = query.toLowerCase();
+                const index = lowerText.indexOf(lowerQuery);
+
+                if (index !== -1) {
+                    const mark = document.createElement('mark');
+                    const before = text.substring(0, index);
+                    const match = text.substring(index, index + query.length);
+                    const after = text.substring(index + query.length);
+
+                    if (before) mark.parentNode.insertBefore(document.createTextNode(before), mark);
+                    mark.textContent = match;
+                    if (after) mark.parentNode.appendChild(document.createTextNode(after));
+
+                    node.parentNode.replaceChild(mark, node);
+                }
+            });
+        }
+
+        function resetHighlight(item) {
+            const question = item.querySelector('.faq-question');
+            const answer = item.querySelector('.faq-answer-inner');
+
+            [question, answer].forEach(el => {
+                el.querySelectorAll('mark').forEach(m => {
+                    m.replaceWith(m.textContent);
+                });
+            });
+        }
+
+        function updateCategoryCount(cat) {
+            const visibleItems = cat.querySelectorAll('.faq-item:not([style*="display: none"])');
+            const countEl = cat.querySelector('.faq-category-count');
+            if (countEl) {
+                countEl.textContent = `${visibleItems.length} pregunta${visibleItems.length !== 1 ? 's' : ''}`;
+            }
+        }
+
+        // ===== SCROLL REVEAL =====
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+        
+        const particlesContainer = document.getElementById('bgParticles');
+
+for (let i = 0; i < 25; i++) {
+    const p = document.createElement('div');
+    p.className = 'bg-particle';
+    p.style.left = Math.random() * 100 + '%';
+    p.style.animationDelay = Math.random() * 10 + 's';
+    p.style.animationDuration = (8 + Math.random() * 8) + 's';
+
+    particlesContainer.appendChild(p);
+}
+
+        // ===== SMOOTH SCROLL =====
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                const href = this.getAttribute('href');
+                if (href === '#') return;
+                e.preventDefault();
+                const target = document.querySelector(href);
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }             
+
+                
+            });
+        });
+    </script>
+</body>
+</html>
