@@ -1,0 +1,1800 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>deepfolio. — Términos</title>
+     <link rel="icon" type="logo" href="../../logo/logobien.png">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --burgundy-deep: #3D0F14;
+            --burgundy-dark: #5C1A20;
+            --burgundy: #7B2D35;
+            --burgundy-mid: #8B3A42;
+            --burgundy-light: #A84B52;
+            --burgundy-pale: #C46B73;
+            --gold: #C9A84C;
+            --gold-light: #D4B96A;
+            --gold-pale: #E8D5A0;
+            --cream: #F5EDE4;
+            --cream-light: #FAF6F2;
+            --text-dark: #1A080A;
+            --text-muted: #6B5055;
+            --bg-dark: #1A0A0E;
+            --bg-card: #2A1015;
+            --bg-card-light: #35151A;
+            --white: #FFFFFF;
+            --success: #4A9E6E;
+            --danger: #C45A5A;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-dark);
+            color: var(--cream);
+            overflow-x: hidden;
+            line-height: 1.7;
+        }
+
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: var(--bg-dark); }
+        ::-webkit-scrollbar-thumb { background: var(--burgundy); border-radius: 3px; }
+
+        /* ===== NAVBAR ===== */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 1rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            background: transparent;
+        }
+
+        .navbar.scrolled {
+            background: rgba(26, 10, 14, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(123, 45, 53, 0.3);
+            padding: 0.7rem 2rem;
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+        }
+
+        .nav-logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--burgundy), var(--gold));
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--white);
+            font-family: 'Playfair Display', serif;
+        }
+
+        .nav-logo-icon span {
+            color: black;            
+        }   
+
+        .nav-logo-text {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.6rem;
+            font-weight: 600;
+            color: var(--cream);
+            letter-spacing: -0.5px;
+        }
+
+        .nav-logo-text span {
+            color: var(--gold);
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--cream);
+            font-size: 0.9rem;
+            font-weight: 500;
+            opacity: 0.8;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            opacity: 1;
+            color: var(--gold);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 1.5px;
+            background: var(--gold);
+            transition: width 0.3s;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .nav-cta {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.7rem 1.5rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: none;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .btn-ghost {
+            background: transparent;
+            color: var(--cream);
+            border: 1px solid rgba(201, 168, 76, 0.3);
+        }
+
+        .btn-ghost:hover {
+            border-color: var(--gold);
+            color: var(--gold);
+            background: rgba(201, 168, 76, 0.05);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--burgundy), var(--burgundy-mid));
+            color: var(--white);
+            box-shadow: 0 4px 15px rgba(123, 45, 53, 0.4);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(123, 45, 53, 0.5);
+        }
+
+        .btn-gold {
+            background: linear-gradient(135deg, var(--gold), var(--gold-light));
+            color: var(--text-dark);
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(201, 168, 76, 0.3);
+        }
+
+        .btn-gold:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(201, 168, 76, 0.4);
+        }
+
+        .btn-large {
+            padding: 1rem 2.2rem;
+            font-size: 1rem;
+            border-radius: 10px;
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 5px;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 2px;
+            background: var(--cream);
+            transition: all 0.3s;
+            border-radius: 2px;
+        }
+
+        /* ===== HERO / HEADER ===== */
+        .terms-header {
+            min-height: 30vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            padding: 8rem 2rem 3rem;
+            overflow: hidden;
+        }
+
+        .terms-header-bg {
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+        }
+
+        .terms-header-bg::before {
+            content: '';
+            position: absolute;
+            top: -30%;
+            left: -30%;
+            width: 160%;
+            height: 160%;
+            background: radial-gradient(ellipse at 40% 30%, rgba(123, 45, 53, 0.12) 0%, transparent 50%),
+                        radial-gradient(ellipse at 70% 70%, rgba(201, 168, 76, 0.04) 0%, transparent 50%);
+        }
+
+        .terms-header-content {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            max-width: 700px;
+        }
+
+        .terms-version {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.4rem 1rem;
+            background: rgba(123, 45, 53, 0.15);
+            border: 1px solid rgba(201, 168, 76, 0.15);
+            border-radius: 50px;
+            font-size: 0.78rem;
+            color: var(--gold-pale);
+            margin-bottom: 0.75rem;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .terms-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 700;
+            line-height: 1.15;
+            margin-bottom: 0.5rem;
+        }
+
+        .terms-title .gold {
+            background: linear-gradient(135deg, var(--gold), var(--gold-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .terms-subtitle {
+            font-size: 1.05rem;
+            color: var(--cream);
+            opacity: 0.5;
+            font-weight: 300;
+            line-height: 1.7;
+            max-width: 520px;
+            margin: 0 auto;
+        }
+
+        .terms-last-updated {
+            margin-top: 0.75rem;
+            font-size: 0.82rem;
+            color: var(--cream);
+            opacity: 0.35;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* ===== LAYOUT ===== */
+        .terms-body {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem 6rem;
+            display: grid;
+            grid-template-columns: 240px 1fr;
+            gap: 3rem;
+            position: relative;
+        }
+
+        /* ===== SIDEBAR TOC ===== */
+        .toc {
+            position: sticky;
+            top: 100px;
+            height: fit-content;
+            max-height: calc(100vh - 120px);
+            overflow-y: auto;
+            padding-right: 1rem;
+        }
+
+        .toc::-webkit-scrollbar { width: 3px; }
+        .toc::-webkit-scrollbar-thumb { background: var(--burgundy); border-radius: 3px; }
+
+        .toc-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--gold);
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid rgba(201, 168, 76, 0.2);
+        }
+
+        .toc-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.2rem;
+        }
+
+        .toc-item {
+            display: block;
+        }
+
+        .toc-link {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            text-decoration: none;
+            color: var(--cream);
+            opacity: 0.4;
+            font-size: 0.82rem;
+            padding: 0.5rem 0.75rem;
+            border-radius: 8px;
+            transition: all 0.3s;
+            border-left: 2px solid transparent;
+        }
+
+        .toc-link:hover {
+            opacity: 0.8;
+            background: rgba(123, 45, 53, 0.1);
+        }
+
+        .toc-link.active {
+            opacity: 1;
+            color: var(--gold);
+            background: rgba(201, 168, 76, 0.05);
+            border-left-color: var(--gold);
+        }
+
+        .toc-number {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.7rem;
+            font-weight: 500;
+            min-width: 20px;
+        }
+
+        .toc-text {
+            line-height: 1.4;
+        }
+
+        /* ===== CONTENT ===== */
+        .terms-content {
+            min-width: 0;
+        }
+
+        .terms-section {
+            margin-bottom: 1.5rem;
+            scroll-margin-top: 100px;
+        }
+
+        .terms-section-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            padding: 1.5rem;
+            background: rgba(42, 16, 21, 0.4);
+            border: 1px solid rgba(123, 45, 53, 0.15);
+            border-radius: 14px;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            user-select: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .terms-section-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+
+        .terms-section-header:hover {
+            border-color: rgba(123, 45, 53, 0.35);
+            background: rgba(42, 16, 21, 0.6);
+        }
+
+        .terms-section-header.active {
+            border-color: rgba(201, 168, 76, 0.25);
+            background: rgba(42, 16, 21, 0.7);
+            border-radius: 14px 14px 0 0;
+        }
+
+        .terms-section-header.active::before {
+            opacity: 1;
+        }
+
+        .section-number {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--gold);
+            opacity: 0.3;
+            line-height: 1;
+            min-width: 40px;
+            transition: opacity 0.3s;
+        }
+
+        .terms-section-header:hover .section-number {
+            opacity: 0.5;
+        }
+
+        .terms-section-header.active .section-number {
+            opacity: 0.8;
+        }
+
+        .section-header-text {
+            flex: 1;
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.15rem;
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+            transition: color 0.3s;
+        }
+
+        .terms-section-header:hover .section-title {
+            color: var(--gold-pale);
+        }
+
+        .section-brief {
+            font-size: 0.82rem;
+            color: var(--cream);
+            opacity: 0.35;
+            font-weight: 300;
+        }
+
+        .section-toggle {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            border: 1px solid rgba(123, 45, 53, 0.2);
+            background: transparent;
+            color: var(--cream);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            flex-shrink: 0;
+            margin-top: 0.25rem;
+        }
+
+        .section-toggle svg {
+            width: 14px;
+            height: 14px;
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .terms-section-header.active .section-toggle {
+            background: rgba(201, 168, 76, 0.1);
+            border-color: var(--gold);
+            color: var(--gold);
+        }
+
+        .terms-section-header.active .section-toggle svg {
+            transform: rotate(180deg);
+        }
+
+        /* ===== EXPANDABLE CONTENT ===== */
+        .terms-section-body {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .terms-section-body.open {
+            max-height: 2000px;
+        }
+
+        .terms-section-inner {
+            padding: 1.5rem 1.5rem 1.5rem;
+            background: rgba(42, 16, 21, 0.3);
+            border: 1px solid rgba(123, 45, 53, 0.15);
+            border-top: none;
+            border-radius: 0 0 14px 14px;
+        }
+
+        .terms-section-inner p {
+            font-size: 0.92rem;
+            color: var(--cream);
+            opacity: 0.7;
+            line-height: 1.8;
+            margin-bottom: 1rem;
+        }
+
+        .terms-section-inner p:last-child {
+            margin-bottom: 0;
+        }
+
+        .terms-section-inner ul {
+            list-style: none;
+            margin: 0.75rem 0;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .terms-section-inner ul li {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.6rem;
+            font-size: 0.9rem;
+            color: var(--cream);
+            opacity: 0.65;
+            line-height: 1.6;
+        }
+
+        .terms-section-inner ul li::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            background: var(--gold);
+            border-radius: 2px;
+            flex-shrink: 0;
+            margin-top: 0.55rem;
+            opacity: 0.6;
+        }
+
+        .terms-highlight {
+            background: rgba(201, 168, 76, 0.06);
+            border-left: 3px solid var(--gold);
+            padding: 1rem 1.25rem;
+            border-radius: 0 10px 10px 0;
+            margin: 1rem 0;
+        }
+
+        .terms-highlight p {
+            opacity: 0.8 !important;
+            font-size: 0.88rem !important;
+            margin-bottom: 0 !important;
+        }
+
+        .terms-highlight .highlight-label {
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--gold);
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .terms-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+            font-size: 0.85rem;
+        }
+
+        .terms-table th {
+            text-align: left;
+            padding: 0.75rem 1rem;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--gold);
+            font-weight: 500;
+            border-bottom: 1px solid rgba(123, 45, 53, 0.3);
+            opacity: 0.7;
+        }
+
+        .terms-table td {
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid rgba(123, 45, 53, 0.1);
+            color: var(--cream);
+            opacity: 0.65;
+        }
+
+        .terms-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .terms-table .price-free {
+            color: var(--success);
+            opacity: 1;
+            font-weight: 500;
+        }
+
+        .terms-table .price-paid {
+            color: var(--gold);
+            opacity: 1;
+            font-weight: 500;
+        }
+
+        /* ===== CONTACT BAR ===== */
+        .terms-contact {
+            max-width: 1200px;
+            margin: 0 auto 4rem;
+            padding: 0 2rem;
+        }
+
+        .terms-contact-inner {
+            background: linear-gradient(135deg, rgba(42, 16, 21, 0.8), rgba(61, 15, 20, 0.6));
+            border: 1px solid rgba(201, 168, 76, 0.2);
+            border-radius: 16px;
+            padding: 2.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .terms-contact-inner::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+        }
+
+        .terms-contact-text h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 0.4rem;
+        }
+
+        .terms-contact-text p {
+            font-size: 0.9rem;
+            color: var(--cream);
+            opacity: 0.5;
+        }
+
+        .terms-contact-text a {
+            color: var(--gold);
+            text-decoration: none;
+            font-weight: 500;
+            transition: opacity 0.3s;
+        }
+
+        .terms-contact-text a:hover {
+            opacity: 0.8;
+        }
+
+        .btn-contact {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.8rem 1.8rem;
+            background: linear-gradient(135deg, var(--gold), var(--gold-light));
+            color: var(--text-dark);
+            font-weight: 600;
+            font-size: 0.9rem;
+            border-radius: 10px;
+            text-decoration: none;
+            transition: all 0.3s;
+            flex-shrink: 0;
+            border: none;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .btn-contact:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(201, 168, 76, 0.3);
+        }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            background: rgba(26, 10, 14, 0.95);
+            border-top: 1px solid rgba(123, 45, 53, 0.2);
+            padding: 4rem 2rem 2rem;
+        }
+
+        .footer-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-brand p {
+            font-size: 0.9rem;
+            color: var(--cream);
+            opacity: 0.5;
+            line-height: 1.7;
+            margin-top: 1rem;
+            max-width: 300px;
+        }
+
+        .footer-col h4 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 1.2rem;
+            color: var(--cream);
+        }
+
+        .footer-col ul {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+        }
+
+        .footer-col ul a {
+            text-decoration: none;
+            color: var(--cream);
+            opacity: 0.5;
+            font-size: 0.85rem;
+            transition: all 0.3s;
+        }
+
+        .footer-col ul a:hover {
+            opacity: 1;
+            color: var(--gold);
+        }
+        
+                .footer-col:nth-child(2) { 
+    margin-left: 500px; /* Ajusta este número a tu gusto */
+}
+
+
+.footer-col:nth-child(2) { 
+    margin-left: auto; /* Esto empuja Recursos y Empresa al extremo derecho */
+    padding-right: 50px; /* Para que no peguen al borde de la pantalla */
+}
+
+        .footer-col li a {
+    white-space: nowrap; /* Evita que el texto salte a 2 líneas */
+}
+
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(123, 45, 53, 0.15);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .footer-bottom p {
+            font-size: 0.8rem;
+            color: var(--cream);
+            opacity: 0.3;
+        }
+
+        .footer-socials {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .footer-socials a {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            border: 1px solid rgba(123, 45, 53, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+            color: var(--cream);
+            opacity: 0.5;
+        }
+
+        .footer-socials a:hover {
+            border-color: var(--gold);
+            opacity: 1;
+            background: rgba(201, 168, 76, 0.1);
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 900px) {
+            .terms-body {
+                grid-template-columns: 1fr;
+                gap: 0;
+            }
+
+            .toc {
+                position: relative;
+                top: 0;
+                max-height: none;
+                padding-right: 0;
+                margin-bottom: 2rem;
+                padding: 1.5rem;
+                background: rgba(42, 16, 21, 0.4);
+                border: 1px solid rgba(123, 45, 53, 0.2);
+                border-radius: 14px;
+            }
+
+            .toc-list {
+                flex-wrap: wrap;
+                gap: 0.2rem;
+            }
+
+            .toc-link {
+                padding: 0.4rem 0.6rem;
+            }
+
+            .terms-contact-inner {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .terms-header {
+                min-height: 45vh;
+                padding: 7rem 1.5rem 3rem;
+            }
+
+            .terms-body {
+                padding: 0 1rem 4rem;
+            }
+
+            .terms-section-header {
+                padding: 1.2rem;
+            }
+
+            .section-number {
+                font-size: 1.4rem;
+                min-width: 30px;
+            }
+
+            .section-title {
+                font-size: 1rem;
+            }
+
+            .toc-list {
+                flex-direction: column;
+            }
+        }
+
+                /* ===== ANIMATED BACKGROUND ===== */
+        .bg-layer {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .bg-gradient-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.4;
+            animation: orbFloat 12s ease-in-out infinite alternate;
+        }
+
+        .bg-gradient-orb:nth-child(1) {
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, var(--burgundy-dark), transparent 70%);
+            top: -10%;
+            left: -10%;
+            animation-duration: 15s;
+        }
+
+        .bg-gradient-orb:nth-child(2) {
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, var(--burgundy), transparent 70%);
+            bottom: -15%;
+            right: -5%;
+            animation-duration: 18s;
+            animation-delay: -3s;
+        }
+
+        .bg-gradient-orb:nth-child(3) {
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(201, 168, 76, 0.15), transparent 70%);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation-duration: 10s;
+            animation-delay: -7s;
+        }
+
+        @keyframes orbFloat {
+            0% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(30px, -20px) scale(1.05); }
+            66% { transform: translate(-20px, 30px) scale(0.95); }
+            100% { transform: translate(10px, -10px) scale(1.02); }
+        }
+
+        .bg-grid {
+            position: absolute;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(201, 168, 76, 0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(201, 168, 76, 0.02) 1px, transparent 1px);
+            background-size: 50px 50px;
+        }
+
+        .bg-particles {
+            position: absolute;
+            inset: 0;
+        }
+
+        .bg-particle {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: var(--gold);
+            border-radius: 50%;
+            opacity: 0;
+            animation: particleDrift 10s infinite;
+        }
+
+        @keyframes particleDrift {
+            0% { opacity: 0; transform: translateY(100vh) translateX(0); }
+            10% { opacity: 0.5; }
+            90% { opacity: 0.5; }
+            100% { opacity: 0; transform: translateY(-10vh) translateX(50px); }
+        }
+
+        /* ===== ANIMATIONS ===== */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .terms-section {
+            animation: fadeInUp 0.5s ease-out both;
+        }
+
+        .terms-section:nth-child(1) { animation-delay: 0.05s; }
+        .terms-section:nth-child(2) { animation-delay: 0.1s; }
+        .terms-section:nth-child(3) { animation-delay: 0.15s; }
+        .terms-section:nth-child(4) { animation-delay: 0.2s; }
+        .terms-section:nth-child(5) { animation-delay: 0.25s; }
+        .terms-section:nth-child(6) { animation-delay: 0.3s; }
+        .terms-section:nth-child(7) { animation-delay: 0.35s; }
+        .terms-section:nth-child(8) { animation-delay: 0.4s; }
+        .terms-section:nth-child(9) { animation-delay: 0.45s; }
+        .terms-section:nth-child(10) { animation-delay: 0.5s; }
+        .terms-section:nth-child(11) { animation-delay: 0.55s; }
+        .terms-section:nth-child(12) { animation-delay: 0.6s; }
+    </style>
+</head>
+<body>
+
+    <!-- ANIMATED BACKGROUND -->
+<div class="bg-layer">
+    <div class="bg-gradient-orb"></div>
+    <div class="bg-gradient-orb"></div>
+    <div class="bg-gradient-orb"></div>
+    <div class="bg-grid"></div>
+    <div class="bg-particles" id="bgParticles"></div>
+</div>
+
+    <!-- NAVBAR -->
+    <nav class="navbar" id="navbar">
+        <a href="#" class="nav-logo">
+            <div class="nav-logo-icon">d<span>;</span></div>
+            <div class="nav-logo-text">deep<span>folio.</span></div>
+        </a>
+        <ul class="nav-links">
+            <li><a href="#features">Funciones</a></li>
+            <li><a href="#assets">Activos</a></li>
+            <li><a href="#backtesting">Backtesting</a></li>
+            <li><a href="#comparison">Comparativas</a></li>
+            <li><a href="#pricing">Planes</a></li>
+        </ul>
+        <div class="nav-cta">
+            <a href="login.html" class="btn btn-ghost">Iniciar Sesión</a>
+            <a href="#" class="btn btn-primary">Registrarme</a>
+        </div>
+        <button class="hamburger" id="hamburger" aria-label="Menu"> 
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </nav>
+
+    <!-- HEADER -->
+    <header class="terms-header">
+        <div class="terms-header-bg"></div>
+        <div class="terms-header-content">
+            <h1 class="terms-title">
+                Términos de<br><span class="gold">Servicio</span>
+            </h1>
+            <div class="terms-last-updated">Última actualización: 01/07/2025</div>
+        </div>
+    </header>
+
+    <!-- BODY -->
+    <div class="terms-body">
+
+        <!-- SIDEBAR TOC -->
+        <aside class="toc">
+            <div class="toc-title">Contenidos</div>
+            <ol class="toc-list">
+                <li class="toc-item">
+                    <a href="#s1" class="toc-link active">
+                        <span class="toc-number">01</span>
+                        <span class="toc-text">Aceptación</span>
+                    </a>
+                </li>
+                <li class="toc-item">
+                    <a href="#s2" class="toc-link">
+                        <span class="toc-number">02</span>
+                        <span class="toc-text">Descripción del Servicio</span>
+                    </a>
+                </li>
+                <li class="toc-item">
+                    <a href="#s3" class="toc-link">
+                        <span class="toc-number">03</span>
+                        <span class="toc-text">Cuentas y Registro</span>
+                    </a>
+                </li>
+                <li class="toc-item">
+                    <a href="#s4" class="toc-link">
+                        <span class="toc-number">04</span>
+                        <span class="toc-text">Planes y Pagos</span>
+                    </a>
+                </li>
+                <li class="toc-item">
+                    <a href="#s5" class="toc-link">
+                        <span class="toc-number">05</span>
+                        <span class="toc-text">Uso Aceptable</span>
+                    </a>
+                </li>
+                <li class="toc-item">
+                    <a href="#s6" class="toc-link">
+                        <span class="toc-number">06</span>
+                        <span class="toc-text">Propiedad Intelectual</span>
+                    </a>
+                </li>
+                <li class="toc-item">
+                    <a href="#s7" class="toc-link">
+                        <span class="toc-number">07</span>
+                        <span class="toc-text">Datos y Precisión</span>
+                    </a>
+                </li>
+                <li class="toc-item">
+                    <a href="#s8" class="toc-link">
+                        <span class="toc-number">08</span>
+                        <span class="toc-text">Descargo de Responsabilidad</span>
+                    </a>
+                </li>
+                <li class="toc-item">
+                    <a href="#s9" class="toc-link">
+                        <span class="toc-number">09</span>
+                        <span class="toc-text">Limitación de Responsabilidad</span>
+                    </a>
+                </li>
+                <li class="toc-item">
+                    <a href="#s10" class="toc-link">
+                        <span class="toc-number">10</span>
+                        <span class="toc-text">Terminación</span>
+                    </a>
+                </li>
+                <li class="toc-item">
+                    <a href="#s11" class="toc-link">
+                        <span class="toc-number">11</span>
+                        <span class="toc-text">Modificaciones</span>
+                    </a>
+                </li>
+                <li class="toc-item">
+                    <a href="#s12" class="toc-link">
+                        <span class="toc-number">12</span>
+                        <span class="toc-text">Contacto</span>
+                    </a>
+                </li>
+            </ol>
+        </aside>
+
+        <!-- CONTENT -->
+        <div class="terms-content">
+
+            <!-- 1. ACEPTACIÓN -->
+            <div class="terms-section" id="s1">
+                <div class="terms-section-header" onclick="toggleSection(this)">
+                    <div class="section-number">01</div>
+                    <div class="section-header-text">
+                        <div class="section-title">Aceptación de los Términos</div>
+                        <div class="section-brief">Cómo se vinculan estos términos a tu uso de la plataforma</div>
+                    </div>
+                    <div class="section-toggle">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="6 9 12 15 18 9"/>
+                        </svg>
+                    </div>
+                </div>
+                <div class="terms-section-body">
+                    <div class="terms-section-inner">
+                        <p>
+                            Al acceder, registrarte o utilizar cualquiera de los servicios proporcionados por 
+                            <strong>deepfolio.</strong> (en adelante, «la Plataforma»), aceptas estar vinculado/a 
+                            por estos Términos de Servicio (en adelante, «los Términos»).
+                        </p>
+                        <p>
+                            Estos Términos constituyen un acuerdo legal entre tú (en adelante, «el Usuario» o 
+                            «tú») y deepfolio. S.L. (en adelante, «nosotros», «nos» o «deepfolio.»). 
+                            Te recomendamos leerlos detenidamente antes de utilizar la Plataforma.
+                        </p>
+                        <div class="terms-highlight">
+                            <span class="highlight-label">Importante</span>
+                            <p>
+                                Si no estás de acuerdo con alguno de estos Términos, no utilices la Plataforma. 
+                                El uso continuado de los servicios implica tu aceptación plena e incondicional 
+                                de todas las condiciones aquí establecidas.
+                            </p>
+                        </div>
+                        <p>
+                            Estos Términos deben leerse conjuntamente con nuestra 
+                            <a href="#" style="color: var(--gold); text-decoration: none;">Política de Privacidad</a>, 
+                            la cual se incorpora por referencia a estos Términos.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. DESCRIPCIÓN DEL SERVICIO -->
+            <div class="terms-section" id="s2">
+                <div class="terms-section-header" onclick="toggleSection(this)">
+                    <div class="section-number">02</div>
+                    <div class="section-header-text">
+                        <div class="section-title">Descripción del Servicio</div>
+                        <div class="section-brief">Qué es deepfolio. y qué ofrece</div>
+                    </div>
+                    <div class="section-toggle">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="6 9 12 15 18 9"/>
+                        </svg>
+                    </div>
+                </div>
+                <div class="terms-section-body">
+                    <div class="terms-section-inner">
+                        <p>
+                            deepfolio. es una plataforma digital de gestión y análisis de carteras de inversión 
+                            que proporciona herramientas de seguimiento, backtesting, comparativas y análisis 
+                            de rendimiento para diversos tipos de activos financieros.
+                        </p>
+                        <p>Los servicios incluyen, entre otros:</p>
+                        <ul>
+                            <li>Rastreo en tiempo real de carteras multi-activo (acciones, ETFs, criptomonedas, renta fija, fondos indexados, real estate, materias primas, forex y otros)</li>
+                            <li>Motor de backtesting con datos históricos para simular estrategias de inversión</li>
+                            <li>Herramientas de comparación entre carteras, fondos y activos individuales</li>
+                            <li>Análisis asistido por inteligencia artificial para optimización de carteras</li>
+                            <li>Sistema de alertas personalizadas sobre movimientos del mercado</li>
+                            <li>Generación de reportes fiscales y de rendimiento</li>
+                            <li>API y webhooks para integración con terceros (planes Enterprise)</li>
+                        </ul>
+                        <div class="terms-highlight">
+                            <span class="highlight-label">Nota</span>
+                            <p>
+                                deepfolio. es una herramienta de análisis y seguimiento, no una entidad de 
+                                asesoramiento financiero ni un intermediario de valores. No ejecutamos operaciones 
+                                ni nos hacemos cargo de tus inversiones.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. CUENTAS Y REGISTRO -->
+            <div class="terms-section" id="s3">
+                <div class="terms-section-header" onclick="toggleSection(this)">
+                    <div class="section-number">03</div>
+                    <div class="section-header-text">
+                        <div class="section-title">Cuentas y Registro</div>
+                        <div class="section-brief">Requisitos para crear y mantener una cuenta</div>
+                    </div>
+                    <div class="section-toggle">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="6 9 12 15 18 9"/>
+                        </svg>
+                    </div>
+                </div>
+                <div class="terms-section-body">
+                    <div class="terms-section-inner">
+                        <p>
+                            Para utilizar los servicios de deepfolio. debes crear una cuenta proporcionando 
+                            información veraz, precisa y actualizada.
+                        </p>
+                        <ul>
+                            <li>Debes tener al menos 18 años o la edad legal de mayoría en tu jurisdicción</li>
+                            <li>Eres responsable de mantener la confidencialidad de tus credenciales de acceso</li>
+                            <li>Aceptas notificar inmediatamente cualquier uso no autorizado de tu cuenta</li>
+                            <li>Solo se permite una cuenta por persona; las cuentas duplicadas pueden ser suspendidas</li>
+                            <li>Puedes registrar la cuenta mediante email o proveedores de identidad federados (Google, Apple, etc.)</li>
+                        </ul>
+                        <p>
+                            Nos reservamos el derecho de denegar el registro o cancelar cuentas en cualquier 
+                            momento y por cualquier motivo, incluyendo pero no limitado a violaciones de estos 
+                            Términos o comportamiento sospechoso.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4. PLANES Y PAGOS -->
+            <div class="terms-section" id="s4">
+                <div class="terms-section-header" onclick="toggleSection(this)">
+                    <div class="section-number">04</div>
+                    <div class="section-header-text">
+                        <div class="section-title">Planes y Pagos</div>
+                        <div class="section-brief">Estructura de precios, facturación y reembolsos</div>
+                    </div>
+                    <div class="section-toggle">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="6 9 12 15 18 9"/>
+                        </svg>
+                    </div>
+                </div>
+                <div class="terms-section-body">
+                    <div class="terms-section-inner">
+                        <p>
+                            deepfolio. opera bajo un modelo freemium con tres niveles de servicio:
+                        </p>
+                        <table class="terms-table">
+                            <thead>
+                                <tr>
+                                    <th>Plan</th>
+                                    <th>Precio</th>
+                                    <th>Características clave</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Explorer</strong></td>
+                                    <td class="price-free">Gratis</td>
+                                    <td>3 carteras, datos con delay, 1 backtest/mes</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Deep Pro</strong></td>
+                                    <td class="price-paid">€12/mes</td>
+                                    <td>Carteras ilimitadas, datos en tiempo real, IA, alertas</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Deep Enterprise</strong></td>
+                                    <td class="price-paid">€39/mes</td>
+                                    <td>API, multi-cliente, Monte Carlo, soporte 24/7</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <p>
+                            <strong>Facturación:</strong> Los planes de pago se facturan de forma mensual o anual 
+                            (con un descuento del 20% en facturación anual). El pago se procesa de forma recurrente 
+                            mediante la método de pago registrado.
+                        </p>
+                        <p>
+                            <strong>Período de prueba:</strong> Los planes de pago incluyen un período de prueba 
+                            gratuito de 14 días. No se requiere tarjeta de crédito para activar la prueba.
+                        </p>
+                        <p>
+                            <strong>Cancelación y reembolso:</strong> Puedes cancelar tu suscripción en cualquier 
+                            momento desde la configuración de tu cuenta. La cancelación surtirá efecto al final 
+                            del período de facturación actual. No se realizan reembolsos prorrateados por períodos 
+                            no utilizados, salvo obligación legal contraria.
+                        </p>
+                        <p>
+                            <strong>Aumentos de precio:</strong> Nos reservamos el derecho de modificar los precios 
+                            de nuestros planes. Te notificaremos con al menos 30 días de antelación antes de que 
+                            cualquier aumento surta efecto sobre tu suscripción vigente.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 5. USO ACEPTABLE -->
+            <div class="terms-section" id="s5">
+                <div class="terms-section-header" onclick="toggleSection(this)">
+                    <div class="section-number">05</div>
+                    <div class="section-header-text">
+                        <div class="section-title">Uso Aceptable</div>
+                        <div class="section-brief">Lo que está permitido y lo que está prohibido</div>
+                    </div>
+                    <div class="section-toggle">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="6 9 12 15 18 9"/>
+                        </svg>
+                    </div>
+                </div>
+                <div class="terms-section-body">
+                    <div class="terms-section-inner">
+                        <p>
+                            Puedes utilizar deepfolio. para fines personales o comerciales legítimos. 
+                            Queda estrictamente prohibido:
+                        </p>
+                        <ul>
+                            <li>Utilizar la Plataforma para actividades fraudulentas, ilegales o que violen cualquier ley aplicable</li>
+                            <li>Acceder a la Plataforma mediante métodos no autorizados, incluyendo scraping automatizado, bots o crawlers sin consentimiento previo</li>
+                            <li>Introducir datos falsos o manipular información de carteras para engañar a otros usuarios o terceros</li>
+                            <li>Reproducir, distribuir o comercializar datos de deepfolio. sin autorización expresa</li>
+                            <li>Intentar interferir con el funcionamiento de la Plataforma, sus servidores o redes</li>
+                            <li>Utilizar la Plataforma para asesoramiento financiero no autorizado a terceros sin la debida licencia regulatoria</li>
+                            <li>Revender acceso a la Plataforma o compartir credenciales con terceros</li>
+                        </ul>
+                        <div class="terms-highlight">
+                            <span class="highlight-label">Aviso regulatorio</span>
+                            <p>
+                                Si utilizas deepfolio. para proporcionar asesoramiento financiero a terceros, 
+                                eres responsable de cumplir con todas las regulaciones aplicables en tu jurisdicción, 
+                                incluyendo pero no limitado a MiFID II, la normativa CNMV en España o las regulaciones 
+                                equivalentes en tu país.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 6. PROPIEDAD INTELECTUAL -->
+            <div class="terms-section" id="s6">
+                <div class="terms-section-header" onclick="toggleSection(this)">
+                    <div class="section-number">06</div>
+                    <div class="section-header-text">
+                        <div class="section-title">Propiedad Intelectual</div>
+                        <div class="section-brief">Derechos sobre el contenido y la marca</div>
+                    </div>
+                    <div class="section-toggle">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="6 9 12 15 18 9"/>
+                        </svg>
+                    </div>
+                </div>
+                <div class="terms-section-body">
+                    <div class="terms-section-inner">
+                        <p>
+                            Todo el contenido de la Plataforma, incluyendo pero no limitado a código fuente, 
+                            diseño, interfaces, gráficos, logotipos, marcas comerciales, algoritmos, 
+                            metodologías de análisis y documentación, es propiedad exclusiva de deepfolio. 
+                            o de sus licenciantes.
+                        </p>
+                        <ul>
+                            <li>La marca «deepfolio.» y sus elementos visuales están protegidos por derechos de marca registrada</li>
+                            <li>Los datos de mercado mostrados son proporcionados por terceros y están sujetos a sus propios términos de licencia</li>
+                            <li>Se concede una licencia limitada, no exclusiva e intransferible para utilizar la Plataforma conforme a estos Términos</li>
+                            <li>Los datos de tus carteras y configuraciones te pertenecen y puedes exportarlos en cualquier momento</li>
+                        </ul>
+                        <p>
+                            No se concede ningún derecho sobre la propiedad intelectual de deepfolio. salvo 
+                            lo expresamente establecido en estos Términos.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 7. DATOS Y PRECISIÓN -->
+            <div class="terms-section" id="s7">
+                <div class="terms-section-header" onclick="toggleSection(this)">
+                    <div class="section-number">07</div>
+                    <div class="section-header-text">
+                        <div class="section-title">Datos y Precisión de la Información</div>
+                        <div class="section-brief">Fiabilidad de los datos financieros proporcionados</div>
+                    </div>
+                    <div class="section-toggle">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="6 9 12 15 18 9"/>
+                        </svg>
+                    </div>
+                </div>
+                <div class="terms-section-body">
+                    <div class="terms-section-inner">
+                        <p>
+                            deepfolio. se esfuerza por proporcionar datos financieros precisos y actualizados. 
+                            Sin embargo, debes tener en cuenta que:
+                        </p>
+                        <ul>
+                            <li>Los datos de mercado se obtienen de proveedores de terceros y pueden contuar retrasos (especialmente en el plan Explorer)</li>
+                            <li>No garantizamos la exactitud, integridad o puntualidad de los datos proporcionados</li>
+                            <li>Los resultados de backtesting son simulaciones basadas en datos históricos y no predicen rendimiento futuro</li>
+                            <li>Las recomendaciones del motor de IA son orientativas y no constituyen asesoramiento financiero</li>
+                            <li>Los datos de criptomonedas pueden variar significativamente entre exchanges</li>
+                        </ul>
+                        <div class="terms-highlight">
+                            <span class="highlight-label">Advertencia</span>
+                            <p>
+                                Los resultados de backtesting no son indicadores fiables de rendimiento futuro. 
+                                Los mercados financieros son inherentemente volátiles e inciertos. 
+                                No tomes decisiones de inversión basándote exclusivamente en los datos o 
+                                simulaciones proporcionados por deepfolio.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 8. DESCARGO DE RESPONSABILIDAD -->
+            <div class="terms-section" id="s8">
+                <div class="terms-section-header" onclick="toggleSection(this)">
+                    <div class="section-number">08</div>
+                    <div class="section-header-text">
+                        <div class="section-title">Descargo de Responsabilidad Financiera</div>
+                        <div class="section-brief">deepfolio. no es asesoramiento financiero</div>
+                    </div>
+                    <div class="section-toggle">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="6 9 12 15 18 9"/>
+                        </svg>
+                    </div>
+                </div>
+                <div class="terms-section-body">
+                    <div class="terms-section-inner">
+                        <p>
+                            <strong>deepfolio. no es una entidad de asesoramiento financiero, ni un gestor de 
+                            carteras, ni un intermediario de valores.</strong>
+                        </p>
+                        <p>
+                            La Plataforma proporciona herramientas de análisis y seguimiento que te permiten 
+                            tomar decisiones informadas sobre tus inversiones. Sin embargo:
+                        </p>
+                        <ul>
+                            <li>Ningún contenido de la Plataforma constituye recomendación de compra o venta de valores</li>
+                            <li>Las simulaciones y análisis de IA no garantizan resultados específicos</li>
+                            <li>Eres el único responsable de todas las decisiones de inversión que tomes</li>
+                            <li>Te recomendamos consultar con un asesor financiero cualificado antes de tomar decisiones de inversión significativas</li>
+                            <li>La inversión en mercados financieros conlleva riesgo de pérdida del capital invertido</li>
+                        </ul>
+                        <div class="terms-highlight">
+                            <span class="highlight-label">Riesgo de inversión</span>
+                            <p>
+                                El rendimiento pasado de cualquier activo no es indicador de su rendimiento futuro. 
+                                Invertir conlleva riesgos, incluyendo la posible pérdida total del capital. 
+                                Nunca inviertas dinero que no puedas permitirte perder.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 9. LIMITACIÓN DE RESPONSABILIDAD -->
+            <div class="terms-section" id="s9">
+                <div class="terms-section-header" onclick="toggleSection(this)">
+                    <div class="section-number">09</div>
+                    <div class="section-header-text">
+                        <div class="section-title">Limitación de Responsabilidad</div>
+                        <div class="section-brief">Ámbito de nuestra responsabilidad legal</div>
+                    </div>
+                    <div class="section-toggle">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="6 9 12 15 18 9"/>
+                        </svg>
+                    </div>
+                </div>
+                <div class="terms-section-body">
+                    <div class="terms-section-inner">
+                        <p>
+                            En la máxima medida permitida por la ley aplicable:
+                        </p>
+                        <ul>
+                            <li>deepfolio. no será responsable de pérdidas indirectas, incidentales, especiales o consecuentes derivadas del uso de la Plataforma</li>
+                            <li>Nuestra responsabilidad total acumulada no excederá el importe total pagado por ti durante los 12 meses anteriores al incidente</li>
+                            <li>No somos responsables de pérdidas derivadas de decisiones de inversión basadas en datos o análisis de la Plataforma</li>
+                            <li>No garantizamos que la Plataforma estará disponible de forma ininterrumpida, segura o libre de errores</li>
+                            <li>No somos responsables de la disponibilidad o precisión de datos de terceros</li>
+                        </ul>
+                        <p>
+                            Esta limitación se aplica a todas las reclamaciones, independientemente de la base 
+                            legal (contrato, negligencia u otra teoría de responsabilidad).
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 10. TERMINACIÓN -->
+            <div class="terms-section" id="s10">
+                <div class="terms-section-header" onclick="toggleSection(this)">
+                    <div class="section-number">10</div>
+                    <div class="section-header-text">
+                        <div class="section-title">Terminación del Servicio</div>
+                        <div class="section-brief">Cómo y cuándo puede finalizar la relación contractual</div>
+                    </div>
+                    <div class="section-toggle">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="6 9 12 15 18 9"/>
+                        </svg>
+                    </div>
+                </div>
+                <div class="terms-section-body">
+                    <div class="terms-section-inner">
+                        <p>
+                            <strong>Por parte del Usuario:</strong> Puedes cancelar tu cuenta en cualquier momento 
+                            desde la configuración del perfil. Tras la cancelación, tus datos se mantendrán durante 
+                            30 días y luego serán eliminados de forma permanente.
+                        </p>
+                        <p>
+                            <strong>Por parte de deepfolio.:</strong> Nos reservamos el derecho de suspender o 
+                            terminar tu acceso a la Plataforma en los siguientes casos:
+                        </p>
+                        <ul>
+                            <li>Violación de estos Términos de Servicio</li>
+                            <li>Comportamiento fraudulento o sospechoso</li>
+                            <li>Inactividad prolongada (más de 24 meses consecutivos)</li>
+                            <li>Causas técnicas o de mantenimiento que afecten al servicio</li>
+                            <li>Por decisión unilateral con un preaviso de 30 días</li>
+                        </ul>
+                        <p>
+                            En caso de terminación, podrás exportar tus datos de cartera durante un período 
+                            de gracia de 30 días.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 11. MODIFICACIONES -->
+            <div class="terms-section" id="s11">
+                <div class="terms-section-header" onclick="toggleSection(this)">
+                    <div class="section-number">11</div>
+                    <div class="section-header-text">
+                        <div class="section-title">Modificaciones de los Términos</div>
+                        <div class="section-brief">Cómo gestionamos las actualizaciones</div>
+                    </div>
+                    <div class="section-toggle">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="6 9 12 15 18 9"/>
+                        </svg>
+                    </div>
+                </div>
+                <div class="terms-section-body">
+                    <div class="terms-section-inner">
+                        <p>
+                            Nos reservamos el derecho de modificar estos Términos en cualquier momento para 
+                            reflejar cambios en nuestros servicios, la normativa aplicable o nuestras políticas.
+                        </p>
+                        <ul>
+                            <li>Te notificaremos cualquier cambio significativo mediante email o aviso dentro de la Plataforma con al menos 15 días de antelación</li>
+                            <li>Los cambios menores de carácter técnico o correctivo entrarán en vigor de forma inmediata</li>
+                            <li>El uso continuado de la Plataforma tras la entrada en vigor de los nuevos Términos constituye tu aceptación</li>
+                            <li>La fecha de última actualización se mostrará siempre en la parte superior de esta página</li>
+                        </ul>
+                        <p>
+                            Te recomendamos revisar periódicamente esta página para estar al tanto de cualquier 
+                            actualización.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 12. CONTACTO -->
+            <div class="terms-section" id="s12">
+                <div class="terms-section-header" onclick="toggleSection(this)">
+                    <div class="section-number">12</div>
+                    <div class="section-header-text">
+                        <div class="section-title">Información de Contacto</div>
+                        <div class="section-brief">Cómo comunicarte con nosotros</div>
+                    </div>
+                    <div class="section-toggle">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="6 9 12 15 18 9"/>
+                        </svg>
+                    </div>
+                </div>
+                <div class="terms-section-body">
+                    <div class="terms-section-inner">
+                        <p>
+                            Si tienes alguna pregunta sobre estos Términos de Servicio, puedes contactarnos a través de:
+                        </p>
+                        <ul>
+                            <li><strong>Email:</strong> legal@deepfolio.com</li>
+                            <li><strong>Dirección:</strong> deepfolio., S.L. — Calle de la Innovación, 42, 28013 Madrid, España</li>
+                            <li><strong>Centro de ayuda:</strong> help.deepfolio.com</li>
+                            <li><strong>Soporte en-app:</strong> Disponible 24/7 para usuarios Deep Pro y Enterprise</li>
+                        </ul>
+                        <p>
+                            Nos comprometemos a responder a cualquier consulta sobre estos Términos en un plazo 
+                            máximo de 5 días laborables.
+                        </p>
+                        <div class="terms-highlight">
+                            <span class="highlight-label">Legislación aplicable</span>
+                            <p>
+                                Estos Términos se rigen por la legislación española. Para cualquier controversia, 
+                                las partes se someterán a los juzgados y tribunales de Madrid, salvo que la ley 
+                                aplicable establezca otra cosa.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- CONTACT BAR -->
+    <div class="terms-contact">
+        <div class="terms-contact-inner">
+            <div class="terms-contact-text">
+                <h3>¿Tienes dudas sobre estos Términos?</h3>
+                <p>Nuestro equipo está aquí para ayudarte. <a href="mailto:legal@deepfolio.com">Escríbenos</a></p>
+            </div>
+            <a href="mailto:legal@deeptfolio.com" class="btn-contact">
+                Contactar
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M5 12h14"/>
+                    <path d="M12 5l7 7-7 7"/>
+                </svg>
+            </a>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <a href="#" class="nav-logo">
+                        <div class="nav-logo-icon">d<span>;</span></div>
+                    <div class="nav-logo-text">deep<span>folio.</span></div>
+                </a>
+                <p>
+                    La plataforma de gestión de carteras para inversores que exigen 
+                    profundidad, precisión y elegancia en cada decisión financiera.
+                </p>
+            </div>
+            <div class="footer-col">
+                <h4>Recursos</h4>
+                <ul>
+                    <li><a href="#">Calculadora de Interés Compuesto</a></li>
+                    <li><a href="#">Calculadora FIRE</a></li>
+                    <li><a href="#">Calculadora de Dividendos</a></li>
+                    <li><a href="#">Comparativas</a></li>
+                    <li><a href="#">Planes</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4>Empresa</h4>
+                <ul>
+                    <li><a href="footer/empresa/contacto.html">Contacto</a></li>
+                    <li><a href="footer/empresa/Nosotros.html">Nosotros</a></li>            
+                    <li><a href="footer/empresa/FAQ.html">F.A.Q</a></li>
+                    <li><a href="footer/empresa/privacidad.html">Privacidad</a></li>
+                    <li><a href="footer/empresa/terminos.html">Términos</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4>Inversión</h4>
+                <ul>
+                    <li><a href="#">Guía de ETFs</a></li>
+                    <li><a href="#">Mejores Brokers</a></li>
+                    <li><a href="#">Glosario del Inversor</a></li>
+                    <li><a href="#">Modelos de Cartera</a></li>
+                    <li><a href="#">Enlaces de Interés</a></li>
+                </ul>
+            </div>
+
+        </div>
+        <div class="footer-bottom">
+            <p>© 2026 deepfolio. Todos los derechos reservados.</p>
+            <div class="footer-socials">
+                <a href="https://x.com/deepfolio" aria-label="Twitter">𝕏</a>
+                <a href="https://www.linkedin.com/in/pauescobargarcia/" aria-label="LinkedIn">in</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+            // ===== NAVBAR SCROLL =====
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            navbar.classList.toggle('scrolled', window.scrollY > 50);
+        });
+
+        // ===== ACCORDION =====
+        function toggleSection(header) {
+            const body = header.nextElementSibling;
+            const isOpen = body.classList.contains('open');
+
+            // Close all
+            document.querySelectorAll('.terms-section-body').forEach(b => b.classList.remove('open'));
+            document.querySelectorAll('.terms-section-header').forEach(h => h.classList.remove('active'));
+
+            // Toggle current
+            if (!isOpen) {
+                body.classList.add('open');
+                header.classList.add('active');
+            }
+        }
+
+        // ===== TOC ACTIVE STATE =====
+        const tocLinks = document.querySelectorAll('.toc-link');
+        const sections = document.querySelectorAll('.terms-section');
+
+        const tocObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const id = entry.target.getAttribute('id');
+                    tocLinks.forEach(link => {
+                        link.classList.toggle('active', link.getAttribute('href') === '#' + id);
+                    });
+                }
+            });
+        }, {
+            rootMargin: '-20% 0px -60% 0px',
+            threshold: 0
+        });
+
+        sections.forEach(section => tocObserver.observe(section));
+
+        // ===== SMOOTH SCROLL FOR TOC =====
+        tocLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = link.getAttribute('href').substring(1);
+                const target = document.getElementById(targetId);
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+                    // Open the section if closed
+                    const header = target.querySelector('.terms-section-header');
+                    const body = target.querySelector('.terms-section-body');
+                    if (!body.classList.contains('open')) {
+                        body.classList.add('open');
+                        header.classList.add('active');
+                    }
+                }
+            });
+        });
+
+        // ===== OPEN FIRST SECTION BY DEFAULT =====
+        window.addEventListener('load', () => {
+            const firstHeader = document.querySelector('.terms-section:first-child .terms-section-header');
+            const firstBody = document.querySelector('.terms-section:first-child .terms-section-body');
+            if (firstHeader && firstBody) {
+                firstHeader.classList.add('active');
+                firstBody.classList.add('open');
+            }
+        });
+
+        const particlesContainer = document.getElementById('bgParticles');
+
+for (let i = 0; i < 25; i++) {
+    const p = document.createElement('div');
+    p.className = 'bg-particle';
+    p.style.left = Math.random() * 100 + '%';
+    p.style.animationDelay = Math.random() * 10 + 's';
+    p.style.animationDuration = (8 + Math.random() * 8) + 's';
+
+    particlesContainer.appendChild(p);
+}
+    </script>
+</body>
+</html>
