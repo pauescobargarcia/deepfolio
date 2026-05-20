@@ -1,0 +1,1186 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>deepfolio. — Nosotros</title>
+    <link rel="icon" type="image/png" href="../../logo/logobien.png">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --burgundy-deep: #3D0F14;
+            --burgundy-dark: #5C1A20;
+            --burgundy: #7B2D35;
+            --burgundy-mid: #8B3A42;
+            --burgundy-light: #A84B52;
+            --burgundy-pale: #C46B73;
+            --gold: #C9A84C;
+            --gold-light: #D4B96A;
+            --gold-pale: #E8D5A0;
+            --cream: #F5EDE4;
+            --cream-light: #FAF6F2;
+            --text-dark: #1A080A;
+            --text-muted: #6B5055;
+            --bg-dark: #1A0A0E;
+            --bg-card: #2A1015;
+            --bg-card-light: #35151A;
+            --white: #FFFFFF;
+            --success: #4A9E6E;
+            --danger: #C45A5A;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-dark);
+            color: var(--cream);
+            overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg-dark); }
+        ::-webkit-scrollbar-thumb { background: var(--burgundy); border-radius: 4px; }
+
+        /* ===== NAVBAR ===== */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 1rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            background: transparent;
+        }
+
+        .navbar.scrolled {
+            background: rgba(26, 10, 14, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(123, 45, 53, 0.3);
+            padding: 0.7rem 2rem;
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+        }
+
+        .nav-logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--burgundy), var(--gold));
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--white);
+            font-family: 'Playfair Display', serif;
+        }
+
+        .nav-logo-icon span {
+            color: black;            
+        }   
+
+        .nav-logo-text {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.6rem;
+            font-weight: 600;
+            color: var(--cream);
+            letter-spacing: -0.5px;
+        }
+
+        .nav-logo-text span {
+            color: var(--gold);
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--cream);
+            font-size: 0.9rem;
+            font-weight: 500;
+            opacity: 0.8;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            opacity: 1;
+            color: var(--gold);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 1.5px;
+            background: var(--gold);
+            transition: width 0.3s;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .nav-cta {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .btn {
+            display: inline-flex; align-items: center; justify-content: center;
+            padding: 0.7rem 1.5rem; border-radius: 8px; font-size: 0.9rem; font-weight: 500;
+            text-decoration: none; cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: none; font-family: 'Inter', sans-serif;
+        }
+        .btn-ghost { background: transparent; color: var(--cream); border: 1px solid rgba(201, 168, 76, 0.3); }
+        .btn-ghost:hover { border-color: var(--gold); color: var(--gold); background: rgba(201, 168, 76, 0.05); }
+        .btn-primary { background: linear-gradient(135deg, var(--burgundy), var(--burgundy-mid)); color: var(--white); box-shadow: 0 4px 15px rgba(123, 45, 53, 0.4); }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(123, 45, 53, 0.5); }
+        .btn-gold { background: linear-gradient(135deg, var(--gold), var(--gold-light)); color: var(--text-dark); font-weight: 600; box-shadow: 0 4px 15px rgba(201, 168, 76, 0.3); }
+        .btn-gold:hover { transform: translateY(-2px); box-shadow: 0 8px 25px rgba(201, 168, 76, 0.4); }
+        .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; background: none; border: none; padding: 5px; }
+        .hamburger span { width: 25px; height: 2px; background: var(--cream); transition: all 0.3s; border-radius: 2px; }
+
+        /* ===== HERO ABOUT ===== */
+        .about-hero {
+            min-height: 70vh; display: flex; align-items: center; justify-content: center;
+            position: relative; overflow: hidden; padding: 8rem 2rem 4rem;
+        }
+        .about-hero-bg {
+            position: absolute; inset: 0; z-index: 0;
+            background: radial-gradient(ellipse at 50% 30%, rgba(123,45,53,0.2) 0%, transparent 60%),
+                        radial-gradient(ellipse at 80% 70%, rgba(201,168,76,0.05) 0%, transparent 40%);
+        }
+        .about-hero-grid {
+            position: absolute; inset: 0;
+            background-image:
+                linear-gradient(rgba(201,168,76,0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(201,168,76,0.02) 1px, transparent 1px);
+            background-size: 80px 80px;
+        }
+        .about-hero-content {
+            position: relative; z-index: 1; text-align: center; max-width: 800px;
+        }
+        .breadcrumb {
+            display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+            font-size: 0.85rem; color: var(--cream); opacity: 0.4; margin-bottom: 2rem;
+        }
+        .breadcrumb a { text-decoration: none; color: var(--cream); transition: color 0.3s; }
+        .breadcrumb a:hover { color: var(--gold); }
+        .breadcrumb-sep { font-size: 0.7rem; }
+        .about-hero-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.5rem, 5vw, 4.5rem);
+            font-weight: 700; line-height: 1.15; margin-bottom: 1.5rem;
+        }
+        .about-hero-title .highlight {
+            background: linear-gradient(135deg, var(--gold), var(--gold-light), var(--gold-pale));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+        }
+        .about-hero-title .italic { font-style: italic; color: var(--burgundy-pale); -webkit-text-fill-color: var(--burgundy-pale); }
+        .about-hero-subtitle {
+            font-size: clamp(1rem, 2vw, 1.2rem); color: var(--cream); opacity: 0.6;
+            max-width: 600px; margin: 0 auto; font-weight: 300; line-height: 1.8;
+        }
+        .scroll-indicator {
+            position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%);
+            display: flex; flex-direction: column; align-items: center; gap: 0.5rem;
+            color: var(--cream); opacity: 0.3; font-size: 0.75rem; text-transform: uppercase;
+            letter-spacing: 2px; animation: scrollBounce 2s infinite;
+        }
+        .scroll-line {
+            width: 1px; height: 40px; background: linear-gradient(to bottom, var(--gold), transparent);
+        }
+        @keyframes scrollBounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(8px); }
+        }
+
+        /* ===== SECTIONS ===== */
+        section { padding: 6rem 2rem; position: relative; }
+        .section-container { max-width: 1200px; margin: 0 auto; }
+        .section-label {
+            display: inline-flex; align-items: center; gap: 0.5rem;
+            font-size: 0.8rem; text-transform: uppercase; letter-spacing: 2px;
+            color: var(--gold); font-weight: 500; margin-bottom: 1rem;
+        }
+        .section-label::before { content: ''; width: 30px; height: 1px; background: var(--gold); }
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2rem, 4vw, 3rem); font-weight: 700;
+            margin-bottom: 1rem; line-height: 1.2;
+        }
+        .section-subtitle {
+            font-size: 1.1rem; color: var(--cream); opacity: 0.6;
+            max-width: 600px; font-weight: 300; line-height: 1.7;
+        }
+        .section-header { text-align: center; margin-bottom: 4rem; }
+        .section-header .section-subtitle { margin: 0 auto; }
+
+        /* ===== STORY ===== */
+        .story { background: linear-gradient(180deg, var(--bg-dark), rgba(61,15,20,0.15), var(--bg-dark)); }
+        .story-layout {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center;
+        }
+        .story-visual {
+            position: relative; display: flex; align-items: center; justify-content: center;
+        }
+        .story-image-frame {
+            width: 100%; max-width: 450px; aspect-ratio: 4/5;
+            border-radius: 20px; position: relative; overflow: hidden;
+            background: linear-gradient(135deg, var(--burgundy-deep), var(--bg-card));
+            border: 1px solid rgba(123,45,53,0.3);
+        }
+        .story-image-inner {
+            position: absolute; inset: 0; display: flex; flex-direction: column;
+            align-items: center; justify-content: center; padding: 3rem;
+        }
+        .story-year {
+            font-family: 'Playfair Display', serif;
+            font-size: 6rem; font-weight: 700;
+            background: linear-gradient(135deg, var(--gold), var(--gold-pale));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+            line-height: 1; margin-bottom: 1rem;
+        }
+        .story-year-label {
+            font-size: 0.85rem; text-transform: uppercase; letter-spacing: 3px;
+            color: var(--cream); opacity: 0.4; margin-bottom: 2rem;
+        }
+        .story-quote {
+            font-family: 'Playfair Display', serif; font-style: italic;
+            font-size: 1.1rem; color: var(--cream); opacity: 0.6;
+            text-align: center; line-height: 1.7;
+        }
+        .story-floating-badge {
+            position: absolute; bottom: -20px; right: -20px;
+            background: linear-gradient(135deg, var(--gold), var(--gold-light));
+            color: var(--text-dark); padding: 1rem 1.5rem; border-radius: 12px;
+            font-weight: 600; font-size: 0.9rem;
+            box-shadow: 0 10px 30px rgba(201,168,76,0.3);
+        }
+        .story-text h3 {
+            font-family: 'Playfair Display', serif; font-size: 1.8rem;
+            font-weight: 700; margin-bottom: 1.5rem; line-height: 1.3;
+        }
+        .story-text h3 span { color: var(--gold); }
+        .story-text p {
+            color: var(--cream); opacity: 0.65; line-height: 1.8;
+            margin-bottom: 1.2rem; font-size: 0.95rem;
+        }
+        .story-text p strong { color: var(--cream); opacity: 1; font-weight: 500; }
+
+        /* ===== MISSION VISION ===== */
+        .mission-vision { overflow: hidden; }
+        .mv-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+        .mv-card {
+            background: rgba(42,16,21,0.6); border: 1px solid rgba(123,45,53,0.2);
+            border-radius: 20px; padding: 3rem; position: relative; overflow: hidden;
+            transition: all 0.4s;
+        }
+        .mv-card:hover {
+            transform: translateY(-5px); border-color: rgba(201,168,76,0.3);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+        .mv-card::before {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+            background: linear-gradient(90deg, var(--burgundy), var(--gold), var(--burgundy));
+            opacity: 0; transition: opacity 0.4s;
+        }
+        .mv-card:hover::before { opacity: 1; }
+        .mv-icon {
+            width: 60px; height: 60px; border-radius: 16px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.6rem; margin-bottom: 1.5rem;
+            background: rgba(123,45,53,0.15); border: 1px solid rgba(123,45,53,0.25);
+        }
+        .mv-card h3 {
+            font-family: 'Playfair Display', serif; font-size: 1.5rem;
+            font-weight: 600; margin-bottom: 1rem;
+        }
+        .mv-card p {
+            color: var(--cream); opacity: 0.6; line-height: 1.8; font-size: 0.95rem;
+        }
+
+        /* ===== VALUES ===== */
+        .values { background: linear-gradient(180deg, var(--bg-dark), rgba(61,15,20,0.2), var(--bg-dark)); }
+        .values-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; }
+        .value-card {
+            text-align: center; padding: 2.5rem 1.5rem;
+            background: rgba(42,16,21,0.4); border: 1px solid rgba(123,45,53,0.15);
+            border-radius: 16px; transition: all 0.4s; position: relative;
+        }
+        .value-card:hover {
+            transform: translateY(-5px); border-color: rgba(201,168,76,0.3);
+            background: rgba(42,16,21,0.7);
+        }
+        .value-number {
+            font-family: 'Playfair Display', serif; font-size: 3rem;
+            font-weight: 700; color: var(--gold); opacity: 0.15;
+            position: absolute; top: 1rem; left: 1.5rem;
+        }
+        .value-icon {
+            font-size: 2rem; margin-bottom: 1.2rem; display: block;
+        }
+        .value-card h4 {
+            font-family: 'Playfair Display', serif; font-size: 1.15rem;
+            font-weight: 600; margin-bottom: 0.75rem;
+        }
+        .value-card p {
+            font-size: 0.85rem; color: var(--cream); opacity: 0.5; line-height: 1.6;
+        }
+
+        /* ===== TEAM ===== */
+        .team { overflow: hidden; }
+        .team-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; }
+        .team-card {
+            background: rgba(42,16,21,0.5); border: 1px solid rgba(123,45,53,0.2);
+            border-radius: 16px; overflow: hidden; transition: all 0.4s;
+        }
+        .team-card:hover {
+            transform: translateY(-5px); border-color: rgba(201,168,76,0.3);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+        .team-photo {
+            width: 100%; aspect-ratio: 1; position: relative; overflow: hidden;
+            background: linear-gradient(135deg, var(--burgundy-deep), var(--bg-card));
+            display: flex; align-items: center; justify-content: center;
+        }
+        .team-avatar {
+            width: 80px; height: 80px; border-radius: 50%;
+            background: linear-gradient(135deg, var(--burgundy), var(--gold));
+            display: flex; align-items: center; justify-content: center;
+            font-family: 'Playfair Display', serif; font-size: 1.8rem;
+            font-weight: 700; color: var(--white);
+        }
+        .team-info { padding: 1.5rem; }
+        .team-name {
+            font-family: 'Playfair Display', serif; font-size: 1.1rem;
+            font-weight: 600; margin-bottom: 0.25rem;
+        }
+        .team-role {
+            font-size: 0.8rem; color: var(--gold); opacity: 0.8;
+            margin-bottom: 0.75rem; font-weight: 500;
+        }
+        .team-bio {
+            font-size: 0.82rem; color: var(--cream); opacity: 0.45; line-height: 1.6;
+        }
+        .team-socials {
+            display: flex; gap: 0.5rem; margin-top: 1rem;
+        }
+        .team-socials a {
+            width: 30px; height: 30px; border-radius: 6px;
+            border: 1px solid rgba(123,45,53,0.2);
+            display: flex; align-items: center; justify-content: center;
+            text-decoration: none; font-size: 0.75rem; color: var(--cream);
+            opacity: 0.4; transition: all 0.3s;
+        }
+        .team-socials a:hover { border-color: var(--gold); opacity: 1; background: rgba(201,168,76,0.1); }
+
+        /* ===== TIMELINE ===== */
+        .timeline-section {
+            background: linear-gradient(180deg, var(--bg-dark), rgba(61,15,20,0.15), var(--bg-dark));
+        }
+        .timeline {
+            position: relative; max-width: 800px; margin: 0 auto;
+            padding: 2rem 0;
+        }
+        .timeline::before {
+            content: ''; position: absolute; left: 50%; top: 0; bottom: 0;
+            width: 2px; background: linear-gradient(to bottom, transparent, var(--burgundy), var(--gold), var(--burgundy), transparent);
+            transform: translateX(-50%);
+        }
+        .timeline-item {
+            display: flex; align-items: flex-start; margin-bottom: 3rem;
+            position: relative;
+        }
+        .timeline-item:nth-child(odd) { flex-direction: row-reverse; }
+        .timeline-item:nth-child(odd) .timeline-content { text-align: right; padding-right: 3rem; padding-left: 0; }
+        .timeline-item:nth-child(even) .timeline-content { padding-left: 3rem; }
+        .timeline-content { width: 50%; }
+        .timeline-dot {
+            position: absolute; left: 50%; top: 0.5rem;
+            width: 16px; height: 16px; border-radius: 50%;
+            background: var(--gold); border: 3px solid var(--bg-dark);
+            transform: translateX(-50%); z-index: 1;
+            box-shadow: 0 0 15px rgba(201,168,76,0.3);
+        }
+        .timeline-year {
+            font-family: 'Playfair Display', serif; font-size: 1.3rem;
+            font-weight: 700; color: var(--gold); margin-bottom: 0.5rem;
+        }
+        .timeline-title {
+            font-size: 1rem; font-weight: 600; margin-bottom: 0.5rem;
+        }
+        .timeline-desc {
+            font-size: 0.85rem; color: var(--cream); opacity: 0.5; line-height: 1.6;
+        }
+
+        /* ===== STATS BANNER ===== */
+        .stats-banner {
+            padding: 4rem 2rem;
+            border-top: 1px solid rgba(201,168,76,0.1);
+            border-bottom: 1px solid rgba(201,168,76,0.1);
+        }
+        .stats-grid {
+            max-width: 1000px; margin: 0 auto;
+            display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem;
+            text-align: center;
+        }
+             
+        .stat-value {
+            font-family: 'Playfair Display', serif; font-size: 2.8rem;
+            font-weight: 700; color: var(--gold); margin-bottom: 0.5rem;
+        }
+        .stat-label {
+            font-size: 0.85rem; color: var(--cream); opacity: 0.5;
+            text-transform: uppercase; letter-spacing: 1px;
+        }
+        .stat-divider {
+            width: 1px; background: rgba(201,168,76,0.15);
+        }
+
+        /* ===== CULTURE ===== */
+        .culture { overflow: hidden; }
+        .culture-layout {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center;
+        }
+        .culture-text h3 {
+            font-family: 'Playfair Display', serif; font-size: 1.8rem;
+            font-weight: 700; margin-bottom: 1.5rem; line-height: 1.3;
+        }
+        .culture-text h3 span { color: var(--gold); }
+        .culture-text p {
+            color: var(--cream); opacity: 0.65; line-height: 1.8;
+            margin-bottom: 1.2rem; font-size: 0.95rem;
+        }
+        .culture-perks {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 2rem;
+        }
+        .perk {
+            display: flex; align-items: center; gap: 0.75rem;
+            padding: 1rem; background: rgba(42,16,21,0.4);
+            border: 1px solid rgba(123,45,53,0.15); border-radius: 10px;
+            transition: all 0.3s;
+        }
+        .perk:hover { border-color: rgba(201,168,76,0.3); background: rgba(42,16,21,0.6); }
+        .perk-icon { font-size: 1.2rem; flex-shrink: 0; }
+        .perk-text { font-size: 0.85rem; opacity: 0.7; }
+        .culture-visual {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;
+        }
+        .culture-card {
+            background: rgba(42,16,21,0.6); border: 1px solid rgba(123,45,53,0.2);
+            border-radius: 16px; padding: 2rem; text-align: center;
+            transition: all 0.4s;
+        }
+        .culture-card:hover {
+            transform: translateY(-3px); border-color: rgba(201,168,76,0.3);
+        }
+        .culture-card:nth-child(2):hover { transform: translateY(-3px); }
+        .culture-card:nth-child(3):hover { transform: translateY(-3px); }
+        .culture-card-icon { font-size: 2rem; margin-bottom: 1rem; }
+        .culture-card h4 {
+            font-family: 'Playfair Display', serif; font-size: 1rem;
+            font-weight: 600; margin-bottom: 0.5rem;
+        }
+        .culture-card p {
+            font-size: 0.8rem; color: var(--cream); opacity: 0.45; line-height: 1.5;
+        }
+
+        /* ===== CTA ===== */
+        .about-cta {
+            padding: 8rem 2rem; text-align: center; position: relative; overflow: hidden;
+        }
+        .about-cta::before {
+            content: ''; position: absolute; inset: 0;
+            background: radial-gradient(ellipse at center, rgba(123,45,53,0.15) 0%, transparent 70%);
+        }
+        .about-cta-content { position: relative; z-index: 1; }
+        .about-cta-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2rem, 4vw, 3rem); font-weight: 700; margin-bottom: 1rem;
+        }
+        .about-cta-subtitle {
+            font-size: 1.1rem; color: var(--cream); opacity: 0.6;
+            margin-bottom: 2.5rem; max-width: 500px; margin-left: auto; margin-right: auto;
+        }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            background: rgba(26, 10, 14, 0.95);
+            border-top: 1px solid rgba(123, 45, 53, 0.2);
+            padding: 4rem 2rem 2rem;
+        }
+
+        .footer-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-brand p {
+            font-size: 0.9rem;
+            color: var(--cream);
+            opacity: 0.5;
+            line-height: 1.7;
+            margin-top: 1rem;
+            max-width: 300px;
+        }
+
+        .footer-col h4 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 1.2rem;
+            color: var(--cream);
+        }
+
+        .footer-col ul {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+        }
+
+        .footer-col ul a {
+            text-decoration: none;
+            color: var(--cream);
+            opacity: 0.5;
+            font-size: 0.85rem;
+            transition: all 0.3s;
+        }
+
+        .footer-col ul a:hover {
+            opacity: 1;
+            color: var(--gold);
+        }
+        
+                .footer-col:nth-child(2) { 
+    margin-left: 500px; /* Ajusta este número a tu gusto */
+}
+
+
+.footer-col:nth-child(2) { 
+    margin-left: auto; /* Esto empuja Recursos y Empresa al extremo derecho */
+    padding-right: 50px; /* Para que no peguen al borde de la pantalla */
+}
+
+        .footer-col li a {
+    white-space: nowrap; /* Evita que el texto salte a 2 líneas */
+}
+
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(123, 45, 53, 0.15);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .footer-bottom p {
+            font-size: 0.8rem;
+            color: var(--cream);
+            opacity: 0.3;
+        }
+
+        .footer-socials {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .footer-socials a {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            border: 1px solid rgba(123, 45, 53, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+            color: var(--cream);
+            opacity: 0.5;
+        }
+
+        .footer-socials a:hover {
+            border-color: var(--gold);
+            opacity: 1;
+            background: rgba(201, 168, 76, 0.1);
+        }
+
+        /* ===== MOBILE MENU ===== */
+        .mobile-menu {
+            display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(26,10,14,0.98); z-index: 999;
+            flex-direction: column; align-items: center; justify-content: center; gap: 2rem;
+            backdrop-filter: blur(20px);
+        }
+        .mobile-menu.active { display: flex; }
+        .mobile-menu a {
+            text-decoration: none; color: var(--cream); font-size: 1.3rem;
+            font-family: 'Playfair Display', serif; transition: color 0.3s;
+        }
+        .mobile-menu a:hover { color: var(--gold); }
+        .mobile-close {
+            position: absolute; top: 1.5rem; right: 2rem;
+            background: none; border: none; color: var(--cream);
+            font-size: 2rem; cursor: pointer;
+        }
+
+        /* ===== REVEAL ===== */
+        .reveal {
+            opacity: 0; transform: translateY(40px);
+            transition: all 0.8s cubic-bezier(0.4,0,0.2,1);
+        }
+        .reveal.visible { opacity: 1; transform: translateY(0); }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 1024px) {
+            .values-grid { grid-template-columns: repeat(2, 1fr); }
+            .team-grid { grid-template-columns: repeat(2, 1fr); }
+            .story-layout, .culture-layout { grid-template-columns: 1fr; gap: 3rem; }
+            .story-visual { order: -1; }
+            .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 2rem; }
+            .stat-divider { display: none; }
+            .footer-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (max-width: 768px) {
+            .nav-links, .nav-cta { display: none; }
+            .hamburger { display: flex; }
+            .mv-grid { grid-template-columns: 1fr; }
+            .values-grid { grid-template-columns: 1fr; }
+            .team-grid { grid-template-columns: 1fr; max-width: 400px; margin: 0 auto; }
+            .timeline::before { left: 20px; }
+            .timeline-item, .timeline-item:nth-child(odd) { flex-direction: row; }
+            .timeline-content, .timeline-item:nth-child(odd) .timeline-content {
+                width: 100%; text-align: left !important; padding-left: 3.5rem !important; padding-right: 0 !important;
+            }
+            .timeline-dot { left: 20px; }
+            .culture-visual { grid-template-columns: 1fr; }
+            .culture-card:nth-child(2), .culture-card:nth-child(3) { transform: none; }
+            .culture-card:nth-child(2):hover, .culture-card:nth-child(3):hover { transform: translateY(-3px); }
+            .culture-perks { grid-template-columns: 1fr; }
+            .footer-grid { grid-template-columns: 1fr; }
+            section { padding: 4rem 1.5rem; }
+        }
+        @media (max-width: 480px) {
+            .story-image-frame { max-width: 100%; }
+            .story-year { font-size: 4rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar" id="navbar">
+        <a href="#" class="nav-logo">
+            <div class="nav-logo-icon">d<span>;</span></div>
+            <div class="nav-logo-text">deep<span>folio.</span></div>
+        </a>
+        <ul class="nav-links">
+            <li><a href="#features">Funciones</a></li>
+            <li><a href="#assets">Activos</a></li>
+            <li><a href="#backtesting">Backtesting</a></li>
+            <li><a href="#comparison">Comparativas</a></li>
+            <li><a href="#pricing">Planes</a></li>
+        </ul>
+        <div class="nav-cta">
+            <a href="login.html" class="btn btn-ghost">Iniciar Sesión</a>
+            <a href="#" class="btn btn-primary">Registrarme</a>
+        </div>
+        <button class="hamburger" id="hamburger" aria-label="Menu"> 
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </nav>
+
+    <div class="mobile-menu" id="mobileMenu">
+        <button class="mobile-close" id="mobileClose">✕</button>
+        <a href="index.html">Inicio</a>
+        <a href="index.html#features">Funciones</a>
+        <a href="index.html#pricing">Precios</a>
+        <a href="contacto.html">Contacto</a>
+        <a href="#" class="btn btn-gold">Empezar Gratis</a>
+    </div>  
+
+    <!-- MOBILE MENU -->
+    <div class="mobile-menu" id="mobileMenu">
+        <button class="mobile-close" id="mobileClose">✕</button>
+        <a href="index.html" onclick="closeMobile()">Inicio</a>
+        <a href="index.html#features" onclick="closeMobile()">Funciones</a>
+        <a href="index.html#backtesting" onclick="closeMobile()">Backtesting</a>
+        <a href="index.html#pricing" onclick="closeMobile()">Precios</a>
+        <a href="about.html" onclick="closeMobile()" style="color: var(--gold);">Nosotros</a>
+        <a href="#" class="btn btn-gold btn-large" onclick="closeMobile()">Empezar Gratis</a>
+    </div>
+
+    <!-- HERO -->
+    <section class="about-hero">
+        <div class="about-hero-bg"></div>
+        <div class="about-hero-grid"></div>
+        <div class="about-hero-content">
+            <div class="breadcrumb">
+                <a href="index.html">Inicio</a>
+                <span class="breadcrumb-sep"></span>
+                <span>Nosotros</span>
+            </div>
+            <h1 class="about-hero-title">
+                La historia detrás de<br>
+                <span class="highlight">deepfolio.</span>
+            </h1>
+            <p class="about-hero-subtitle">
+                Nacimos de una convicción: que la gestión inteligente del patrimonio
+                no debería ser un privilegio exclusivo. Democratizamos el análisis financiero
+                de nivel institucional.
+            </p>
+        </div>
+        <div class="scroll-indicator">
+            <span>Descubre más</span>
+            <div class="scroll-line"></div>
+        </div>
+    </section>
+
+    <!-- STORY -->
+    <section class="story" id="story">
+        <div class="section-container">
+            <div class="story-layout">
+                <div class="story-visual reveal">
+                    <div class="story-image-frame">
+                        <div class="story-image-inner">
+                            <div class="story-year">2026</div>
+                            <div class="story-year-label">Año de fundación</div>
+                            <div class="story-quote">
+                                "Lo que empezó como un proyecto personal para rastrear
+                                mi propia cartera se convirtió en una misión: dar a cada
+                                inversor las herramientas que antes solo tenían los fondos."
+                            </div>
+                        </div>
+                    </div>
+                    <div class="story-floating-badge">Hecho en España</div>
+                </div>
+                <div class="story-text reveal">
+                    <div class="section-label">Nuestra Historia</div>
+                    <h3>De un problema personal a una <span>solución global</span></h3>
+                    <p>
+                        En 2026, nuestro fundador <strong>Pau Escobar</strong>, inversor
+                        autodidacta, se encontró con un problema
+                        frustrante: ninguna plataforma le permitía gestionar su cartera
+                        diversificada —acciones, ETFs, cripto y renta fija— con el rigor
+                        analítico que merecía.
+                    </p>
+                    <p>
+                        Tras meses construyendo herramientas internas, se dio cuenta de que
+                        miles de inversores enfrentaban el mismo desafío. Así nació
+                        <strong>deepfolio.</strong> una plataforma que combina la profundidad
+                        del análisis cuantitativo con una experiencia de usuario elegante
+                        e intuitiva.
+                    </p>
+                             </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- MISSION & VISION -->
+    <section class="mission-vision">
+        <div class="section-container">
+            <div class="section-header reveal">
+                <div class="section-label">Propósito</div>
+                <h2 class="section-title">Misión y Visión</h2>
+                <p class="section-subtitle">
+                    Lo que nos impulsa cada día y hacia dónde vamos.
+                </p>
+            </div>
+            <div class="mv-grid">
+                <div class="mv-card reveal">
+                    <div class="mv-icon">🎯</div>
+                    <h3>Nuestra Misión</h3>
+                    <p>
+                        Democratizar el acceso a herramientas de análisis financiero
+                        de nivel institucional. Creemos que cada inversor, sin importar
+                        su experiencia o patrimonio, merece tomar decisiones basadas en
+                        datos reales, backtesting riguroso y comparativas transparentes.
+                    </p>
+                </div>
+                <div class="mv-card reveal">
+                    <div class="mv-icon">🔭</div>
+                    <h3>Nuestra Visión</h3>
+                    <p>
+                        Ser la plataforma de referencia mundial para la gestión inteligente
+                        de carteras, donde la tecnología y la elegancia se unen.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- VALUES -->
+    <section class="values">
+        <div class="section-container">
+            <div class="section-header reveal">
+                <div class="section-label">Principios</div>
+                <h2 class="section-title">Los valores que nos <span style="color: var(--gold)">definen</span></h2>
+                <p class="section-subtitle">
+                    Cada decisión que tomamos está guiada por estos cuatro pilares fundamentales.
+                </p>
+            </div>
+            <div class="values-grid">
+                <div class="value-card reveal">
+                    <span class="value-number">01</span>
+                    <span class="value-icon">🔬</span>
+                    <h4>Profundidad Analítica</h4>
+                    <p>No nos conformamos con la superficie. Cada métrica, cada gráfico, cada insight está diseñado para revelar lo que otros ocultan.</p>
+                </div>
+                <div class="value-card reveal">
+                    <span class="value-number">02</span>
+                    <span class="value-icon">🛡️</span>
+                    <h4>Transparencia Radical</h4>
+                    <p>Sin letra pequeña, sin datos sesgados. Presentamos la información tal cual es, para que tomes decisiones con total claridad.</p>
+                </div>
+                <div class="value-card reveal">
+                    <span class="value-number">03</span>
+                    <span class="value-icon">✨</span>
+                    <h4>Elegancia en la Experiencia</h4>
+                    <p>La complejidad financiera no tiene por qué ser abrumadora. Diseñamos interfaces que son tan precisas como hermosas.</p>
+                </div>
+                <div class="value-card reveal">
+                    <span class="value-number">04</span>
+                    <span class="value-icon">🌱</span>
+                    <h4>Inversión Responsable</h4>
+                    <p>Creemos en construir herramientas que ayuden a nuestros usuarios a invertir de forma sostenible y con propósito a largo plazo.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TEAM -->
+    <section class="team" id="team">
+        <div class="section-container">
+            <div class="section-header reveal">
+                <div class="section-label">Equipo</div>
+                <h2 class="section-title">Las personas detrás de <span style="color: var(--gold)">deepfolio.</span></h2>
+                <p class="section-subtitle">
+                </p>
+            </div>
+            <div class="team-grid">
+                <div class="team-card reveal">
+                    <div class="team-photo">
+                        <div class="team-avatar">AM</div>
+                    </div>
+                    <div class="team-info">
+                        <div class="team-name">Pau Escobar</div>
+                        <div class="team-role">CEO & Co-Fundador</div>
+                        <div class="team-bio">Ex-Ingeniero Financiero en Goldman Sachs. MBA por IESE. 12 años en fintech y gestión de carteras.</div>
+                        <div class="team-socials">
+                            <a href="https://www.linkedin.com/in/pauescobargarcia/">in</a>
+                            <a href="https://x.com/soypauescobar">𝕏</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="team-card reveal">
+                    <div class="team-photo">
+                        <div class="team-avatar">...</div>
+                    </div>
+                    <div class="team-info">
+                        <div class="team-name">WIP</div>
+                        <div class="team-role">WIP Co-Fundadora</div>
+                        <div class="team-bio">PhD en Ciencias de la Computación por MIT. Especialista en WIP WIP WIP</div>
+                        <div class="team-socials">
+                            <a href="#">in</a>
+                            <a href="">𝕏</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="team-card reveal">
+                    <div class="team-photo">
+                        <div class="team-avatar">...</div>
+                    </div>
+                    <div class="team-info">
+                        <div class="team-name">WIP</div>
+                        <div class="team-role">WIP Product</div>
+                        <div class="team-bio">Anteriormente en Revolut y N26. Experto en UX para pWIP WIP WIP WIP WIP WIPs. Diseña experiencias que simplifican lo difícil.</div>
+                        <div class="team-socials">
+                            <a href="#">in</a>
+                            <a href="#">𝕏</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="team-card reveal">
+                    <div class="team-photo">
+                        <div class="team-avatar">...</div>
+                    </div>
+                    <div class="team-info">
+                        <div class="team-name">WIP</div>
+                        <div class="team-role">Head of WIP</div>
+                        <div class="team-bio">WIP ANALISIS DE WIP en análisis cuantitativo en BlackRock. Lidera el desarrollo de nuestros modelos de backtesting.</div>
+                        <div class="team-socials">
+                            <a href="#">in</a>
+                            <a href="#">𝕏</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TIMELINE -->
+    <section class="timeline-section" id="timeline">
+        <div class="section-container">
+            <div class="section-header reveal">
+                <div class="section-label">Hitos</div>
+                <h2 class="section-title">Nuestra <span style="color: var(--gold)">trayectoria</span></h2>
+                <p class="section-subtitle">
+                    Cada paso nos ha acercado más a nuestra visión de democratizar el análisis financiero.
+                </p>
+            </div>
+            <div class="timeline">
+                <div class="timeline-item reveal">
+                    <div class="timeline-content">
+                        <div class="timeline-year">2026</div>
+                        <div class="timeline-title">🌱 Fundación de deeptfolio</div>
+                        <div class="timeline-desc">Creación del proyecto y primera versión de pruebas lanzada.</div>
+                    </div>
+                    <div class="timeline-dot"></div>
+                </div>
+                <div class="timeline-item reveal">
+                    <div class="timeline-content">
+                        <div class="timeline-year">2027</div>
+                        <div class="timeline-title">Lanzamiento oficial</div>
+                        <div class="timeline-desc">Se abre al público la plataforma.</div>
+                    </div>
+                    <div class="timeline-dot"></div>
+     </section>
+
+    <!-- CULTURE -->
+    <section class="culture" id="culture">
+        <div class="section-container">
+            <div class="culture-layout">
+                <div class="culture-text reveal">
+                    <div class="section-label">Cultura</div>
+                    <h3>Donde la <span>excelencia</span> se encuentra con el <span>propósito</span></h3>
+                    <p>
+                        En deepfolio. creemos que construir tecnología financiera extraordinaria
+                        requiere un equipo extraordinario. Fomentamos un ambiente donde la
+                        curiosidad intelectual y la creatividad florecen.
+                    </p>
+                    <div class="culture-perks">
+                        <div class="perk">
+                            <span class="perk-icon">🌍</span>
+                            <span class="perk-text">Remoto-first global</span>
+                        </div>
+                        <div class="perk">
+                            <span class="perk-icon">📚</span>
+                            <span class="perk-text">Budget de aprendizaje</span>
+                        </div>
+                        <div class="perk">
+                            <span class="perk-icon">🏖️</span>
+                            <span class="perk-text">Vacaciones ilimitadas</span>
+                        </div>
+                        <div class="perk">
+                            <span class="perk-icon">💰</span>
+                            <span class="perk-text">Equity para todos</span>
+                        </div>
+                        <div class="perk">
+                            <span class="perk-icon">🏥</span>
+                            <span class="perk-text">Salud mental & física</span>
+                        </div>
+                        <div class="perk">
+                            <span class="perk-icon">🎯</span>
+                            <span class="perk-text">Impacto medible</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="culture-visual reveal">
+                    <div class="culture-card">
+                        <div class="culture-card-icon">🧠</div>
+                        <h4>Aprendizaje Continuo</h4>
+                        <p>Sesiones semanales de inversión, libros compartidos y conferencias.</p>
+                    </div>
+                    <div class="culture-card">
+                        <div class="culture-card-icon">🤝</div>
+                        <h4>Feedback Honesto</h4>
+                        <p>Comunicación directa y constructiva en cada equipo.</p>
+                    </div>
+                    <div class="culture-card">
+                        <div class="culture-card-icon">🎨</div>
+                        <h4>Diseño Obsesivo</h4>
+                        <p>Cada píxel importa. La belleza es funcionalidad.</p>
+                    </div>
+                    <div class="culture-card">
+                        <div class="culture-card-icon">📈</div>
+                        <h4>Data-Driven</h4>
+                        <p>Cada decisión respaldada por datos, no por intuición.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="about-cta">
+        <div class="about-cta-content reveal">
+            <div class="section-label" style="justify-content: center;">Únete al Equipo</div>
+            <h2 class="about-cta-title">¿Listo para construir el<br><span style="color: var(--gold)">futuro de las finanzas</span>?</h2>
+            <p class="about-cta-subtitle">
+                Estamos siempre buscando mentes brillantes. Descubre nuestras
+                posiciones abiertas o envíanos tu CV.
+            </p>
+            <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                <a href="#" class="btn btn-gold btn-large">Ver Open Positions →</a>
+                <a href="#" class="btn btn-ghost btn-large">Enviar CV</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <a href="#" class="nav-logo">
+                        <div class="nav-logo-icon">d<span>;</span></div>
+                    <div class="nav-logo-text">deep<span>folio.</span></div>
+                </a>
+                <p>
+                    La plataforma de gestión de carteras para inversores que exigen 
+                    profundidad, precisión y elegancia en cada decisión financiera.
+                </p>
+            </div>
+            <div class="footer-col">
+                <h4>Recursos</h4>
+                <ul>
+                    <li><a href="#">Calculadora de Interés Compuesto</a></li>
+                    <li><a href="#">Calculadora FIRE</a></li>
+                    <li><a href="#">Calculadora de Dividendos</a></li>
+                    <li><a href="#">Comparativas</a></li>
+                    <li><a href="#">Planes</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4>Empresa</h4>
+                <ul>
+                    <li><a href="footer/empresa/contacto.html">Contacto</a></li>
+                    <li><a href="footer/empresa/Nosotros.html">Nosotros</a></li>            
+                    <li><a href="footer/empresa/FAQ.html">F.A.Q</a></li>
+                    <li><a href="footer/empresa/privacidad.html">Privacidad</a></li>
+                    <li><a href="footer/empresa/terminos.html">Términos</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4>Inversión</h4>
+                <ul>
+                    <li><a href="#">Guía de ETFs</a></li>
+                    <li><a href="#">Mejores Brokers</a></li>
+                    <li><a href="#">Glosario del Inversor</a></li>
+                    <li><a href="#">Modelos de Cartera</a></li>
+                    <li><a href="#">Enlaces de Interésa</a></li>
+                </ul>
+            </div>
+
+        </div>
+        <div class="footer-bottom">
+            <p>© 2026 deepfolio. Todos los derechos reservados.</p>
+            <div class="footer-socials">
+                <a href="https://x.com/deepfolio" aria-label="Twitter">𝕏</a>
+                <a href="https://www.linkedin.com/in/pauescobargarcia/" aria-label="LinkedIn">in</a>
+            </div>
+        </div>
+    </footer>
+    <script>
+
+            // ===== NAVBAR SCROLL =====
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            navbar.classList.toggle('scrolled', window.scrollY > 50);
+        });
+
+        // ===== MOBILE MENU =====
+        const hamburger = document.getElementById('hamburger');
+        const mobileMenu = document.getElementById('mobileMenu');
+        const mobileClose = document.getElementById('mobileClose');
+        hamburger.addEventListener('click', () => mobileMenu.classList.add('active'));
+        mobileClose.addEventListener('click', () => mobileMenu.classList.remove('active'));
+        function closeMobile() { mobileMenu.classList.remove('active'); }
+
+        // ===== SCROLL REVEAL =====
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+        // ===== COUNTER ANIMATION =====
+        const counterObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const el = entry.target;
+                    const target = parseInt(el.dataset.target);
+                    if (!target) return;
+                    let current = 0;
+                    const increment = target / 60;
+                    const timer = setInterval(() => {
+                        current += increment;
+                        if (current >= target) {
+                            current = target;
+                            clearInterval(timer);
+                        }
+                        if (target >= 1000) {
+                            el.textContent = Math.floor(current).toLocaleString('es-ES') + '+';
+                        } else if (target === 99) {
+                            el.textContent = current.toFixed(1) + '%';
+                        } else {
+                            el.textContent = Math.floor(current) + '+';
+                        }
+                    }, 25);
+                    counterObserver.unobserve(el);
+                }
+            });
+        }, { threshold: 0.5 });
+        document.querySelectorAll('.stat-value[data-target]').forEach(el => counterObserver.observe(el));
+
+        // ===== SMOOTH SCROLL =====
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                const href = this.getAttribute('href');
+                if (href === '#') return;
+                e.preventDefault();
+                const target = document.querySelector(href);
+                if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            });
+        });
+    </script>
+</body>
+</html>
