@@ -1,0 +1,895 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>deepfolio. — Privacidad</title>
+    <link rel="icon" type="logo" href="../../logo/logobien.png">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --burgundy-deep: #3D0F14;
+            --burgundy-dark: #5C1A20;
+            --burgundy: #7B2D35;
+            --burgundy-mid: #8B3A42;
+            --burgundy-light: #A84B52;
+            --burgundy-pale: #C46B73;
+            --gold: #C9A84C;
+            --gold-light: #D4B96A;
+            --gold-pale: #E8D5A0;
+            --cream: #F5EDE4;
+            --cream-light: #FAF6F2;
+            --text-dark: #1A080A;
+            --text-muted: #6B5055;
+            --bg-dark: #1A0A0E;
+            --bg-card: #2A1015;
+            --bg-card-light: #35151A;
+            --white: #FFFFFF;
+            --success: #4A9E6E;
+            --danger: #C45A5A;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-dark);
+            color: var(--cream);
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg-dark); }
+        ::-webkit-scrollbar-thumb { background: var(--burgundy); border-radius: 4px; }
+
+        /* ===== NAVBAR ===== */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 1rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            background: transparent;
+        }
+
+        .navbar.scrolled {
+            background: rgba(26, 10, 14, 0.95);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(123, 45, 53, 0.3);
+            padding: 0.7rem 2rem;
+        }
+
+        .nav-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+        }
+
+        .nav-logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--burgundy), var(--gold));
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--white);
+            font-family: 'Playfair Display', serif;
+        }
+
+        .nav-logo-icon span {
+            color: black;            
+        }   
+
+        .nav-logo-text {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.6rem;
+            font-weight: 600;
+            color: var(--cream);
+            letter-spacing: -0.5px;
+        }
+
+        .nav-logo-text span {
+            color: var(--gold);
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--cream);
+            font-size: 0.9rem;
+            font-weight: 500;
+            opacity: 0.8;
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            opacity: 1;
+            color: var(--gold);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 1.5px;
+            background: var(--gold);
+            transition: width 0.3s;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .nav-cta {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0.7rem 1.5rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: none;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .btn-ghost {
+            background: transparent;
+            color: var(--cream);
+            border: 1px solid rgba(201, 168, 76, 0.3);
+        }
+
+        .btn-ghost:hover {
+            border-color: var(--gold);
+            color: var(--gold);
+            background: rgba(201, 168, 76, 0.05);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--burgundy), var(--burgundy-mid));
+            color: var(--white);
+            box-shadow: 0 4px 15px rgba(123, 45, 53, 0.4);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(123, 45, 53, 0.5);
+        }
+
+        .btn-gold {
+            background: linear-gradient(135deg, var(--gold), var(--gold-light));
+            color: var(--text-dark);
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(201, 168, 76, 0.3);
+        }
+
+        .btn-gold:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(201, 168, 76, 0.4);
+        }
+
+        .btn-large {
+            padding: 1rem 2.2rem;
+            font-size: 1rem;
+            border-radius: 10px;
+        }
+
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            padding: 5px;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 2px;
+            background: var(--cream);
+            transition: all 0.3s;
+            border-radius: 2px;
+        }
+
+                        /* ===== ANIMATED BACKGROUND ===== */
+        .bg-layer {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .bg-gradient-orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.4;
+            animation: orbFloat 12s ease-in-out infinite alternate;
+        }
+
+        .bg-gradient-orb:nth-child(1) {
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, var(--burgundy-dark), transparent 70%);
+            top: -10%;
+            left: -10%;
+            animation-duration: 15s;
+        }
+
+        .bg-gradient-orb:nth-child(2) {
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, var(--burgundy), transparent 70%);
+            bottom: -15%;
+            right: -5%;
+            animation-duration: 18s;
+            animation-delay: -3s;
+        }
+
+        .bg-gradient-orb:nth-child(3) {
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(201, 168, 76, 0.15), transparent 70%);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation-duration: 10s;
+            animation-delay: -7s;
+        }
+
+        @keyframes orbFloat {
+            0% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(30px, -20px) scale(1.05); }
+            66% { transform: translate(-20px, 30px) scale(0.95); }
+            100% { transform: translate(10px, -10px) scale(1.02); }
+        }
+
+        .bg-grid {
+            position: absolute;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(201, 168, 76, 0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(201, 168, 76, 0.02) 1px, transparent 1px);
+            background-size: 50px 50px;
+        }
+
+        .bg-particles {
+            position: absolute;
+            inset: 0;
+        }
+
+        .bg-particle {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: var(--gold);
+            border-radius: 50%;
+            opacity: 0;
+            animation: particleDrift 10s infinite;
+        }
+
+        @keyframes particleDrift {
+            0% { opacity: 0; transform: translateY(100vh) translateX(0); }
+            10% { opacity: 0.5; }
+            90% { opacity: 0.5; }
+            100% { opacity: 0; transform: translateY(-10vh) translateX(50px); }
+        }
+
+
+        /* LAYOUT */
+        .privacy-wrapper {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 10rem 2rem 4rem;
+            display: grid;
+            grid-template-columns: 260px 1fr;
+            gap: 3rem;
+        }
+
+        /* HEADER */
+        .privacy-header {
+            grid-column: 1 / -1;
+            margin-bottom: 1rem;
+        }
+        .privacy-badge {
+            display: inline-flex; align-items: center; gap: 0.5rem;
+            padding: 0.4rem 1rem;
+            background: rgba(123, 45, 53, 0.2);
+            border: 1px solid rgba(201, 168, 76, 0.2);
+            border-radius: 50px;
+            font-size: 0.8rem; color: var(--gold-pale);
+            margin-bottom: 1.2rem;
+        }
+        .privacy-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.2rem, 4vw, 3.2rem);
+            font-weight: 700; line-height: 1.15;
+            margin-bottom: 1rem;
+        }
+        .privacy-subtitle {
+            font-size: 1.1rem; color: var(--cream); opacity: 0.6;
+            max-width: 650px; font-weight: 300;
+        }
+        .privacy-meta {
+            margin-top: 1.5rem;
+            display: flex; gap: 1.5rem; flex-wrap: wrap;
+            font-size: 0.85rem; color: var(--cream); opacity: 0.5;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* TABLE OF CONTENTS */
+        .toc {
+            position: sticky;
+            top: 6rem;
+            height: fit-content;
+            background: rgba(42, 16, 21, 0.4);
+            border: 1px solid rgba(123, 45, 53, 0.2);
+            border-radius: 12px;
+            padding: 1.5rem;
+        }
+        .toc-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 0.95rem; font-weight: 600;
+            margin-bottom: 1rem; color: var(--gold);
+            text-transform: uppercase; letter-spacing: 1px;
+        }
+        .toc-list {
+            list-style: none;
+            display: flex; flex-direction: column; gap: 0.3rem;
+        }
+        .toc-link {
+            display: block;
+            padding: 0.5rem 0.8rem;
+            text-decoration: none;
+            color: var(--cream); opacity: 0.6;
+            font-size: 0.85rem;
+            border-radius: 6px;
+            border-left: 2px solid transparent;
+            transition: all 0.3s;
+        }
+        .toc-link:hover { opacity: 1; background: rgba(123, 45, 53, 0.15); }
+        .toc-link.active {
+            opacity: 1;
+            color: var(--gold);
+            border-left-color: var(--gold);
+            background: rgba(201, 168, 76, 0.08);
+        }
+
+        /* CONTENT */
+        .privacy-content {
+            max-width: 780px;
+        }
+        .privacy-section {
+            margin-bottom: 3rem;
+            padding-bottom: 2.5rem;
+            border-bottom: 1px solid rgba(123, 45, 53, 0.15);
+        }
+        .privacy-section:last-child { border-bottom: none; }
+        
+        .privacy-section h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.6rem; font-weight: 600;
+            margin-bottom: 1.2rem;
+            display: flex; align-items: center; gap: 0.8rem;
+        }
+        .privacy-section h2 .num {
+            display: inline-flex; align-items: center; justify-content: center;
+            width: 32px; height: 32px;
+            background: rgba(123, 45, 53, 0.25);
+            border: 1px solid rgba(201, 168, 76, 0.2);
+            border-radius: 8px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.85rem; color: var(--gold);
+            flex-shrink: 0;
+        }
+
+        .privacy-section p {
+            margin-bottom: 1rem;
+            font-size: 1.02rem;
+            color: var(--cream);
+            opacity: 0.85;
+        }
+        .privacy-section ul, .privacy-section ol {
+            margin: 1rem 0 1.2rem 1.2rem;
+            color: var(--cream);
+            opacity: 0.85;
+        }
+        .privacy-section li {
+            margin-bottom: 0.6rem;
+            font-size: 1rem;
+        }
+        .privacy-section strong {
+            color: var(--cream);
+            opacity: 1;
+            font-weight: 600;
+        }
+        .highlight-box {
+            background: rgba(42, 16, 21, 0.6);
+            border: 1px solid rgba(123, 45, 53, 0.25);
+            border-left: 3px solid var(--gold);
+            border-radius: 8px;
+            padding: 1.2rem 1.5rem;
+            margin: 1.5rem 0;
+            font-size: 0.95rem;
+        }
+
+        /* ===== FOOTER ===== */
+        .footer {
+            background: rgba(26, 10, 14, 0.95);
+            border-top: 1px solid rgba(123, 45, 53, 0.2);
+            padding: 4rem 2rem 2rem;
+        }
+
+        .footer-grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-brand p {
+            font-size: 0.9rem;
+            color: var(--cream);
+            opacity: 0.5;
+            line-height: 1.7;
+            margin-top: 1rem;
+            max-width: 300px;
+        }
+
+        .footer-col h4 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 1.2rem;
+            color: var(--cream);
+        }
+
+        .footer-col ul {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+        }
+
+        .footer-col ul a {
+            text-decoration: none;
+            color: var(--cream);
+            opacity: 0.5;
+            font-size: 0.85rem;
+            transition: all 0.3s;
+        }
+
+        .footer-col ul a:hover {
+            opacity: 1;
+            color: var(--gold);
+        }
+        
+                .footer-col:nth-child(2) { 
+    margin-left: 500px; /* Ajusta este número a tu gusto */
+}
+
+
+.footer-col:nth-child(2) { 
+    margin-left: auto; /* Esto empuja Recursos y Empresa al extremo derecho */
+    padding-right: 50px; /* Para que no peguen al borde de la pantalla */
+}
+
+        .footer-col li a {
+    white-space: nowrap; /* Evita que el texto salte a 2 líneas */
+}
+
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(123, 45, 53, 0.15);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .footer-bottom p {
+            font-size: 0.8rem;
+            color: var(--cream);
+            opacity: 0.3;
+        }
+
+        .footer-socials {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .footer-socials a {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            border: 1px solid rgba(123, 45, 53, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+            color: var(--cream);
+            opacity: 0.5;
+        }
+
+        .footer-socials a:hover {
+            border-color: var(--gold);
+            opacity: 1;
+            background: rgba(201, 168, 76, 0.1);
+        }
+
+
+        /* RESPONSIVE */
+        @media (max-width: 900px) {
+            .privacy-wrapper {
+                grid-template-columns: 1fr;
+                padding-top: 6rem;
+            }
+            .toc {
+                position: relative;
+                top: 0;
+                margin-bottom: 2rem;
+            }
+            .toc-list {
+                display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+                gap: 0.5rem;
+            }
+        }
+        @media (max-width: 600px) {
+            .privacy-wrapper { padding: 5rem 1.2rem 3rem; }
+            .privacy-title { font-size: 2rem; }
+            .toc-list { grid-template-columns: 1fr; }
+            .privacy-meta { flex-direction: column; gap: 0.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ANIMATED BACKGROUND -->
+<div class="bg-layer">
+    <div class="bg-gradient-orb"></div>
+    <div class="bg-gradient-orb"></div>
+    <div class="bg-gradient-orb"></div>
+    <div class="bg-grid"></div>
+    <div class="bg-particles" id="bgParticles"></div>
+</div>
+
+    <!-- NAVBAR -->
+    <nav class="navbar" id="navbar">
+        <a href="#" class="nav-logo">
+            <div class="nav-logo-icon">d<span>;</span></div>
+            <div class="nav-logo-text">deep<span>folio.</span></div>
+        </a>
+        <ul class="nav-links">
+            <li><a href="#features">Funciones</a></li>
+            <li><a href="#assets">Activos</a></li>
+            <li><a href="#backtesting">Backtesting</a></li>
+            <li><a href="#comparison">Comparativas</a></li>
+            <li><a href="#pricing">Planes</a></li>
+        </ul>
+        <div class="nav-cta">
+            <a href="login.html" class="btn btn-ghost">Iniciar Sesión</a>
+            <a href="#" class="btn btn-primary">Registrarme</a>
+        </div>
+        <button class="hamburger" id="hamburger" aria-label="Menu"> 
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+    </nav>
+
+    <div class="privacy-wrapper">
+        <header class="privacy-header">
+            <div class="privacy-badge">🔒 Compromiso con tu privacidad</div>
+            <h1 class="privacy-title">Política de Privacidad</h1>
+            <p class="privacy-subtitle">
+                En deepfolio., tu información financiera y personal es sagrada. 
+                Esta política explica claramente cómo recopilamos, usamos y protegemos tus datos.
+            </p>
+            <div class="privacy-meta">
+                <span>Última actualización: 15 de mayo de 2025</span>
+                <span>Versión: 2.4</span>
+                <span>Aplicable a: UE, EEE y usuarios globales</span>
+            </div>
+        </header>
+
+        <aside class="toc">
+            <div class="toc-title">Contenido</div>
+            <ol class="toc-list">
+                <li><a href="#intro" class="toc-link active">Introducción y Alcance</a></li>
+                <li><a href="#recopilacion" class="toc-link">Información que Recopilamos</a></li>
+                <li><a href="#uso" class="toc-link">Finalidades del Tratamiento</a></li>
+                <li><a href="#base" class="toc-link">Base Legal</a></li>
+                <li><a href="#compartir" class="toc-link">Compartición y Terceros</a></li>
+                <li><a href="#seguridad" class="toc-link">Seguridad y Cifrado</a></li>
+                <li><a href="#retencion" class="toc-link">Conservación de Datos</a></li>
+                <li><a href="#derechos" class="toc-link">Tus Derechos</a></li>
+                <li><a href="#cookies" class="toc-link">Cookies y Rastreo</a></li>
+                <li><a href="#transferencias" class="toc-link">Transferencias Internacionales</a></li>
+                <li><a href="#menores" class="toc-link">Menores de Edad</a></li>
+                <li><a href="#cambios" class="toc-link">Actualizaciones</a></li>
+                <li><a href="#contacto" class="toc-link">Contacto y DPO</a></li>
+            </ol>
+        </aside>
+
+        <article class="privacy-content">
+            <section id="intro" class="privacy-section">
+                <h2><span class="num">01</span> Introducción y Alcance</h2>
+                <p>
+                    <strong>deepfolio.</strong> ("nosotros", "la plataforma" o "deepfolio.") es el responsable del tratamiento de los datos personales que nos proporciones al utilizar nuestros servicios de gestión y análisis de carteras de inversión. Esta Política de Privacidad se aplica a nuestra aplicación web, aplicaciones móviles, API y cualquier otro canal digital asociado.
+                </p>
+                <p>
+                    Nos comprometemos a tratar tu información con la máxima transparencia, cumpliendo estrictamente con el Reglamento General de Protección de Datos (RGPD), la LOPDGDD española y demás normativas aplicables en materia de protección de datos financieros.
+                </p>
+                <div class="highlight-box">
+                    💡 <strong>Nota importante:</strong> deepfolio. no es una entidad financiera autorizada ni un asesor de inversiones. No ejecutamos operaciones en tu nombre ni almacenamos credenciales de acceso a tus brokerages o exchanges.
+                </div>
+            </section>
+
+            <section id="recopilacion" class="privacy-section">
+                <h2><span class="num">02</span> Información que Recopilamos</h2>
+                <p>Recopilamos únicamente los datos estrictamente necesarios para ofrecer un servicio de análisis financiero preciso y seguro:</p>
+                <ul>
+                    <li><strong>Datos de identificación:</strong> Nombre, correo electrónico, país de residencia y datos de facturación (para planes de pago).</li>
+                    <li><strong>Datos de la cartera:</strong> Composición de activos, cantidades invertidas, fechas de compra/venta, divisas y asignaciones porcentuales.</li>
+                    <li><strong>Datos de uso y rendimiento:</strong> Historial de backtests, configuraciones de alertas, páginas visitadas y frecuencia de uso.</li>
+                    <li><strong>Datos técnicos:</strong> Dirección IP, tipo de dispositivo, sistema operativo, navegador y registros de acceso (logs).</li>
+                    <li><strong>Comunicaciones:</strong> Contenido de mensajes enviados a soporte o feedback voluntario.</li>
+                </ul>
+            </section>
+
+            <section id="uso" class="privacy-section">
+                <h2><span class="num">03</span> Finalidades del Tratamiento</h2>
+                <p>Utilizamos tu información exclusivamente para:</p>
+                <ul>
+                    <li>Gestionar tu cuenta, autenticación y preferencias de plataforma.</li>
+                    <li>Calcular rendimientos, ejecutar simulaciones de backtesting y generar comparativas de carteras.</li>
+                    <li>Proveer alertas personalizadas y reportes fiscales adaptados a tu jurisdicción.</li>
+                    <li>Mejorar la precisión de nuestros modelos de análisis y detectar anomalías técnicas.</li>
+                    <li>Cumplir obligaciones legales, fiscales y de prevención de fraude.</li>
+                    <li>Enviar comunicaciones comerciales <strong>únicamente con tu consentimiento explícito</strong>, revocable en cualquier momento.</li>
+                </ul>
+            </section>
+
+            <section id="base" class="privacy-section">
+                <h2><span class="num">04</span> Base Legal</h2>
+                <p>El tratamiento se fundamenta en:</p>
+                <ul>
+                    <li><strong>Ejecución contractual:</strong> Para prestar los servicios contratados.</li>
+                    <li><strong>Consentimiento:</strong> Para funciones analíticas, marketing y cookies no esenciales.</li>
+                    <li><strong>Interés legítimo:</strong> Para seguridad, prevención de fraude y mejora técnica del servicio.</li>
+                    <li><strong>Obligación legal:</strong> Cumplimiento de normativas fiscales y financieras aplicables.</li>
+                </ul>
+            </section>
+
+            <section id="compartir" class="privacy-section">
+                <h2><span class="num">05</span> Compartición y Terceros</h2>
+                <p><strong>No vendemos ni cedemos tus datos a terceros con fines comerciales.</strong> Compartimos información únicamente cuando es estrictamente necesario:</p>
+                <ul>
+                    <li><strong>Proveedores de infraestructura:</strong> Cloud hosting (AWS/GCP) con certificación SOC 2 y cifrado en reposo.</li>
+                    <li><strong>Procesadores de pago:</strong> Stripe / Adyen para gestionar suscripciones (no almacenamos datos de tarjetas).</li>
+                    <li><strong>APIs de datos financieros:</strong> Proveedores regulados para precios históricos y en tiempo real.</li>
+                    <li><strong>Autoridades competentes:</strong> Únicamente si existe obligación legal o requerimiento judicial válido.</li>
+                </ul>
+            </section>
+
+            <section id="seguridad" class="privacy-section">
+                <h2><span class="num">06</span> Seguridad y Cifrado</h2>
+                <p>Implementamos estándares de seguridad de nivel institucional para proteger tu información:</p>
+                <ul>
+                    <li>Cifrado <strong>AES-256</strong> en reposo y <strong>TLS 1.3</strong> en tránsito.</li>
+                    <li>Autenticación multifactor (MFA) obligatoria para cuentas Pro y Enterprise.</li>
+                    <li>Segmentación de redes, control de acceso basado en roles (RBAC) y auditorías trimestrales.</li>
+                    <li>Monitoreo continuo de intrusiones y respuesta automatizada a incidentes.</li>
+                    <li>Los datos de carteras se almacenan en bases de datos aisladas y encriptadas por usuario.</li>
+                </ul>
+            </section>
+
+            <section id="retencion" class="privacy-section">
+                <h2><span class="num">07</span> Conservación de Datos</h2>
+                <p>Mantendremos tus datos mientras tu cuenta esté activa o sea necesario para cumplir con los propósitos descritos en esta política. Tras la baja voluntaria o inactividad prolongada (24 meses), procederemos a:</p>
+                <ul>
+                    <li>La supresión o anonimización completa de tus datos en un plazo máximo de 30 días.</li>
+                    <li>La conservación de registros estrictamente necesarios por obligaciones legales (hasta 5 años según normativa fiscal aplicable).</li>
+                </ul>
+            </section>
+
+            <section id="derechos" class="privacy-section">
+                <h2><span class="num">08</span> Tus Derechos</h2>
+                <p>Como titular de los datos, puedes ejercer los siguientes derechos en cualquier momento:</p>
+                <ul>
+                    <li>Acceso, rectificación y limitación del tratamiento.</li>
+                    <li>Portabilidad de datos (exportación en formato JSON/CSV).</li>
+                    <li>Oposición al tratamiento basado en interés legítimo o marketing.</li>
+                    <li>Supresión ("derecho al olvido") salvo obligaciones legales contrarias.</li>
+                </ul>
+                <p>Puedes ejercer estos derechos directamente desde el panel de configuración de tu cuenta o contactando a nuestro Delegado de Protección de Datos (DPO).</p>
+            </section>
+
+            <section id="cookies" class="privacy-section">
+                <h2><span class="num">09</span> Cookies y Tecnologías de Rastreo</h2>
+                <p>Utilizamos cookies esenciales para el funcionamiento básico, analíticas anónimas para mejorar la experiencia y de preferencias para recordar configuraciones. No empleamos cookies de seguimiento publicitario ni compartimos identificadores con redes de anuncios. Puedes gestionar tus preferencias en cualquier momento desde el panel de privacidad.</p>
+            </section>
+
+            <section id="transferencias" class="privacy-section">
+                <h2><span class="num">10</span> Transferencias Internacionales</h2>
+                <p>Tus datos se procesan principalmente en servidores ubicados en la Unión Europea. En caso de utilizar servicios de proveedores con infraestructura fuera del EEE, garantizamos el cumplimiento mediante Cláusulas Contractuales Tipo (CCT) aprobadas por la Comisión Europea y evaluaciones de adecuación.</p>
+            </section>
+
+            <section id="menores" class="privacy-section">
+                <h2><span class="num">11</span> Menores de Edad</h2>
+                <p>deepfolio. está dirigido a mayores de 18 años. No recopilamos intencionadamente datos de menores. Si detectamos el registro de un menor, procederemos a la eliminación inmediata de sus datos y a la suspensión de la cuenta.</p>
+            </section>
+
+            <section id="cambios" class="privacy-section">
+                <h2><span class="num">12</span> Actualizaciones</h2>
+                <p>Podemos actualizar esta política para reflejar cambios técnicos, legales o de producto. Te notificaremos con al menos 15 días de antelación mediante correo electrónico o aviso dentro de la plataforma. El uso continuado del servicio implica la aceptación de las modificaciones.</p>
+            </section>
+
+            <section id="contacto" class="privacy-section">
+                <h2><span class="num">13</span> Contacto y DPO</h2>
+                <p>Para cualquier consulta, ejercicio de derechos o reporte de incidentes:</p>
+                <ul>
+                    <li><strong>Delegado de Protección de Datos (DPO):</strong> privacy@deepfolio.com</li>
+                    <li><strong>Dirección legal:</strong> deepfolio., Calle de la Innovación 42, 28013 Madrid, España</li>
+                    <li><strong>Formulario de contacto:</strong> Disponible en la sección de Soporte de la plataforma</li>
+                    <li><strong>Supervisión:</strong> Agencia Española de Protección de Datos (AEPD)</li>
+                </ul>
+                <div class="highlight-box">
+                    ⚖️ <strong>Nota legal:</strong> Esta política se rige por la legislación española y europea. Cualquier disputa será sometida a los tribunales competentes de Madrid, salvo disposición legal imperativa en contrario.
+                </div>
+            </section>
+        </article>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-grid">
+            <div class="footer-brand">
+                <a href="#" class="nav-logo">
+                        <div class="nav-logo-icon">d<span>;</span></div>
+                    <div class="nav-logo-text">deep<span>folio.</span></div>
+                </a>
+                <p>
+                    La plataforma de gestión de carteras para inversores que exigen 
+                    profundidad, precisión y elegancia en cada decisión financiera.
+                </p>
+            </div>
+            <div class="footer-col">
+                <h4>Recursos</h4>
+                <ul>
+                    <li><a href="#">Calculadora de Interés Compuesto</a></li>
+                    <li><a href="#">Calculadora FIRE</a></li>
+                    <li><a href="#">Calculadora de Dividendos</a></li>
+                    <li><a href="#">Comparativas</a></li>
+                    <li><a href="#">Planes</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4>Empresa</h4>
+                <ul>
+                    <li><a href="footer/empresa/contacto.html">Contacto</a></li>
+                    <li><a href="footer/empresa/Nosotros.html">Nosotros</a></li>            
+                    <li><a href="footer/empresa/FAQ.html">F.A.Q</a></li>
+                    <li><a href="footer/empresa/privacidad.html">Privacidad</a></li>
+                    <li><a href="footer/empresa/terminos.html">Términos</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h4>Inversión</h4>
+                <ul>
+                    <li><a href="#">Guía de ETFs</a></li>
+                    <li><a href="#">Mejores Brokers</a></li>
+                    <li><a href="#">Glosario del Inversor</a></li>
+                    <li><a href="#">Modelos de Cartera</a></li>
+                    <li><a href="#">Enlaces de Interés</a></li>
+                </ul>
+            </div>
+
+        </div>
+        <div class="footer-bottom">
+            <p>© 2026 deepfolio. Todos los derechos reservados.</p>
+            <div class="footer-socials">
+                <a href="https://x.com/deepfolio" aria-label="Twitter">𝕏</a>
+                <a href="https://www.linkedin.com/in/pauescobargarcia/" aria-label="LinkedIn">in</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Navbar scroll
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            navbar.classList.toggle('scrolled', window.scrollY > 50);
+        });
+
+        // Smooth scroll for TOC
+        document.querySelectorAll('.toc-link').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = link.getAttribute('href').substring(1);
+                const target = document.getElementById(targetId);
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            });
+        });
+
+        // Active section highlight on scroll
+        const sections = document.querySelectorAll('.privacy-section');
+        const tocLinks = document.querySelectorAll('.toc-link');
+
+        const observerOptions = {
+            root: null,
+            rootMargin: '-20% 0px -60% 0px',
+            threshold: 0
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    tocLinks.forEach(link => {
+                        link.classList.remove('active');
+                        if (link.getAttribute('href').substring(1) === entry.target.id) {
+                            link.classList.add('active');
+                        }
+                    });
+                }
+            });
+        }, observerOptions);
+
+        sections.forEach(section => observer.observe(section));
+
+        const particlesContainer = document.getElementById('bgParticles');
+
+for (let i = 0; i < 25; i++) {
+    const p = document.createElement('div');
+    p.className = 'bg-particle';
+    p.style.left = Math.random() * 100 + '%';
+    p.style.animationDelay = Math.random() * 10 + 's';
+    p.style.animationDuration = (8 + Math.random() * 8) + 's';
+
+    particlesContainer.appendChild(p);
+}
+
+    </script>
+</body>
+</html>
